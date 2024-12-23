@@ -10,6 +10,7 @@ import Remove from '../assets/remove.png';
 import Location from '../assets/map.png';
 import basicProfile from '../assets/basicProfile.png';
 import reviewImageSrc from '../assets/reviewImg.png';
+import MyTravelReviewCard from '@/components/myTravel/MyTravelReviewCard';
 const TravelDetail = () => {
   const price = 123000;
   const bookmark = 27;
@@ -31,22 +32,24 @@ const TravelDetail = () => {
   const reviewData = {
     reviews: [
       {
-        id: 1,
+        id: crypto.randomUUID(),
         title: '손성오',
         content:
           '경복궁은 한국의 역사와 전통을 온전히 느낄 수 있는 곳이었어요. 정문인 광화문을 지나 들어서면 웅장한 근정전과 경회루가 시선을 사로잡고, 조용한 연못과 정원은 마치 옛 시대로 돌아간 듯한 기분을 주었답니다. 주변의 한복 대여점에서 한복을 입고 방문하니 더욱 특별한 추억으로 남았어요. 고즈넉한 분위기 속에서 시간을 보내며 한국의 멋과 아름다움을 새삼 느낄 수 있었던 시간이었어요.',
         imgSrcs: [reviewImageSrc],
         createdAt: new Date('2024-10-25'),
         rating: 4.5,
+        profileImage: basicProfile,
       },
       {
-        id: 2,
+        id: crypto.randomUUID(),
         title: '고낙연',
         content:
           '경복궁은 한국의 역사와 전통을 온전히 느낄 수 있는 곳이었어요. 정문인 광화문을 지나 들어서면 웅장한 근정전과 경회루가 시선을 사로잡고, 조용한 연못과 정원은 마치 옛 시대로 돌아간 듯한 기분을 주었답니다. 주변의 한복 대여점에서 한복을 입고 방문하니 더욱 특별한 추억으로 남았어요. 고즈넉한 분위기 속에서 시간을 보내며 한국의 멋과 아름다움을 새삼 느낄 수 있었던 시간이었어요.',
         imgSrcs: [reviewImageSrc, reviewImageSrc, reviewImageSrc, reviewImageSrc],
         createdAt: new Date('2024-10-25'),
         rating: 5,
+        profileImage: basicProfile,
       },
     ],
   };
@@ -110,38 +113,7 @@ const TravelDetail = () => {
           </div>
           <div css={reviewContent}>
             {reviewData.reviews.map((review) => (
-              <div key={review.id} css={reviewItem}>
-                <div css={reviewUserInfo}>
-                  <img css={userProfileImage} src={basicProfile} alt="User profile" />
-                  <div css={userDetails}>
-                    <span css={userName}>{review.title}</span>
-                    <div css={reviewMetadata}>
-                      <span>
-                        {review.createdAt
-                          .toLocaleDateString('ko-KR', {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                          })
-                          .replace(/\. /g, '. ')
-                          .replace(/\.$/, '')}
-                      </span>
-                      <Rating rating={review.rating} />
-                    </div>
-                  </div>
-                </div>
-                <div css={reviewImages}>
-                  {review.imgSrcs.slice(0, 4).map((imgSrc, index) => (
-                    <img
-                      key={index}
-                      css={reviewImage}
-                      src={imgSrc}
-                      alt={`Review image ${index + 1}`}
-                    />
-                  ))}
-                </div>
-                <p css={reviewText}>{review.content}</p>
-              </div>
+              <MyTravelReviewCard review={review} />
             ))}
           </div>
         </div>
@@ -381,63 +353,4 @@ const reviewContent = css`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`;
-
-const reviewItem = css`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const reviewUserInfo = css`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-`;
-
-const userProfileImage = css`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-
-const userDetails = css`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const userName = css`
-  font-size: 14px;
-  font-weight: 500;
-  color: #444;
-`;
-
-const reviewMetadata = css`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: #666;
-`;
-
-const reviewImages = css`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
-
-const reviewImage = css`
-  width: 140px;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 4px;
-`;
-
-const reviewText = css`
-  font-size: 14px;
-  color: #333;
 `;
