@@ -1,7 +1,7 @@
 import reviewImage from '@/assets/reviewImg.png';
 import ReviewCard from '@/components/myReview/ReviewCard';
 import { Review } from '@/types/reviewType';
-import ReviewWriteModal from '@/components/myReview/ReviewWriteModal';
+// import ReviewWriteModal from '@/components/myReview/ReviewWriteModal';
 
 const data: { reviews: Review[] } = {
   reviews: [
@@ -41,15 +41,15 @@ const data: { reviews: Review[] } = {
 const MyReviews = () => {
   return (
     <div>
-      <ReviewWriteModal
+      {/* <ReviewWriteModal
         reviewTitle="내한 고궁 투어"
         userName="김낙연"
         guideName="영낙연"
         imgURL={reviewImage}
-      />
+      /> */}
       <div>
         {data.reviews.map((review: Review) => (
-          <ReviewCard key={review.id} review={review} showBackground={true} showProfile={false} />
+          <ReviewCard key={review.id} review={review} />
         ))}
       </div>
     </div>

@@ -1,6 +1,5 @@
 import DeleteIcon from '@/components/DeleteIcon';
 import Rating from '@/components/Rating';
-import UserProfile from '@/components/UserProfile';
 import { textEllipsis } from '@/styles/GlobalStyles';
 import { Review } from '@/types/reviewType';
 import { dateToString } from '@/utils/dataToString';
@@ -8,45 +7,21 @@ import { css } from '@emotion/react';
 
 interface ReviewCardProps {
   review: Review;
-  showBackground?: boolean;
-  showTitle?: boolean;
-  showRating?: boolean;
-  showDelete?: boolean;
-  showProfile?: boolean;
   onDelete?: (id: string) => void;
 }
 
-const ReviewCard = ({
-  review,
-  showBackground = true,
-  showRating = true,
-  showTitle = true,
-  showDelete = true,
-  showProfile = true,
-}: ReviewCardProps) => {
+const ReviewCard = ({ review }: ReviewCardProps) => {
   return (
-    <div css={reviewStyle(showBackground, showTitle)}>
+    <div css={reviewStyle}>
       <div className="titleStyle">
-        {showProfile && (
-          <UserProfile
-            name="김낙연"
-            rating={review.rating}
-            imgURL={review.imgSrc}
-            showRating={true}
-            showSocialName={false}
-            showDate={false}
-          />
-        )}
         <div className="titleText">
-          {showTitle && <h2>{review.title}</h2>}
+          <h2>{review.title}</h2>
           <p className="createAt">
             {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
           </p>
-          <div className="ratingContaner">
-            {showRating && review.rating && <Rating rating={review.rating} />}
-          </div>
+          <div className="ratingContaner">{review.rating && <Rating rating={review.rating} />}</div>
         </div>
-        {showDelete && <DeleteIcon onDelete={() => console.log('delete')} />}
+        <DeleteIcon onDelete={() => console.log('delete')} />
       </div>
       <div className="imgContainer">
         <img src={review.imgSrc} alt="review" />
@@ -58,11 +33,11 @@ const ReviewCard = ({
 
 export default ReviewCard;
 
-const reviewStyle = (showBackground: boolean, showTitle: boolean) => css`
+const reviewStyle = css`
   border-radius: 10px;
   width: 800px;
   height: 290px;
-  background-color: ${showBackground ? '#f8f8f8' : ''};
+  background-color: #f8f8f8;
   padding: 10px 15px 15px 15px;
   margin-bottom: 20px;
 
@@ -70,6 +45,7 @@ const reviewStyle = (showBackground: boolean, showTitle: boolean) => css`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
 
     .titleText {
       display: flex;
@@ -88,7 +64,7 @@ const reviewStyle = (showBackground: boolean, showTitle: boolean) => css`
     justify-content: center;
     width: 110px;
     height: 120px;
-    margin-top: ${showTitle ? '13px' : '0'};
+    margin-top: '13px';
     margin-bottom: 16px;
     border-radius: 5px;
     overflow: hidden;
