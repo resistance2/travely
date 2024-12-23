@@ -1,29 +1,51 @@
 import DeleteIcon from '@/components/DeleteIcon';
 import Rating from '@/components/Rating';
+import UserProfile from '@/components/UserProfile';
 import { textEllipsis } from '@/styles/GlobalStyles';
 import { Review } from '@/types/reviewType';
+import { dateToString } from '@/utils/dataToString';
 import { css } from '@emotion/react';
 
-//!TODO: 리뷰 카드에서 별점을 옵셔널
-//!TODO: 리뷰 카드에서 백그라운드 색상이 옵셔널
-//!TODO: 리뷰 카드에서 제목을 옵셔널
+interface ReviewCardProps {
+  review: Review;
+  showBackground?: boolean;
+  showTitle?: boolean;
+  showRating?: boolean;
+  showDelete?: boolean;
+  showProfile?: boolean;
+  onDelete?: (id: string) => void;
+}
 
 const ReviewCard = ({
   review,
-  backgroundEnable = true,
-}: {
-  review: Review;
-  backgroundEnable: boolean;
-}) => {
+  showBackground = true,
+  showRating = true,
+  showTitle = false,
+  showDelete = true,
+  showProfile = true,
+}: ReviewCardProps) => {
   return (
-    <div css={reviewStyle(backgroundEnable)}>
+    <div css={reviewStyle(showBackground, showTitle)}>
       <div className="titleStyle">
+        {showProfile && (
+          <UserProfile
+            name="김낙연"
+            rating={review.rating}
+            imgURL={review.imgSrc}
+            showRating={true}
+            showDate={true}
+          />
+        )}
         <div className="titleText">
-          <h2>{review.title}</h2>
-          <p className="createAt">{review.createdAt?.toLocaleDateString()}</p>
-          <Rating rating={review.rating} />
+          {showTitle && <h2>{review.title}</h2>}
+          <p className="createAt">
+            {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
+          </p>
+          <div className="ratingContaner">
+            {showRating && review.rating && <Rating rating={review.rating} />}
+          </div>
         </div>
-        <DeleteIcon onDelete={() => console.log('delete')} />
+        {showDelete && <DeleteIcon onDelete={() => console.log('delete')} />}
       </div>
       <div className="imgContainer">
         <img src={review.imgSrc} alt="review" />
@@ -35,11 +57,11 @@ const ReviewCard = ({
 
 export default ReviewCard;
 
-const reviewStyle = (backgroundEnable: boolean) => css`
+const reviewStyle = (showBackground: boolean, showTitle: boolean) => css`
   border-radius: 10px;
   width: 800px;
   height: 290px;
-  background-color: ${backgroundEnable ? '#f8f8f8' : ''};
+  background-color: ${showBackground ? '#f8f8f8' : ''};
   padding: 10px 15px 15px 15px;
   margin-bottom: 20px;
 
@@ -65,7 +87,7 @@ const reviewStyle = (backgroundEnable: boolean) => css`
     justify-content: center;
     width: 110px;
     height: 120px;
-    margin-top: 13px;
+    margin-top: ${showTitle ? '13px' : '0'};
     margin-bottom: 16px;
     border-radius: 5px;
     overflow: hidden;
@@ -74,8 +96,13 @@ const reviewStyle = (backgroundEnable: boolean) => css`
     width: 100%;
   }
 
+  .ratingContaner {
+    transform: translateY(-3px);
+  }
+
   .createAt {
     font-size: 13px;
     color: #666;
+    transform: translateY(-3px);
   }
 `;

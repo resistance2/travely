@@ -5,10 +5,11 @@ import defaultProfile from '@/assets/defaultProfile.jpg';
 export interface UserProfileProps {
   name: string;
   userEmailId?: string;
-  rating?: string;
+  rating?: number;
   imgURL?: string;
-  hideRating?: boolean;
-  hideUserId?: boolean;
+  showRating?: boolean;
+  showSocialName?: boolean;
+  showDate?: boolean;
 }
 
 //!TODO 리뷰 숫자가 없을 때 에러처리 넣기
@@ -17,8 +18,9 @@ const UserProfile = ({
   userEmailId,
   rating,
   imgURL,
-  hideRating = false,
-  hideUserId = false,
+  showRating = true,
+  showSocialName = true,
+  showDate = true,
 }: UserProfileProps) => {
   return (
     <div css={userProfileStyles}>
@@ -27,9 +29,10 @@ const UserProfile = ({
         <div className="user-info">
           <div className="name-rating">
             <div className="name">{name}</div>
-            {!hideRating && <Rating rating={Number(rating) || -1} />}
+            {showRating && <Rating rating={Number(rating) || -1} />}
           </div>
-          {!hideUserId && <span className="kakao">kakao:{userEmailId}</span>}
+          {showDate && <span>2021.09.01</span>}
+          {showSocialName && <span className="kakao">kakao:{userEmailId}</span>}
         </div>
       </div>
     </div>

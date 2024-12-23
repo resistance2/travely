@@ -40,8 +40,10 @@ const MyCreatedContent = () => {
                 name={guide.userName}
                 userEmailId={guide.userEmail}
                 imgURL={guide.userProfileImg}
-                hideRating={true}
-                hideUserId={false}
+                showRating={true}
+                rating={guide.userRating}
+                showSocialName={true}
+                showDate={false}
               />
             </UserInfoContainer>
 
