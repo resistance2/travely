@@ -11,6 +11,7 @@ export interface UserProfileProps {
   hideUserId?: boolean;
 }
 
+//!TODO 리뷰 숫자가 없을 때 에러처리 넣기
 const UserProfile = ({
   name,
   userEmailId,
@@ -26,7 +27,7 @@ const UserProfile = ({
         <div className="user-info">
           <div className="name-rating">
             <div className="name">{name}</div>
-            {!hideRating && <Rating rating={rating || ''} />}
+            {!hideRating && <Rating rating={Number(rating) || -1} />}
           </div>
           {!hideUserId && <span className="kakao">kakao:{userEmailId}</span>}
         </div>

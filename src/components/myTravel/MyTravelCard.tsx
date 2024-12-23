@@ -33,7 +33,7 @@ const TripCard: React.FC<ITripCardProps> = ({
       <TripInfo isDisabled={isDisabled}>
         <TitleContainer>
           <Title>{title}</Title>
-          <Rating rating={rating} reviewCount={String(reviews)} />
+          <Rating rating={Number(rating)} reviewCount={Number(reviews)} />
         </TitleContainer>
         <Price>
           {price} <PricePerPerson>/ 1인</PricePerPerson>

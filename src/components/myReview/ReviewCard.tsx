@@ -4,14 +4,24 @@ import { textEllipsis } from '@/styles/GlobalStyles';
 import { Review } from '@/types/reviewType';
 import { css } from '@emotion/react';
 
-const ReviewCard = ({ review }: { review: Review }) => {
+//!TODO: 리뷰 카드에서 별점을 옵셔널
+//!TODO: 리뷰 카드에서 백그라운드 색상이 옵셔널
+//!TODO: 리뷰 카드에서 제목을 옵셔널
+
+const ReviewCard = ({
+  review,
+  backgroundEnable = true,
+}: {
+  review: Review;
+  backgroundEnable: boolean;
+}) => {
   return (
-    <div css={reviewStyle}>
+    <div css={reviewStyle(backgroundEnable)}>
       <div className="titleStyle">
         <div className="titleText">
           <h2>{review.title}</h2>
           <p className="createAt">{review.createdAt?.toLocaleDateString()}</p>
-          <Rating rating="5.0" />
+          <Rating rating={review.rating} />
         </div>
         <DeleteIcon onDelete={() => console.log('delete')} />
       </div>
@@ -25,11 +35,11 @@ const ReviewCard = ({ review }: { review: Review }) => {
 
 export default ReviewCard;
 
-const reviewStyle = css`
+const reviewStyle = (backgroundEnable: boolean) => css`
   border-radius: 10px;
   width: 800px;
   height: 290px;
-  background-color: #f8f8f8;
+  background-color: ${backgroundEnable ? '#f8f8f8' : ''};
   padding: 10px 15px 15px 15px;
   margin-bottom: 20px;
 
