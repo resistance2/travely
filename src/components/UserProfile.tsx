@@ -29,7 +29,7 @@ const UserProfile = ({
         <div className="user-info">
           <div className="name-rating">
             <div className="name">{name}</div>
-            {showRating && <Rating rating={Number(rating) || -1} />}
+            {showRating && rating && <Rating rating={Number(rating)} />}
           </div>
           {showDate && <span>2021.09.01</span>}
           {showSocialName && <span className="kakao">kakao:{userEmailId}</span>}

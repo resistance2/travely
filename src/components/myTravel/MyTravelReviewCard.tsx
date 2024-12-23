@@ -4,6 +4,7 @@ import { dateToString } from '@/utils/dataToString';
 import { css } from '@emotion/react';
 import React from 'react';
 
+// TODO 리뷰 타입 수정 필요, 공통 리뷰 타입 설정 필요
 interface Review {
   id: string;
   title: string;

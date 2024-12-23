@@ -1,5 +1,6 @@
 import guideImg from '@/assets/guide.jpg';
 
+// TODO 목업 데이터와 실제 DB 데이터 비교 필요
 export const travelMyJoinedData = [
   {
     travelTitle: '대한민국 고궁 투어',
@@ -100,7 +101,7 @@ export const travelMyJoinedData = [
     travelTeam: {
       travelStartDate: '2024-10-07',
       travelEndDate: '2024-10-015',
-      personLimit: 6,
+      personLimit: 1,
       approvedMembersMbti: {
         mbti: ['ISFJ', 'ESTJ', 'ENFJ', 'ISTP'],
       },
@@ -117,7 +118,7 @@ export const travelMyJoinedData = [
       userProfileImg: guideImg,
       userName: '가이드 손성오',
       userEmail: 'guide4@example.com',
-      userRating: 4.5,
+      userRating: 1.5,
     },
     travelTeam: {
       travelStartDate: '2024-10-07',

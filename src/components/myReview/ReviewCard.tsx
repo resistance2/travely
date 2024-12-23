@@ -1,8 +1,8 @@
 import DeleteIcon from '@/components/DeleteIcon';
-import Rating from '@/components/Rating';
 import { textEllipsis } from '@/styles/GlobalStyles';
 import { Review } from '@/types/reviewType';
 import { dateToString } from '@/utils/dataToString';
+import { isVaildRatingNumber } from '@/utils/validCheck';
 import { css } from '@emotion/react';
 
 interface ReviewCardProps {
@@ -19,7 +19,9 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
           <p className="createAt">
             {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
           </p>
-          <div className="ratingContaner">{review.rating && <Rating rating={review.rating} />}</div>
+          <div className="ratingContaner">
+            {isVaildRatingNumber(review.rating) ? review.rating : ''}
+          </div>
         </div>
         <DeleteIcon onDelete={() => console.log('delete')} />
       </div>
@@ -64,7 +66,6 @@ const reviewStyle = css`
     justify-content: center;
     width: 110px;
     height: 120px;
-    margin-top: '13px';
     margin-bottom: 16px;
     border-radius: 5px;
     overflow: hidden;
