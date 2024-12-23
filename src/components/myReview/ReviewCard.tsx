@@ -7,7 +7,7 @@ import { css } from '@emotion/react';
 
 interface ReviewCardProps {
   review: Review;
-  onDelete?: (id: number) => void;
+  onDelete?: (id: string) => void;
 }
 
 const ReviewCard = ({ review }: ReviewCardProps) => {
