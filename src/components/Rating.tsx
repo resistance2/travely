@@ -1,19 +1,37 @@
 import { css, SerializedStyles } from '@emotion/react';
 import { Star } from 'lucide-react';
 
-//!TODO: 별점 컴포넌트 크기를 small, middle, big 셋 중에 하나 선택
+type Size = 'small' | 'middle' | 'large';
 
 interface IRatingProps {
   rating: number;
   reviewCount?: number;
   customStyle?: SerializedStyles;
-  size?: ['small', 'middle', 'big'];
+  size?: Size;
 }
 
-function Rating({ rating, reviewCount, customStyle }: IRatingProps) {
+const sizeMap = {
+  small: {
+    Star: 13,
+    fontSize: 13,
+    spanFontSize: 12,
+  },
+  middle: {
+    Star: 17,
+    fontSize: 17,
+    spanFontSize: 15,
+  },
+  large: {
+    Star: 18,
+    fontSize: 18,
+    spanFontSize: 16,
+  },
+};
+
+function Rating({ rating, reviewCount, customStyle, size = 'small' }: IRatingProps) {
   return (
-    <div css={[ratingWrap, customStyle]}>
-      <Star size="13" fill="#FFBF00" stroke="#FFBF00" />
+    <div css={[ratingWrap(size), customStyle]}>
+      <Star size={sizeMap[size].Star} fill="#FFBF00" stroke="#FFBF00" />
       <p className="score">
         {rating.toPrecision(2)}
         {reviewCount && <span>({reviewCount})</span>}
@@ -24,18 +42,18 @@ function Rating({ rating, reviewCount, customStyle }: IRatingProps) {
 
 export default Rating;
 
-const ratingWrap = css`
+const ratingWrap = (size: Size) => css`
   display: flex;
   align-items: center;
   svg {
     margin-top: -2px;
   }
   .score {
-    font-size: 13px;
+    font-size: ${sizeMap[size].fontSize}px;
     margin-left: 3px;
     span {
       margin-left: 4px;
-      font-size: 12px;
+      font-size: ${sizeMap[size].spanFontSize}px;
       color: #666;
     }
   }

@@ -56,7 +56,7 @@ const TravelDetail = () => {
       <div css={mainContainer}>
         <div css={titleContainer}>
           <h1>한국의 고궁 투어 ( 너무 너무 재밌어요 )</h1>
-          <Rating rating={5.0} />
+          <Rating rating={5.0} reviewCount={25} size="middle" />
         </div>
         <div css={imageContainer}>
           <img src={image} alt="image" />
