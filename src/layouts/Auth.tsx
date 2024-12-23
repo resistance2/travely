@@ -26,11 +26,17 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
       userProfileImage: userInfo.photoURL,
     };
     try {
-      const result = await axios.post(`${import.meta.env.VITE_S3_URL}/api/v1/users/login`, {
+      const result = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/users/login`, {
         ...user,
       });
-      const { userProfileImage, socialName, userEmail, isVerifiedUser } = result.data.data;
-      setUser({ userProfileImage, socialName, userEmail, isVerifiedUser });
+      const {
+        userProfileImage,
+        socialName,
+        userEmail,
+        isVerifiedUser,
+        _id: userId,
+      } = result.data.data;
+      setUser({ userProfileImage, socialName, userEmail, isVerifiedUser, userId });
     } catch (error) {
       console.error('로그인 처리에 오류가 발생했습니다.:', error);
     }
