@@ -49,7 +49,7 @@ const MyReviews = () => {
       />
       <div>
         {data.reviews.map((review: Review) => (
-          <ReviewCard key={review.id} review={review} showBackground={true} />
+          <ReviewCard key={review.id} review={review} showBackground={true} showProfile={false} />
         ))}
       </div>
     </div>

@@ -20,7 +20,7 @@ const ReviewCard = ({
   review,
   showBackground = true,
   showRating = true,
-  showTitle = false,
+  showTitle = true,
   showDelete = true,
   showProfile = true,
 }: ReviewCardProps) => {
@@ -33,7 +33,8 @@ const ReviewCard = ({
             rating={review.rating}
             imgURL={review.imgSrc}
             showRating={true}
-            showDate={true}
+            showSocialName={false}
+            showDate={false}
           />
         )}
         <div className="titleText">
