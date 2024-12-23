@@ -3,6 +3,7 @@ export type User = {
   socialName: string;
   userEmail: string;
   isVerifiedUser: boolean;
+  userId: string;
   // myCreatedTravel: string[];
   // myPassedTravel: string[];
   // myReviews: string[];
