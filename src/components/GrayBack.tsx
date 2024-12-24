@@ -7,7 +7,7 @@ interface GrayBackProps {
   padding?: boolean;
 }
 
-const GrayBack = ({ children, title, price, padding }: GrayBackProps) => {
+const GrayBack = ({ children, title, price = false, padding = true }: GrayBackProps) => {
   return (
     <>
       <p css={{ fontSize: '18px', marginTop: '15px' }}>{title}</p>
