@@ -75,7 +75,7 @@ const reviewStyle = css`
     width: 100%;
   }
 
-  .ratingContaner {
+  .ratingContainer {
     transform: translateY(-3px);
   }
 
