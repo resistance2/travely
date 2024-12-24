@@ -1,10 +1,11 @@
-// import { useQuery } from '@tanstack/react-query';
+import getMyCreatedTravel from '@/api/myCreatedTravel/getMycreatedTravel';
+import { useQuery } from '@tanstack/react-query';
 
-// const useGetMyCreatedTravel = (userId: string) => {
-//   return useQuery({
-//     queryKey: ['my-travel-created', 'userId'],
-//     queryFn: (userId) => {},
-//   });
-// };
+const useGetMyCreatedTravel = (userId: string) => {
+  return useQuery({
+    queryKey: ['my-travel-created', userId],
+    queryFn: () => getMyCreatedTravel(userId),
+  });
+};
 
-// export default useGetMyCreatedTravel;
+export default useGetMyCreatedTravel;

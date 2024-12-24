@@ -6,7 +6,7 @@ interface ITripCardProps {
   title: string;
   rating: string;
   reviews: number;
-  price: string;
+  price: number;
   badgeCount: number;
   updateDate: string;
   isDisabled?: boolean;
