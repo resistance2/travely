@@ -56,7 +56,7 @@ const TravelDetail = () => {
       <div css={mainContainer}>
         <div css={titleContainer}>
           <h1>한국의 고궁 투어 ( 너무 너무 재밌어요 )</h1>
-          <Rating rating="5.0" />
+          <Rating rating={5.0} reviewCount={25} size="large" />
         </div>
         <div css={imageContainer}>
           <img src={image} alt="image" />
@@ -106,7 +106,7 @@ const TravelDetail = () => {
         <div css={reviewContainer}>
           <div css={reviewHeader}>
             <h2>후기</h2>
-            <Rating rating="5.0" />
+            <Rating rating={5.0} />
           </div>
           <div css={reviewContent}>
             {reviewData.reviews.map((review) => (
@@ -126,7 +126,7 @@ const TravelDetail = () => {
                           .replace(/\. /g, '. ')
                           .replace(/\.$/, '')}
                       </span>
-                      <Rating rating={review.rating.toFixed(1)} />
+                      <Rating rating={review.rating} />
                     </div>
                   </div>
                 </div>

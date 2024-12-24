@@ -38,7 +38,7 @@ const SideContainerHeader = ({ price, bookmark }: SideContainerHeaderProps) => {
         <div css={userInfoContentContainer}>
           <div css={userInfoTitleContainer}>
             <p>하나투어</p>
-            <Rating rating="5.0" />
+            <Rating rating={5.0} />
           </div>
           <span>kakao : dirjsdk</span>
         </div>
