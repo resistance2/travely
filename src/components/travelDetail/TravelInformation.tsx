@@ -4,6 +4,7 @@ import { AlarmClock, LandPlot, MapPin } from 'lucide-react';
 import Check from '@/assets/check.png';
 import Remove from '@/assets/remove.png';
 import useMoreBtn from '@/hooks/custom/useMoreBtn';
+import FAQ from './FAQ';
 
 const TravelInformation = ({ children }: { children: React.ReactNode }) => {
   return <div css={container}>{children}</div>;
@@ -75,10 +76,24 @@ const Meeting = ({
   );
 };
 
+const FAQList = ({ faqs }: { faqs: { question: string; answer: string }[] }) => {
+  return (
+    <div css={qnaWrapper}>
+      <p>자주 묻는 질문</p>
+      {faqs.map((faq) => (
+        <div key={faq.question}>
+          <FAQ question={faq.question} answer={faq.answer} />
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export default Object.assign(TravelInformation, {
   Course,
   Notice,
   Meeting,
+  FAQList,
 });
 
 const container = css`
@@ -157,5 +172,16 @@ const meetingWrapper = css`
     li {
       margin-bottom: 2px;
     }
+  }
+`;
+
+const qnaWrapper = css`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  p {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
   }
 `;

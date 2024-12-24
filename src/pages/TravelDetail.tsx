@@ -7,7 +7,7 @@ import TravelInformation from '@/components/travelDetail/TravelInformation';
 import Title from '@/components/detail/Title';
 import Thumbnail from '@/components/detail/Thumbnail';
 import Introduction from '@/components/detail/Introduction';
-import FAQList from '@/components/travelDetail/FAQList';
+
 const TravelDetail = () => {
   const price = 123000;
   const bookmark = 27;
@@ -56,7 +56,7 @@ const TravelDetail = () => {
           meetingTime={['수원역 오전8시', '경복궁 오전10시']}
           meetingPlaceSrc={Location}
         />
-        <FAQList faqs={faqs} />
+        <TravelInformation.FAQList faqs={faqs} />
       </TravelInformation>
       <div css={sideContainer}>
         <SideContainerHeader price={price} bookmark={bookmark} />
