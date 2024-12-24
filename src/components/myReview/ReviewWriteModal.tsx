@@ -109,7 +109,6 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
                   <UserProfile
                     name={guideName}
                     userEmailId="sonjeongwo"
-                    showRating={false}
                     showSocialName={false}
                     showDate={false}
                   />

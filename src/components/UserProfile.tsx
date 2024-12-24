@@ -7,18 +7,15 @@ export interface UserProfileProps {
   userEmailId?: string;
   rating?: number;
   imgURL?: string;
-  showRating?: boolean;
-  showSocialName?: boolean;
   showDate?: boolean;
+  showSocialName?: boolean;
 }
 
-//!TODO 리뷰 숫자가 없을 때 에러처리 넣기
 const UserProfile = ({
   name,
   userEmailId,
   rating,
   imgURL,
-  showRating = true,
   showSocialName = true,
   showDate = true,
 }: UserProfileProps) => {
@@ -29,7 +26,7 @@ const UserProfile = ({
         <div className="user-info">
           <div className="name-rating">
             <div className="name">{name}</div>
-            {showRating && rating && <Rating rating={Number(rating)} />}
+            {rating ?? <Rating rating={Number(rating)} />}
           </div>
           {showDate && <span>2021.09.01</span>}
           {showSocialName && <span className="kakao">kakao:{userEmailId}</span>}
