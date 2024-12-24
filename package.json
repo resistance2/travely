@@ -10,8 +10,7 @@
     "format": "prettier . --write",
     "preview": "vite preview",
     "type-check": "tsc --noEmit --skipLibCheck",
-    "prepare": "npx lefthook install && cp .github/hooks/byulBash.sh .git/hooks/prepare-commit-msg && chmod +x .git/hooks/prepare-commit-msg",
-    "lefthook": "lefthook run pre-commit && cp .github/hooks/byulBash.sh .git/hooks/prepare-commit-msg && chmod +x .git/hooks/prepare-commit-msg"
+    "prepare": "npx lefthook install"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
