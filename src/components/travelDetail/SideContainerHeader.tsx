@@ -50,7 +50,6 @@ const SideContainerHeader = ({ price, bookmark }: SideContainerHeaderProps) => {
 export default SideContainerHeader;
 
 const sideContainerHeader = css`
-  height: 100%;
   border-radius: 8px;
   border: 1px solid #c1c1c1;
 `;
@@ -58,7 +57,6 @@ const sideContainerHeader = css`
 const priceContainer = css`
   display: flex;
   align-items: center;
-  justify-content: row;
   padding: 20px 20px 0 20px;
   h1 {
     font-size: 28px;
