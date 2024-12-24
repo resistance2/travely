@@ -2,8 +2,9 @@ import DeleteIcon from '@/components/DeleteIcon';
 import { textEllipsis } from '@/styles/GlobalStyles';
 import { Review } from '@/types/reviewType';
 import { dateToString } from '@/utils/dataToString';
-import { isVaildRatingNumber } from '@/utils/validCheck';
+
 import { css } from '@emotion/react';
+import Rating from '@/components/Rating';
 
 interface ReviewCardProps {
   review: Review;
@@ -20,7 +21,7 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
             {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
           </p>
           <div className="ratingContaner">
-            {isVaildRatingNumber(review.rating) ? review.rating : ''}
+            <Rating rating={Number(review.rating)} />
           </div>
         </div>
         <DeleteIcon onDelete={() => console.log('delete')} />
