@@ -20,7 +20,7 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
           <p className="createAt">
             {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
           </p>
-          <div className="ratingContaner">
+          <div className="ratingContainer">
             <Rating rating={Number(review.rating)} />
           </div>
         </div>

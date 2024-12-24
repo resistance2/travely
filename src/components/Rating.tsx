@@ -1,4 +1,4 @@
-import { isVaildRatingNumber } from '@/utils/validCheck';
+import { isValidRatingNumber } from '@/utils/validCheck';
 import { css, SerializedStyles } from '@emotion/react';
 import { Star } from 'lucide-react';
 
@@ -34,7 +34,7 @@ function Rating({ rating, reviewCount, customStyle, size = 'small' }: IRatingPro
     <div css={[ratingWrap(size), customStyle]}>
       <Star size={sizeMap[size].Star} fill="#FFBF00" stroke="#FFBF00" />
       <p className="score">
-        {isVaildRatingNumber(rating) ? rating.toPrecision(2) : ''}
+        {isValidRatingNumber(rating) ? rating.toPrecision(2) : ''}
         {reviewCount && <span>({reviewCount})</span>}
       </p>
     </div>

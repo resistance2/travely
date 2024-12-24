@@ -1,1 +1,2 @@
-export const isVaildRatingNumber = (rating: number) => !isNaN(rating) && rating >= 0 && rating <= 5;
+export const isValidRatingNumber = (rating: number) =>
+  Number.isNaN(rating) && rating >= 0 && rating <= 5;
