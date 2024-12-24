@@ -28,15 +28,13 @@ const SideTravelTeam = ({ teams }: SideTravelTeamProps) => {
 export default SideTravelTeam;
 
 const sideTravelTeamContainer = css`
-  height: 100%;
   border-radius: 8px;
   border: 1px solid #c1c1c1;
-  padding: 20px;
+  padding: 20px 16px;
 
   h1 {
     font-size: 18px;
     font-weight: 600;
-    margin-bottom: 14px;
     color: #333;
   }
 `;
@@ -45,7 +43,7 @@ const teamContainer = css`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  margin-bottom: 14px;
+  margin-top: 14px;
   gap: 6px;
 
   span {
