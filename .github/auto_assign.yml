@@ -2,12 +2,12 @@ addReviewers: true
 
 reviewers:
   - nakyeonko3
-  - love1ace
   - ssumanlife
   - haruyam15
+  - Sonseongoh
 
 addAssignees: author
-numberOfReviewers: 2
+numberOfReviewers: 4
 
 skipKeywords:
   - wip  
