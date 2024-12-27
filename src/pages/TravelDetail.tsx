@@ -7,6 +7,65 @@ import TravelInformation from '@/components/travelDetail/TravelInformation';
 import Title from '@/components/detail/Title';
 import Thumbnail from '@/components/detail/Thumbnail';
 import Introduction from '@/components/detail/Introduction';
+import reviewImage from '@/assets/reviewImg.png';
+import { Review } from '@/types/reviewType';
+
+import defaultProfile from '@/assets/defaultProfile.jpg';
+const data: { reviews: Review[] } = {
+  reviews: [
+    {
+      id: 1,
+      title: '대한 고궁 투어',
+      content:
+        '경복궁은 한국의 역사와 전통을 온전히 느낄 수 있는 곳이었어요. 정문인 광화문을 지나 들어서면 웅장한 근정전과 경회루가 시선을 사로잡고, 조용한 연못과 정원은 마치 옛 시대로 돌아간 듯한 기분을 주었답니다. 주변의 한복 대여점에서 한복을 입고 방문하니 더욱 특별한 추억으로 남았어요. 고즈넉한 분위기 속에서 시간을 보내며 한국의 멋과 아름다움을 새삼 느낄 수 있었던 시간이었어요.',
+      imgSrc: reviewImage,
+      createdAt: new Date('2024-10-25'),
+      reviewCount: 10,
+      rating: 4.5,
+      user: {
+        userId: 'user1',
+        socialName: '김철수',
+        userProfileImage: defaultProfile,
+        userEmail: 'nadsa@gmail.com"',
+        isVerifiedUser: false,
+      },
+    },
+    {
+      id: 2,
+      title: '대한 고궁 투어',
+      content:
+        '경복궁은 한국의 역사와 전통을 온전히 느낄 수 있는 곳이었어요. 정문인 광화문을 지나 들어서면 웅장한 근정전과 경회루가 시선을 사로잡고, 조용한 연못과 정원은 마치 옛 시대로 돌아간 듯한 기분을 주었답니다. 주변의 한복 대여점에서 한복을 입고 방문하니 더욱 특별한 추억으로 남았어요. 고즈넉한 분위기 속에서 시간을 보내며 한국의 멋과 아름다움을 새삼 느낄 수 있었던 시간이었어요.',
+      imgSrc: reviewImage,
+      createdAt: new Date('2024-10-25'),
+      reviewCount: 10,
+      rating: 5.0,
+      user: {
+        userId: 'user2',
+        socialName: '김만두',
+        userProfileImage: defaultProfile,
+        userEmail: 'dsdasd@gmail.com',
+        isVerifiedUser: false,
+      },
+    },
+    {
+      id: 3,
+      title: '대한 고궁 투어',
+      content:
+        '경복궁은 한국의 역사와 전통을 온전히 느낄 수 있는 곳이었어요. 정문인 광화문을 지나 들어서면 웅장한 근정전과 경회루가 시선을 사로잡고, 조용한 연못과 정원은 마치 옛 시대로 돌아간 듯한 기분을 주었답니다. 주변의 한복 대여점에서 한복을 입고 방문하니 더욱 특별한 추억으로 남았어요. 고즈넉한 분위기 속에서 시간을 보내며 한국의 멋과 아름다움을 새삼 느낄 수 있었던 시간이었어요.',
+      imgSrc: reviewImage,
+      createdAt: new Date('2024-10-25'),
+      reviewCount: 10,
+      rating: 4.7,
+      user: {
+        userId: 'user3',
+        socialName: '김만두2',
+        userProfileImage: defaultProfile,
+        userEmail: 'dsdasd2@gmail.com',
+        isVerifiedUser: false,
+      },
+    },
+  ],
+};
 
 const TravelDetail = () => {
   const price = 123000;
@@ -57,6 +116,7 @@ const TravelDetail = () => {
           meetingPlaceSrc={Location}
         />
         <TravelInformation.FAQList faqs={faqs} />
+        <TravelInformation.ReviewList reviews={data.reviews} />
       </TravelInformation>
       <div css={sideContainer}>
         <SideContainerHeader price={price} bookmark={bookmark} />

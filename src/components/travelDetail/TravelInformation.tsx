@@ -1,10 +1,14 @@
 import { css } from '@emotion/react';
-import MoreBtn from '../detail/MoreBtn';
 import { AlarmClock, LandPlot, MapPin } from 'lucide-react';
 import Check from '@/assets/check.png';
 import Remove from '@/assets/remove.png';
 import useMoreBtn from '@/hooks/custom/useMoreBtn';
 import FAQ from './FAQ';
+import ReviewCard from '@/components/myReview/ReviewCard';
+import { Review } from '@/types/reviewType';
+
+import MoreBtn from '@/components/detail/MoreBtn';
+import Rating from '@/components/Rating';
 
 const TravelInformation = ({ children }: { children: React.ReactNode }) => {
   return <div css={container}>{children}</div>;
@@ -89,12 +93,66 @@ const FAQList = ({ faqs }: { faqs: { question: string; answer: string }[] }) => 
   );
 };
 
+const ReviewList = ({ reviews }: { reviews: Review[] }) => {
+  const { isOpen, handleToggle } = useMoreBtn();
+
+  return (
+    <div css={reviewContainer}>
+      <div css={reviewHeader}>
+        <h2>후기</h2>
+        <Rating rating={5.0} reviewCount={25} size="middium" />
+      </div>
+      <div css={reviewContent}>
+        {reviews.map((review: Review) => (
+          <ReviewCard
+            key={review.id}
+            review={review}
+            showTitle={false}
+            showUser={true}
+            showDelete={false}
+            showDate={false}
+          />
+        ))}
+      </div>
+      <MoreBtn isOpen={isOpen} onChange={handleToggle} />
+    </div>
+  );
+};
+
 export default Object.assign(TravelInformation, {
   Course,
   Notice,
   Meeting,
   FAQList,
+  ReviewList,
 });
+
+const reviewContainer = css`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 24px;
+  margin-top: 11px;
+`;
+
+const reviewHeader = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 14px;
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+  }
+`;
+
+const reviewContent = css`
+  display: flex;
+  flex-direction: column;
+`;
 
 const container = css`
   width: 680px;

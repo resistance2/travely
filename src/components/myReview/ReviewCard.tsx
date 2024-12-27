@@ -8,23 +8,51 @@ import Rating from '@/components/Rating';
 
 interface ReviewCardProps {
   review: Review;
-  onDelete?: (id: string) => void;
+  onDelete?: () => void;
+  showTitle: boolean;
+  showUser: boolean;
+  showDate: boolean;
+  showDelete: boolean;
 }
 
-const ReviewCard = ({ review }: ReviewCardProps) => {
+const ReviewCard = ({
+  review,
+  onDelete,
+  showTitle,
+  showUser,
+  showDate,
+  showDelete,
+}: ReviewCardProps) => {
   return (
     <div css={reviewStyle}>
       <div className="titleStyle">
         <div className="titleText">
-          <h2>{review.title}</h2>
-          <p className="createAt">
-            {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
-          </p>
+          {showUser && review.user && (
+            <div css={userProfileStyles}>
+              <div className="profile-container">
+                <img src={review.user.userProfileImage} alt="Profile" />
+                <div className="user-info">
+                  <div className="name-rating">
+                    <div className="name">{review.user.socialName}</div>
+                  </div>
+                  <p className="createAt">
+                    {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+          {showTitle && review?.title && <h2>{review.title}</h2>}
+          {showDate && (
+            <p className="createAt">
+              {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
+            </p>
+          )}
           <div className="ratingContainer">
             <Rating rating={Number(review.rating)} />
           </div>
         </div>
-        <DeleteIcon onDelete={() => console.log('delete')} />
+        {showDelete && <DeleteIcon onDelete={onDelete || (() => {})} />}
       </div>
       <div className="imgContainer">
         <img src={review.imgSrc} alt="review" />
@@ -35,6 +63,42 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
 };
 
 export default ReviewCard;
+
+const userProfileStyles = css`
+  .profile-container {
+    display: flex;
+    align-items: center;
+  }
+
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+
+    .name-rating {
+      display: flex;
+      align-items: center;
+    }
+
+    .name {
+      font-weight: 500;
+      margin-right: 8px;
+      font-size: 15px;
+    }
+
+    .kakao {
+      font-size: 14px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+  }
+`;
 
 const reviewStyle = css`
   border-radius: 10px;
@@ -48,7 +112,7 @@ const reviewStyle = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 
     .titleText {
       display: flex;
@@ -76,7 +140,7 @@ const reviewStyle = css`
   }
 
   .ratingContainer {
-    transform: translateY(-3px);
+    transform: translateY(-4px);
   }
 
   .createAt {

@@ -7,8 +7,8 @@ export interface UserProfileProps {
   userEmailId?: string;
   rating?: number;
   imgURL?: string;
-  showDate?: boolean;
-  showSocialName?: boolean;
+  showDate: boolean;
+  showSocialName: boolean;
 }
 
 const UserProfile = ({
@@ -16,9 +16,10 @@ const UserProfile = ({
   userEmailId,
   rating,
   imgURL,
-  showSocialName = true,
-  showDate = true,
+  showSocialName,
+  showDate,
 }: UserProfileProps) => {
+  console.log(rating);
   return (
     <div css={userProfileStyles}>
       <div className="profile-container">
@@ -26,7 +27,7 @@ const UserProfile = ({
         <div className="user-info">
           <div className="name-rating">
             <div className="name">{name}</div>
-            {rating ?? <Rating rating={Number(rating)} />}
+            {rating && <Rating rating={rating} />}
           </div>
           {showDate && <span>2021.09.01</span>}
           {showSocialName && <span className="kakao">kakao:{userEmailId}</span>}
