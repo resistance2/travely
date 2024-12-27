@@ -18,7 +18,7 @@ export interface ReviewWriteModalProps {
   imgURL?: string;
 }
 
-const isValideFile = (file: File) => {
+const isValidFile = (file: File) => {
   const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'video/mp4'];
   return validTypes.includes(file.type);
 };
@@ -32,7 +32,7 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      if (!isValideFile(event.target.files[0])) {
+      if (!isValidFile(event.target.files[0])) {
         alert('지원하지 않는 파일 형식입니다.');
         return;
       }
@@ -49,7 +49,7 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
     setOpen(false);
   };
 
-  const onSumitReview = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFiles([]);
     setOpen(false);
@@ -94,7 +94,7 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
               </div>
             </div>
 
-            <form onSubmit={(e) => onSumitReview(e)}>
+            <form onSubmit={(e) => onSubmitReview(e)}>
               <div css={textAreaContiner}>
                 <textarea placeholder="리뷰를 작성해주세요" />
               </div>

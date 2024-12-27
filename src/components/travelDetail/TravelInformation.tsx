@@ -100,7 +100,7 @@ const ReviewList = ({ reviews }: { reviews: Review[] }) => {
     <div css={reviewContainer}>
       <div css={reviewHeader}>
         <h2>후기</h2>
-        <Rating rating={5.0} reviewCount={25} size="middium" />
+        <Rating rating={5.0} reviewCount={25} size="medium" />
       </div>
       <div css={reviewContent}>
         {reviews.map((review: Review) => (
