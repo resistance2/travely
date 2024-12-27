@@ -38,7 +38,7 @@ const SideContainerHeader = ({ price, bookmark }: SideContainerHeaderProps) => {
         <div css={userInfoContentContainer}>
           <div css={userInfoTitleContainer}>
             <p>하나투어</p>
-            <Rating rating="5.0" />
+            <Rating rating={5.0} />
           </div>
           <span>kakao : dirjsdk</span>
         </div>
@@ -50,7 +50,6 @@ const SideContainerHeader = ({ price, bookmark }: SideContainerHeaderProps) => {
 export default SideContainerHeader;
 
 const sideContainerHeader = css`
-  height: 100%;
   border-radius: 8px;
   border: 1px solid #c1c1c1;
 `;
@@ -58,7 +57,6 @@ const sideContainerHeader = css`
 const priceContainer = css`
   display: flex;
   align-items: center;
-  justify-content: row;
   padding: 20px 20px 0 20px;
   h1 {
     font-size: 28px;

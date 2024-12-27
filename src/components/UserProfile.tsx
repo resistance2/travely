@@ -5,10 +5,10 @@ import defaultProfile from '@/assets/defaultProfile.jpg';
 export interface UserProfileProps {
   name: string;
   userEmailId?: string;
-  rating?: string;
+  rating?: number;
   imgURL?: string;
-  hideRating?: boolean;
-  hideUserId?: boolean;
+  showDate?: boolean;
+  showSocialName?: boolean;
 }
 
 const UserProfile = ({
@@ -16,8 +16,8 @@ const UserProfile = ({
   userEmailId,
   rating,
   imgURL,
-  hideRating = false,
-  hideUserId = false,
+  showSocialName = true,
+  showDate = true,
 }: UserProfileProps) => {
   return (
     <div css={userProfileStyles}>
@@ -26,9 +26,10 @@ const UserProfile = ({
         <div className="user-info">
           <div className="name-rating">
             <div className="name">{name}</div>
-            {!hideRating && <Rating rating={rating || ''} />}
+            {rating ?? <Rating rating={Number(rating)} />}
           </div>
-          {!hideUserId && <span className="kakao">kakao:{userEmailId}</span>}
+          {showDate && <span>2021.09.01</span>}
+          {showSocialName && <span className="kakao">kakao:{userEmailId}</span>}
         </div>
       </div>
     </div>

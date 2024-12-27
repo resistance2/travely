@@ -1,7 +1,16 @@
 import { css } from '@emotion/react';
 
-const MoreBtn = () => {
-  return <button css={moreBtn}>더보기</button>;
+interface MoreBtnProps {
+  isOpen: boolean;
+  onChange: () => void;
+}
+
+const MoreBtn = ({ isOpen, onChange }: MoreBtnProps) => {
+  return (
+    <button css={moreBtn} onClick={onChange}>
+      {isOpen ? '접기' : '더보기'}
+    </button>
+  );
 };
 
 export default MoreBtn;

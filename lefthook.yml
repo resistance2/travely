@@ -24,6 +24,14 @@ pre-merge:
     type-check:
       run: npm run type-check
 
+prepare-commit-msg:
+  commands:
+    commitlint:
+      runner: bash
+      skip:
+        - "[[ ! -f .env ]] || ! grep -q '^byulBash=true' .env"
+      run: 'bash "./.github/hooks/commitlint.sh" {1} {2}'
+
 pre-commit:
   parallel: true
   commands:

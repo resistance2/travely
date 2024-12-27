@@ -4,4 +4,6 @@ export interface Review {
   content: string;
   imgSrc?: string;
   createdAt?: Date;
+  reviewCount: number;
+  rating: number;
 }

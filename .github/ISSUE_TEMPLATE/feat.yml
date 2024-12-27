@@ -11,11 +11,3 @@ body:
       placeholder: 자세한 설명을 제공해주세요!
     validations:
       required: true
-  - type: textarea
-    id: feat-tasks
-    attributes:
-      label: ✅ 작업 목록
-      description: 수행해야 할 작업을 나열해주세요.
-      placeholder: 가능한 한 세분화하세요!
-    validations:
-      required: true

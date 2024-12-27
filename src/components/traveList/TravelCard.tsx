@@ -26,7 +26,7 @@ const TravelCard: React.FC<ITravelCardDataProps> = ({ cardData }) => {
               <Price price={travelPrice} />
             </div>
             <div className="rating-tags">
-              <Rating rating={`${review.travelScore}`} reviewCount={`${review.reviewCnt}`} />
+              <Rating rating={Number(review.travelScore)} reviewCount={Number(review.reviewCnt)} />
               <Tags items={tag} textAlign="right" />
             </div>
           </div>

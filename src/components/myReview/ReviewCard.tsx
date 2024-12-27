@@ -1,17 +1,28 @@
 import DeleteIcon from '@/components/DeleteIcon';
-import Rating from '@/components/Rating';
 import { textEllipsis } from '@/styles/GlobalStyles';
 import { Review } from '@/types/reviewType';
-import { css } from '@emotion/react';
+import { dateToString } from '@/utils/dataToString';
 
-const ReviewCard = ({ review }: { review: Review }) => {
+import { css } from '@emotion/react';
+import Rating from '@/components/Rating';
+
+interface ReviewCardProps {
+  review: Review;
+  onDelete?: (id: string) => void;
+}
+
+const ReviewCard = ({ review }: ReviewCardProps) => {
   return (
     <div css={reviewStyle}>
       <div className="titleStyle">
         <div className="titleText">
           <h2>{review.title}</h2>
-          <p className="createAt">{review.createdAt?.toLocaleDateString()}</p>
-          <Rating rating="5.0" />
+          <p className="createAt">
+            {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
+          </p>
+          <div className="ratingContainer">
+            <Rating rating={Number(review.rating)} />
+          </div>
         </div>
         <DeleteIcon onDelete={() => console.log('delete')} />
       </div>
@@ -37,6 +48,7 @@ const reviewStyle = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
 
     .titleText {
       display: flex;
@@ -55,7 +67,6 @@ const reviewStyle = css`
     justify-content: center;
     width: 110px;
     height: 120px;
-    margin-top: 13px;
     margin-bottom: 16px;
     border-radius: 5px;
     overflow: hidden;
@@ -64,8 +75,13 @@ const reviewStyle = css`
     width: 100%;
   }
 
+  .ratingContainer {
+    transform: translateY(-3px);
+  }
+
   .createAt {
     font-size: 13px;
     color: #666;
+    transform: translateY(-3px);
   }
 `;
