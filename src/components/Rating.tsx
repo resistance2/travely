@@ -52,7 +52,7 @@ const ratingWrap = (size: Size) => css`
   .score {
     font-size: ${sizeMap[size].fontSize}px;
     margin-left: 3px;
-    transform: translateY(-0.7px);
+    transform: translateY(0.3px);
     span {
       margin-left: 4px;
       font-size: ${sizeMap[size].spanFontSize}px;

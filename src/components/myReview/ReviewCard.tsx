@@ -68,6 +68,7 @@ const userProfileStyles = css`
   .profile-container {
     display: flex;
     align-items: center;
+    transform: translateY(3.5px);
   }
 
   img {
@@ -140,7 +141,7 @@ const reviewStyle = css`
   }
 
   .ratingContainer {
-    transform: translateY(-4px);
+    transform: translateY(-1.6px);
   }
 
   .createAt {
