@@ -42,7 +42,7 @@ const TripCard: React.FC<ITripCardProps> = ({
         <Buttons>
           <ManageButtonContainer>
             <ManageButton isDisabled={isDisabled}>관리</ManageButton>
-            <ManageBadge>{badgeCount}</ManageBadge>
+            {badgeCount > 0 && <ManageBadge>{badgeCount}</ManageBadge>}
           </ManageButtonContainer>
           <EditButton isDisabled={isDisabled}>수정</EditButton>
         </Buttons>
