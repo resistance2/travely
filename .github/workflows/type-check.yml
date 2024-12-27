@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ main ]
 
-permissions:
-  issues: write
-  contents: read
-
 jobs:
   type-check:
     runs-on: ubuntu-latest
@@ -21,6 +17,7 @@ jobs:
     - run: bun install
 
     - name: Check out the code
+      id: type-check
       run: |
         bun run type-check
         bun run lint
