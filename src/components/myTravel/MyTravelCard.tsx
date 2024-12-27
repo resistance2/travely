@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import Rating from '@/components/Rating';
+import { formatDate } from '@/utils/formatDate';
 
 interface ITripCardProps {
   title: string;
@@ -45,7 +46,7 @@ const TripCard: React.FC<ITripCardProps> = ({
           </ManageButtonContainer>
           <EditButton isDisabled={isDisabled}>수정</EditButton>
         </Buttons>
-        <UpdateDate>업데이트: {updateDate}</UpdateDate>
+        <UpdateDate>업데이트: {formatDate(updateDate)}</UpdateDate>
       </TripInfo>
       {isDisabled && (
         <Overlay onClick={onEnable}>
