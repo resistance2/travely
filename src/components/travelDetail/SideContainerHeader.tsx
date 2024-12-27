@@ -1,8 +1,8 @@
 import { css } from '@emotion/react';
-import Rating from '@/components/Rating';
 import basicprofile from '@/assets/basicProfile.png';
 import { theme } from '@/styles/theme';
 import { Bookmark } from 'lucide-react';
+import GuideProfile from '@/components/GuideProfile';
 
 interface SideContainerHeaderProps {
   price: number;
@@ -31,23 +31,19 @@ const SideContainerHeader = ({ price, bookmark }: SideContainerHeaderProps) => {
         <button css={applyBtn}>신청하기</button>
       </div>
       <hr css={hr} />
-      <div css={userInfoContainer}>
-        <div css={userInfoProfileContainer}>
-          <img src={basicprofile} alt="basicprofile" />
-        </div>
-        <div css={userInfoContentContainer}>
-          <div css={userInfoTitleContainer}>
-            <p>하나투어</p>
-            <Rating rating={5.0} />
-          </div>
-          <span>kakao : dirjsdk</span>
-        </div>
+      <div css={guideProfileContainer}>
+        <GuideProfile name="하나투어" userEmailId="dirjsdk" rating={5.0} imgURL={basicprofile} />
       </div>
     </div>
   );
 };
 
 export default SideContainerHeader;
+
+const guideProfileContainer = css`
+  padding-bottom: 25px;
+  padding-left: 17px;
+`;
 
 const sideContainerHeader = css`
   border-radius: 8px;
@@ -130,43 +126,4 @@ const hr = css`
   height: 1px;
   background: #c1c1c1;
   margin: 20px 0;
-`;
-
-const userInfoContainer = css`
-  display: flex;
-  align-items: center;
-  justify-content: row;
-  padding: 0 20px 20px 20px;
-`;
-
-const userInfoProfileContainer = css`
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: red;
-  margin-right: 10px;
-`;
-
-const userInfoContentContainer = css`
-  display: flex;
-  flex-direction: column;
-
-  span {
-    font-size: 14px;
-    font-weight: 500;
-    color: #888;
-  }
-`;
-
-const userInfoTitleContainer = css`
-  display: flex;
-  align-items: center;
-  justify-content: row;
-
-  p {
-    font-size: 14px;
-    font-weight: 500;
-    color: #444;
-    margin-right: 4px;
-  }
 `;
