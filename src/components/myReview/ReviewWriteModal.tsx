@@ -7,7 +7,7 @@ import { css } from '@emotion/react';
 import { useState, ChangeEvent, useEffect } from 'react';
 import BorderBtn from '@/components/BorderBtn';
 
-import UserProfile from '@/components/UserProfile';
+import GuideProfile from '@/components/GuideProfile';
 import StarRating from '@/components/StarRating';
 import FileUploadBtn from '@/components/FileUploadBtn';
 
@@ -106,12 +106,7 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
               <div css={guideReviewContainer}>
                 <div className="advice">함께한 가이드가 훌륭했다면 별점을 남겨주세요</div>
                 <div className="guideInfo">
-                  <UserProfile
-                    name={guideName}
-                    userEmailId="sonjeongwo"
-                    showSocialName={false}
-                    showDate={false}
-                  />
+                  <GuideProfile name={guideName} userEmailId="sonjeongwo" />
                   <div
                     css={css`
                       transform: translateY(2px);

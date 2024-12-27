@@ -1,5 +1,5 @@
 import Team from '@/components/Team';
-import UserProfile from '@/components/UserProfile';
+import GuideProfile from '@/components/GuideProfile';
 import { travelMyJoinedData } from '@/data/travelMyJoinedMockData';
 import styled from '@emotion/styled';
 
@@ -36,13 +36,11 @@ const MyCreatedContent = () => {
               )}
             </Header>
             <UserInfoContainer>
-              <UserProfile
+              <GuideProfile
                 name={guide.userName}
                 userEmailId={guide.userEmail}
                 imgURL={guide.userProfileImg}
                 rating={guide.userRating}
-                showSocialName={true}
-                showDate={false}
               />
             </UserInfoContainer>
 

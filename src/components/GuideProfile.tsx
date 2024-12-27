@@ -7,18 +7,9 @@ export interface UserProfileProps {
   userEmailId?: string;
   rating?: number;
   imgURL?: string;
-  showDate: boolean;
-  showSocialName: boolean;
 }
 
-const UserProfile = ({
-  name,
-  userEmailId,
-  rating,
-  imgURL,
-  showSocialName,
-  showDate,
-}: UserProfileProps) => {
+const GuideProfile = ({ name, userEmailId, rating, imgURL }: UserProfileProps) => {
   console.log(rating);
   return (
     <div css={userProfileStyles}>
@@ -29,8 +20,7 @@ const UserProfile = ({
             <div className="name">{name}</div>
             {rating && <Rating rating={rating} />}
           </div>
-          {showDate && <span>2021.09.01</span>}
-          {showSocialName && <span className="kakao">kakao:{userEmailId}</span>}
+          <span className="kakao">kakao:{userEmailId}</span>
         </div>
       </div>
     </div>
@@ -73,4 +63,4 @@ const userProfileStyles = css`
   }
 `;
 
-export default UserProfile;
+export default GuideProfile;
