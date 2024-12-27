@@ -8,7 +8,6 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:prettier/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
   ],
@@ -20,9 +19,8 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'react-hooks', 'import', 'prettier'],
+  plugins: ['react', '@typescript-eslint', 'react-hooks', 'import'],
   rules: {
-    'prettier/prettier': ['error', { endOfLine: 'auto' }],
     'react/react-in-jsx-scope': 'off',
     'import/no-unresolved': [
       'error',
