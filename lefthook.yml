@@ -12,17 +12,6 @@
 #       tags: backend security
 #       run: bundle audit
 #
-pre-push:
-  parallel: true
-  commands:
-    type-check:
-      run: npm run type-check
-
-pre-merge:
-  parallel: true
-  commands:
-    type-check:
-      run: npm run type-check
 
 prepare-commit-msg:
   commands:
