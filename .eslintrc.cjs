@@ -1,3 +1,4 @@
+/* eslint-env node */
 module.exports = {
   env: {
     browser: true,
@@ -7,19 +8,18 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:prettier/recommended',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'react-hooks', 'prettier'],
+  plugins: ['react', '@typescript-eslint', 'react-hooks'],
   rules: {
-    'prettier/prettier': ['error', { endOfLine: 'auto' }],
     'react/react-in-jsx-scope': 'off',
   },
-  ignorePatterns: ['node_modules/', 'dist/', 'build/'],
+  ignorePatterns: ['node_modules/', 'dist/', 'build/', 'public/'],
   settings: {
     react: {
       version: 'detect',
@@ -34,4 +34,9 @@ module.exports = {
       },
     },
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+    },
+  ],
 };
