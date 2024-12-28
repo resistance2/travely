@@ -29,15 +29,15 @@ const MyTravelContent = () => {
         <MyMadeTripsContainer>
           {myCreatedTravelData?.travels?.map((trip: myCreatedTravel) => (
             <TripCard
+              travelId={trip.travelId}
               key={trip.travelId}
               title={trip.travelTitle}
-              rating={String(trip.reviewAverage)}
+              rating={trip.reviewAverage}
               reviews={trip.travelReviewCount}
               price={trip.travelPrice}
               badgeCount={trip.approveWatingCount}
               updateDate={trip.updatedAt}
               isDisabled={!trip.travelActive}
-              // onEnable={() => handleEnableCard2(travelId)}
             />
           ))}
         </MyMadeTripsContainer>
