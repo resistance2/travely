@@ -103,8 +103,7 @@ i   transform: translateY(3.5px);
 
 const reviewStyle = css`
   border-radius: 10px;
-  width: 800px;
-  height: 290px;
+  width: 100%;
   background-color: #f8f8f8;
   padding: 10px 15px 15px 15px;
   margin-bottom: 20px;
