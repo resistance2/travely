@@ -1,3 +1,5 @@
+import { User } from '@/types/userType';
+
 export interface Review {
   id: number;
   title: string;
@@ -6,4 +8,5 @@ export interface Review {
   createdAt?: Date;
   reviewCount: number;
   rating: number;
+  user?: User;
 }

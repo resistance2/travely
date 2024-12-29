@@ -41,15 +41,16 @@ const data: { reviews: Review[] } = {
 const MyReviews = () => {
   return (
     <div>
-      {/* <ReviewWriteModal
-        reviewTitle="내한 고궁 투어"
-        userName="김낙연"
-        guideName="영낙연"
-        imgURL={reviewImage}
-      /> */}
       <div>
         {data.reviews.map((review: Review) => (
-          <ReviewCard key={review.id} review={review} />
+          <ReviewCard
+            key={review.id}
+            review={review}
+            showTitle={true}
+            showUser={false}
+            showDate={true}
+            showDelete={true}
+          />
         ))}
       </div>
     </div>

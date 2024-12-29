@@ -2,7 +2,7 @@ import { isValidRatingNumber } from '@/utils/validCheck';
 import { css, SerializedStyles } from '@emotion/react';
 import { Star } from 'lucide-react';
 
-type Size = 'small' | 'middium' | 'large';
+type Size = 'small' | 'medium' | 'large';
 
 interface IRatingProps {
   rating: number;
@@ -17,7 +17,7 @@ const sizeMap = {
     fontSize: 12,
     spanFontSize: 10,
   },
-  middium: {
+  medium: {
     Star: 20,
     fontSize: 14,
     spanFontSize: 12,
@@ -52,6 +52,7 @@ const ratingWrap = (size: Size) => css`
   .score {
     font-size: ${sizeMap[size].fontSize}px;
     margin-left: 3px;
+    transform: translateY(0.3px);
     span {
       margin-left: 4px;
       font-size: ${sizeMap[size].spanFontSize}px;
