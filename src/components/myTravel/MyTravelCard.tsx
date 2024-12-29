@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 import Rating from '@/components/Rating';
+import { formatDate } from '@/utils/formatDate';
+import useUpdateTravelStatus from '@/hooks/query/useUpdateTravelStatus';
 
 interface ITripCardProps {
+  travelId: string;
   title: string;
-  rating: string;
+  rating: number;
   reviews: number;
-  price: string;
+  price: number;
   badgeCount: number;
   updateDate: string;
   isDisabled?: boolean;
-  onEnable?: () => void;
 }
 
 const TripCard: React.FC<ITripCardProps> = ({
+  travelId,
   title,
   rating,
   reviews,
@@ -21,9 +24,13 @@ const TripCard: React.FC<ITripCardProps> = ({
   badgeCount,
   updateDate,
   isDisabled = false,
-  onEnable,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const updateTravelStatusMutation = useUpdateTravelStatus();
+
+  const handleEnable = () => {
+    updateTravelStatusMutation.mutate({ travelId, isActive: true });
+  };
 
   return (
     <TripCardContainer
@@ -41,14 +48,14 @@ const TripCard: React.FC<ITripCardProps> = ({
         <Buttons>
           <ManageButtonContainer>
             <ManageButton isDisabled={isDisabled}>관리</ManageButton>
-            <ManageBadge>{badgeCount}</ManageBadge>
+            {badgeCount > 0 && <ManageBadge>{badgeCount}</ManageBadge>}
           </ManageButtonContainer>
           <EditButton isDisabled={isDisabled}>수정</EditButton>
         </Buttons>
-        <UpdateDate>업데이트: {updateDate}</UpdateDate>
+        <UpdateDate>업데이트: {formatDate(updateDate)}</UpdateDate>
       </TripInfo>
       {isDisabled && (
-        <Overlay onClick={onEnable}>
+        <Overlay onClick={handleEnable}>
           <DisabledText isHovered={isHovered}>{isHovered ? '활성화' : '비활성화'}</DisabledText>
         </Overlay>
       )}
