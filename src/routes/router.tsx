@@ -46,7 +46,7 @@ const router = createBrowserRouter([
             element: <Bookmark />,
           },
           {
-            path: 'travel-detail',
+            path: 'travel-detail/:travelId',
             element: <TravelDetail />,
           },
           {

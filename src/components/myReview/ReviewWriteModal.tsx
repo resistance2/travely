@@ -70,7 +70,7 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
         trigger={
           <FiledBtn
             color={theme.colors.primary}
-            cutomStyle={css`
+            customStyle={css`
               width: 240px;
             `}
           >
@@ -95,7 +95,7 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
             </div>
 
             <form onSubmit={(e) => onSubmitReview(e)}>
-              <div css={textAreaContiner}>
+              <div css={textAreaContainer}>
                 <textarea placeholder="리뷰를 작성해주세요" />
               </div>
               <FileUploadBtn
@@ -120,7 +120,7 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
                 <FiledBtn
                   children="작성"
                   color={theme.colors.primary}
-                  cutomStyle={css`
+                  customStyle={css`
                     width: 120px;
                   `}
                   type="submit"
@@ -178,7 +178,7 @@ const ReviewWriteModalStyle = css`
   }
 `;
 
-const textAreaContiner = css`
+const textAreaContainer = css`
   border: 1px solid #e4e4e4;
   border-radius: 4px;
   height: 170px;
