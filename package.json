@@ -10,7 +10,8 @@
     "format": "prettier . --write",
     "preview": "vite preview",
     "type-check": "tsc --noEmit --skipLibCheck",
-    "prepare": "npx lefthook install"
+    "prepare": "npx lefthook install",
+    "c": "rm .git/hooks/prepare-commit-msg && cp .github/hooks/commitlint.sh .git/hooks/prepare-commit-msg"
   },
   "dependencies": {
     "@emotion/styled": "^11.14.0",
