@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import Rating from '@/components/Rating';
-import defaultProfile from '@/assets/defaultProfile.jpg';
+import Profile from './Profile';
 
 export interface UserProfileProps {
   name: string;
@@ -10,11 +10,10 @@ export interface UserProfileProps {
 }
 
 const GuideProfile = ({ name, userEmailId, rating, imgURL }: UserProfileProps) => {
-  console.log(rating);
   return (
     <div css={userProfileStyles}>
       <div className="profile-container">
-        <img src={imgURL || defaultProfile} alt="Profile" />
+        <Profile url={imgURL} size="40px" />
         <div className="user-info">
           <div className="name-rating">
             <div className="name">{name}</div>
@@ -31,13 +30,6 @@ const userProfileStyles = css`
   .profile-container {
     display: flex;
     align-items: center;
-  }
-
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 12px;
   }
 
   .user-info {

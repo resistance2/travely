@@ -5,6 +5,7 @@ import { dateToString } from '@/utils/dataToString';
 
 import { css } from '@emotion/react';
 import Rating from '@/components/Rating';
+import Profile from '../Profile';
 
 interface ReviewCardProps {
   review: Review;
@@ -30,7 +31,7 @@ const ReviewCard = ({
           {showUser && review.user && (
             <div css={userProfileStyles}>
               <div className="profile-container">
-                <img src={review.user.userProfileImage} alt="Profile" />
+                <Profile url={review.imgSrc} size="40px" />
                 <div className="user-info">
                   <div className="name-rating">
                     <div className="name">{review.user.socialName}</div>
@@ -68,14 +69,7 @@ const userProfileStyles = css`
   .profile-container {
     display: flex;
     align-items: center;
-i   transform: translateY(3.5px);
-  }
-
-  img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 12px;
+    transform: translateY(3.5px);
   }
 
   .user-info {
