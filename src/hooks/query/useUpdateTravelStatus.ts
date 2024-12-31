@@ -1,4 +1,5 @@
 import updateTravelActiveStatus from '@/api/myCreatedTravel/updateTravelActiveStatus';
+import { MANAGE_TRAVEL, MY_CREATED_TRAVEL } from '@/constants/queyKey';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useUpdateTravelStatus = () => {
@@ -7,8 +8,10 @@ const useUpdateTravelStatus = () => {
   return useMutation({
     mutationFn: ({ travelId, isActive }: { travelId: string; isActive: boolean }) =>
       updateTravelActiveStatus(travelId, isActive),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['my-travel-created'] });
+    onSuccess: (_, variable) => {
+      const travelId = variable.travelId;
+      queryClient.invalidateQueries({ queryKey: [MY_CREATED_TRAVEL] });
+      queryClient.invalidateQueries({ queryKey: [MANAGE_TRAVEL, travelId] });
     },
   });
 };

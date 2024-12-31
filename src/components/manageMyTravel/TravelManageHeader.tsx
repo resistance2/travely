@@ -3,6 +3,7 @@ import BorderBtn from '@/components/BorderBtn';
 import { TravelData } from '@/types/travelDataType';
 import { formatDate } from '@/utils/format';
 import { theme } from '@/styles/theme';
+import useUpdateTravelStatus from '@/hooks/query/useUpdateTravelStatus';
 
 interface ManageHeaderProps {
   travelData: TravelData;
@@ -11,12 +12,23 @@ interface ManageHeaderProps {
 }
 
 const TravelManageHeader = ({ travelData, isOngoingTab, setIsOngoingTab }: ManageHeaderProps) => {
+  const { mutate } = useUpdateTravelStatus();
+
+  const handleActiveStatus = () => {
+    mutate({ travelId: travelData.travelId, isActive: !travelData.travelActive });
+  };
+
   return (
     <div>
       <div css={titleWrapper}>
         <h1>{travelData.travelTitle}</h1>
         <div css={btnWrapper}>
-          <BorderBtn color={theme.colors.primary}>비활성화</BorderBtn>
+          <BorderBtn
+            color={travelData.travelActive ? '#ababab' : theme.colors.primary}
+            onClick={handleActiveStatus}
+          >
+            {travelData.travelActive ? '비활성화하기' : '활성화하기'}
+          </BorderBtn>
           <BorderBtn color={theme.colors.red} size={'sm'}>
             삭제
           </BorderBtn>

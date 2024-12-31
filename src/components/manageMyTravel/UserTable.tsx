@@ -35,12 +35,10 @@ const UserTable = ({ data }: UserTableProps) => {
             <td>{formatDate(user.appliedAt)}</td>
             <td css={{ minWidth: '145px' }}>
               {user.status === 'waiting' ? (
-                <div>
-                  <div css={{ marginRight: '5px' }}>
-                    <FiledBtn color={'#4A95F2'} size={'sm'}>
-                      승인
-                    </FiledBtn>
-                  </div>
+                <div css={{ display: 'flex', gap: '5px' }}>
+                  <FiledBtn color={'#4A95F2'} size={'sm'}>
+                    승인
+                  </FiledBtn>
                   <FiledBtn color={'#d7d7d7'} size={'sm'}>
                     거절
                   </FiledBtn>

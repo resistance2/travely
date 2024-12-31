@@ -45,7 +45,7 @@ const ManageMyTravel = () => {
               handleHasData={handleHasData}
             />
           ))}
-          {!hasTeamData === isOngoingTab && (
+          {hasTeamData === isOngoingTab && (
             <div css={noData}>{isOngoingTab ? '진행중인' : '완료된'} 여행이 없습니다.</div>
           )}
         </>
