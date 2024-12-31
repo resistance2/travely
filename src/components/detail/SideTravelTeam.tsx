@@ -1,14 +1,13 @@
 import { css } from '@emotion/react';
 import Team from '../Team';
-
-export interface TeamInfo {
-  period: string;
-  maxMembers: number;
-  mbtiList: string[];
-}
+import { formatDate } from '@/utils/format';
+import { TravelTeamData } from '@/types/travelDataType';
 
 interface SideTravelTeamProps {
-  teams: TeamInfo[];
+  teams: Pick<
+    TravelTeamData,
+    'teamId' | 'travelStartDate' | 'travelEndDate' | 'personLimit' | 'approvedUsers'
+  >[];
 }
 
 const SideTravelTeam = ({ teams }: SideTravelTeamProps) => {
@@ -17,8 +16,8 @@ const SideTravelTeam = ({ teams }: SideTravelTeamProps) => {
       <h1>여행 기간</h1>
       {teams.map((team, index) => (
         <div key={index} css={teamContainer}>
-          <span>{team.period}</span>
-          <Team max={team.maxMembers} mbtiList={team.mbtiList} />
+          <span>{formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}</span>
+          <Team max={team.personLimit} mbtiList={team.approvedUsers?.map((user) => user.mbti)} />
         </div>
       ))}
     </div>

@@ -11,7 +11,7 @@ const Introduction = ({ content }: { content: string }) => {
     <div css={introWrapper(isOpen)}>
       <GrayBack title={'여행 소개'}>
         <pre ref={heightRef}>{content}</pre>
-        {isThreeLine && <MoreBtn isOpen={isOpen} onChange={handleToggle} />}
+        {isThreeLine ? <MoreBtn isOpen={isOpen} onChange={handleToggle} /> : null}
       </GrayBack>
     </div>
   );

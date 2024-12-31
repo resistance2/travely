@@ -11,7 +11,9 @@ const Title = ({ title, rating, reviewCount }: TitleProps) => {
   return (
     <div css={titleWrapper}>
       <h1>{title}</h1>
-      {rating && reviewCount && <Rating rating={rating} reviewCount={reviewCount} />}
+      {rating && !Number.isNaN(reviewCount) && (
+        <Rating size="large" rating={rating} reviewCount={reviewCount} />
+      )}
     </div>
   );
 };

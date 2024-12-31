@@ -16,17 +16,17 @@ const TravelInformation = ({ children }: { children: React.ReactNode }) => {
 
 const Course = ({ course }: { course: string[] }) => {
   const { isOpen, handleToggle } = useMoreBtn();
-  const slicedCourse = course.length > 4 && !isOpen ? course.slice(0, 4) : course;
+  const slicedCourse = course?.length > 4 && !isOpen ? course.slice(0, 4) : course;
   return (
     <div css={courseWrapper}>
       <p>여행 코스</p>
-      {slicedCourse.map((c) => (
+      {slicedCourse?.map((c) => (
         <div key={c}>
           <MapPin size={20} />
           <span>{c}</span>
         </div>
       ))}
-      {course.length > 4 && <MoreBtn isOpen={isOpen} onChange={handleToggle} />}
+      {course?.length > 4 && <MoreBtn isOpen={isOpen} onChange={handleToggle} />}
     </div>
   );
 };
@@ -38,16 +38,16 @@ const Notice = ({ type, notice }: { type: 'include' | 'exclude'; notice: string[
         {type === 'include' ? (
           <>
             <img src={Check} alt="check" />
-            <span>포함되어 있어요</span>
+            <p>포함되어 있어요</p>
           </>
         ) : (
           <>
             <img src={Remove} alt="check" />
-            <span>미포함된 사항이에요. 주의 해주세요.</span>
+            <p>미포함된 사항이에요. 주의 해주세요.</p>
           </>
         )}
       </div>
-      <ul>{notice && notice.map((item) => <li key={item}>• {item}</li>)}</ul>
+      <ul>{notice?.map((item) => <li key={item}>• {item}</li>)}</ul>
     </div>
   );
 };
@@ -66,11 +66,7 @@ const Meeting = ({
         <AlarmClock size={20} />
         만나는 시간
       </span>
-      <ul>
-        {meetingTime.map((time) => (
-          <li key={time}>• {time}</li>
-        ))}
-      </ul>
+      <ul>{meetingTime?.map((time) => <li key={time}>• {time}</li>)}</ul>
       <span>
         <LandPlot size={20} />
         만나는 장소
@@ -93,28 +89,33 @@ const FAQList = ({ faqs }: { faqs: { question: string; answer: string }[] }) => 
   );
 };
 
-const ReviewList = ({ reviews }: { reviews: Review[] }) => {
+const ReviewList = ({ reviews, totalRating }: { reviews: Review[]; totalRating: number }) => {
   const { isOpen, handleToggle } = useMoreBtn();
+  const slicedReviews = reviews?.length > 3 && !isOpen ? reviews.slice(0, 3) : reviews;
 
   return (
     <div css={reviewContainer}>
       <div css={reviewHeader}>
         <h2>후기</h2>
-        <Rating rating={5.0} reviewCount={25} size="medium" />
+        <Rating rating={totalRating} reviewCount={reviews?.length} size="medium" />
       </div>
-      <div css={reviewContent}>
-        {reviews.map((review: Review) => (
-          <ReviewCard
-            key={review.id}
-            review={review}
-            showTitle={false}
-            showUser={true}
-            showDelete={false}
-            showDate={false}
-          />
-        ))}
+      <div>
+        {slicedReviews?.length > 0 ? (
+          slicedReviews.map((review: Review) => (
+            <ReviewCard
+              key={review.reviewId}
+              review={review}
+              showTitle={false}
+              showUser={true}
+              showDelete={false}
+              showDate={false}
+            />
+          ))
+        ) : (
+          <div css={nodata}>등록된 리뷰가 없습니다.</div>
+        )}
       </div>
-      <MoreBtn isOpen={isOpen} onChange={handleToggle} />
+      {reviews?.length > 3 && <MoreBtn isOpen={isOpen} onChange={handleToggle} />}
     </div>
   );
 };
@@ -127,47 +128,29 @@ export default Object.assign(TravelInformation, {
   ReviewList,
 });
 
-const reviewContainer = css`
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 14px;
-  margin-bottom: 24px;
-  margin-top: 11px;
-`;
-
-const reviewHeader = css`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  gap: 14px;
-  h2 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-  }
-`;
-
-const reviewContent = css`
+const column = css`
   display: flex;
   flex-direction: column;
+  gap: 10px;
+`;
+
+const text = css`
+  font-size: 18px;
+  font-weight: 600;
 `;
 
 const container = css`
   width: 680px;
-  display: flex;
-  flex-direction: column;
+  ${column};
   gap: 20px;
+  color: #333;
 `;
 
 const courseWrapper = css`
-  display: flex;
-  flex-direction: column;
+  ${column};
   gap: 10px;
   p {
-    font-size: 18px;
-    font-weight: 600;
+    ${text};
     margin-top: 10px;
   }
   div {
@@ -180,23 +163,19 @@ const courseWrapper = css`
 `;
 
 const noticeWrapper = css`
-  display: flex;
-  flex-direction: column;
+  ${column};
   margin-bottom: 10px;
-  p {
-    font-size: 18px;
-  }
   div {
     display: flex;
-    margin-bottom: 10px;
+    margin: 10px 0;
     img {
       width: 20px;
       height: 20px;
       object-fit: contain;
       margin-right: 10px;
     }
-    span {
-      font-weight: 600;
+    p {
+      ${text};
     }
   }
   ul {
@@ -205,17 +184,15 @@ const noticeWrapper = css`
 `;
 
 const meetingWrapper = css`
-  display: flex;
-  flex-direction: column;
+  ${column};
   gap: 10px;
   p {
-    font-size: 18px;
-    font-weight: 600;
+    ${text};
     margin-top: 10px;
   }
   span {
     display: flex;
-    gap: 6px;
+    gap: 10px;
     font-weight: 600;
     align-items: center;
     margin-top: 4px;
@@ -234,12 +211,30 @@ const meetingWrapper = css`
 `;
 
 const qnaWrapper = css`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  ${column};
   p {
-    font-size: 18px;
-    font-weight: 600;
+    ${text};
     margin-top: 10px;
   }
+`;
+
+const reviewContainer = css`
+  ${column};
+  margin-top: 20px;
+`;
+
+const reviewHeader = css`
+  display: flex;
+  gap: 14px;
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+`;
+
+const nodata = css`
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+  color: #888;
 `;
