@@ -6,16 +6,14 @@ interface UserProfileProps {
 }
 
 const Profile = ({ url, size }: UserProfileProps) => {
-  return <div css={wrapper(url || basicProfile, size)}></div>;
+  return <img src={url || basicProfile} css={wrapper(size)} alt="Profile" />;
 };
 
 export default Profile;
 
-const wrapper = (url: string, size: string) => css`
+const wrapper = (size: string) => css`
   width: ${size};
   height: ${size};
-  background-image: url(${url});
-  background-size: cover;
   border-radius: 50%;
   margin-right: 10px;
 `;
