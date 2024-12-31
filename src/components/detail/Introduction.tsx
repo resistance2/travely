@@ -4,7 +4,7 @@ import MoreBtn from './MoreBtn';
 import useMoreBtn from '@/hooks/custom/useMoreBtn';
 
 const Introduction = ({ content }: { content: string }) => {
-  const { isOpen, handleToggle, heightRef, height } = useMoreBtn();
+  const { isOpen, handleToggle, heightRef, height } = useMoreBtn<HTMLPreElement>();
   const isThreeLine = height && height > 60;
 
   return (
