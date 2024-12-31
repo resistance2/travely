@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
-const useMoreBtn = () => {
+const useMoreBtn = <T extends HTMLElement>() => {
   const [isOpen, setIsOpen] = useState(false);
   const [height, setHeight] = useState<number | null>(null);
-  const heightRef = useRef<HTMLPreElement>(null);
+  const heightRef = useRef<T>(null);
 
   useEffect(() => {
     if (heightRef.current) {

@@ -6,7 +6,6 @@ import useMoreBtn from '@/hooks/custom/useMoreBtn';
 import FAQ from './FAQ';
 import ReviewCard from '@/components/myReview/ReviewCard';
 import { Review } from '@/types/reviewType';
-
 import MoreBtn from '@/components/detail/MoreBtn';
 import Rating from '@/components/Rating';
 
