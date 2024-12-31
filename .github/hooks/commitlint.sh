@@ -15,10 +15,10 @@ if [ ! -f "$COMMIT_MSG_FILE" ]; then
     exit 1
 fi
 
-# Check if .env file exists and byulBash is set to true
+# Check if .env file exists and commitlint is set to true
 if [ -f .env ]; then
-    byul_bash=$(grep '^byulBash=' .env | cut -d '=' -f2)
-    if [ "$byul_bash" != "true" ]; then
+    commitlint=$(grep '^commitlint=' .env | cut -d '=' -f2)
+    if [ "$commitlint" != "true" ]; then
         exit 0
     fi
 else
