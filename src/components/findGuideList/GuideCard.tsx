@@ -3,13 +3,15 @@ import { IGuideCard } from '@/types/guideCardType';
 import { css } from '@emotion/react';
 import { MessageCircleMore } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import defaultThumb from '../../assets/guide-card-thumb.png';
 
 interface IGuideCardDataProps {
   cardData: IGuideCard;
 }
 
 const GuideCard: React.FC<IGuideCardDataProps> = ({ cardData }) => {
-  const { thumbnail, guideTitle, createdBy, team, reviewCnt } = cardData;
+  const { thumbnail = defaultThumb, travelTitle, createdBy, team, reviewCnt } = cardData;
+
   return (
     <Link to="/travel-detail">
       <div css={card}>
@@ -17,9 +19,13 @@ const GuideCard: React.FC<IGuideCardDataProps> = ({ cardData }) => {
           <img src={thumbnail} alt="" />
         </div>
         <div className="card-content">
-          <p className="title">{guideTitle}</p>
+          <p className="title">{travelTitle}</p>
           <div className="team">
-            <Team max={team.personLimit} size="sm" mbtiList={team.mbti} />
+            <Team
+              max={team.personLimit === null ? 1 : team.personLimit}
+              size="sm"
+              mbtiList={team.mbti === null ? [] : team.mbti}
+            />
           </div>
           <div className="name-comment-wrap">
             <p className="user-name">{createdBy.userName}</p>

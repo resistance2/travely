@@ -8,7 +8,7 @@ export interface ITravelCard {
     readonly userId: string;
     readonly userName: string;
   };
-  readonly travelPrice: number; //가격
+  readonly price: number; //가격
   readonly review: {
     //리뷰
     readonly travelScore: number;

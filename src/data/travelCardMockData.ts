@@ -8,7 +8,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '0',
       userName: '배하은',
     },
-    travelPrice: 49000,
+    price: 49000,
     review: {
       travelScore: 5.0,
       reviewCnt: 23,
@@ -23,7 +23,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '1',
       userName: '맛집탐방러',
     },
-    travelPrice: 42000,
+    price: 42000,
     review: {
       travelScore: 4.8,
       reviewCnt: 18,
@@ -38,7 +38,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '2',
       userName: '여행러버',
     },
-    travelPrice: 60000,
+    price: 60000,
     review: {
       travelScore: 4.9,
       reviewCnt: 35,
@@ -53,7 +53,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '3',
       userName: '밤하늘',
     },
-    travelPrice: 55000,
+    price: 55000,
     review: {
       travelScore: 4.7,
       reviewCnt: 12,
@@ -68,7 +68,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '4',
       userName: '힐링러버',
     },
-    travelPrice: 50000,
+    price: 50000,
     review: {
       travelScore: 5.0,
       reviewCnt: 27,
@@ -83,7 +83,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '5',
       userName: '하루얌',
     },
-    travelPrice: 49000,
+    price: 49000,
     review: {
       travelScore: 5.0,
       reviewCnt: 23,
@@ -98,7 +98,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '6',
       userName: '맛집탐방러',
     },
-    travelPrice: 42000,
+    price: 42000,
     review: {
       travelScore: 4.8,
       reviewCnt: 18,
@@ -113,7 +113,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '7',
       userName: '여행러버',
     },
-    travelPrice: 60000,
+    price: 60000,
     review: {
       travelScore: 4.9,
       reviewCnt: 35,
@@ -128,7 +128,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '8',
       userName: '밤하늘',
     },
-    travelPrice: 55000,
+    price: 55000,
     review: {
       travelScore: 4.7,
       reviewCnt: 12,
@@ -143,7 +143,7 @@ const travelCardMockData: ITravelCard[] = [
       userId: '9',
       userName: '힐링러버',
     },
-    travelPrice: 50000,
+    price: 50000,
     review: {
       travelScore: 5.0,
       reviewCnt: 27,
