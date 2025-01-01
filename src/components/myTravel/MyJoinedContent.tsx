@@ -67,7 +67,6 @@ const MyJoinedContent = () => {
               mbtiList={travelData.travelTeam.approvedMembersMbti.mbti}
             />
 
-            {/* 상태 표시 */}
             <CurrentUserStatus>
               {/* D-DAY이면서 승인 상태고 후기가 작성되지 않은 경우 후기 작성 버튼 */}
               {isPast && currentUser.status === 'approved' && !reviewWritten && (
