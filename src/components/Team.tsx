@@ -3,7 +3,7 @@ import { Smile } from 'lucide-react';
 
 interface ITeamProps {
   max?: number;
-  mbtiList?: string[];
+  mbtiList?: (string | null)[];
   size?: 'sm' | 'md';
 }
 

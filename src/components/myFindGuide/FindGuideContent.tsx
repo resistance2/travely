@@ -1,7 +1,7 @@
+import FindGuideCard from '@/components/myfindGuide/FindGuideCard';
 import { travelFindGuideMockData } from '@/data/travelFindGuideMockData';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import FindGuideCard from '@/components/myFindGuide/FindGuideCard';
 
 const FindGuideContent = () => {
   const [trips, setTrips] = useState(travelFindGuideMockData);
