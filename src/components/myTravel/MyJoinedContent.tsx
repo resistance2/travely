@@ -1,7 +1,9 @@
 import Team from '@/components/Team';
 import GuideProfile from '@/components/GuideProfile';
-import { travelMyJoinedData } from '@/data/travelMyJoinedMockData';
 import styled from '@emotion/styled';
+import useUserStore from '@/stores/useUserStore';
+import useGetMyJoinedTravel from '@/hooks/query/useGetMyJoinedTravel';
+import { myJoinedTravel } from '@/types/myJoinedTravel';
 
 // 남은 일수 계산 함수
 const calculateDaysRemaining = (endDateString: string) => {
@@ -14,10 +16,19 @@ const calculateDaysRemaining = (endDateString: string) => {
   return daysRemaining <= 0 ? 'D-day' : `D-${daysRemaining}`;
 };
 
-const MyCreatedContent = () => {
+const formatDateRange = (startDate: string, endDate: string) => {
+  const start = new Date(startDate).toISOString().split('T')[0];
+  const end = new Date(endDate).toISOString().split('T')[0];
+  return `${start} ~ ${end}`;
+};
+
+const MyJoinedContent = () => {
+  const { user } = useUserStore((state) => state);
+  const { data: myJoinedTravelData } = useGetMyJoinedTravel(user?.userId as string);
+
   return (
     <GridContainer>
-      {travelMyJoinedData.map((travelData, index) => {
+      {myJoinedTravelData?.travels?.map((travelData: myJoinedTravel) => {
         const currentUser = travelData.currentUserStatus; // 현재 사용자 정보
         const guide = travelData.guideInfo; // 가이드 정보
         const daysRemaining = calculateDaysRemaining(travelData.travelTeam.travelEndDate); // 남은 일수 계산
@@ -25,7 +36,7 @@ const MyCreatedContent = () => {
         const reviewWritten = travelData.reviewWritten;
 
         return (
-          <TripCardContainer key={index} isPast={isPast && reviewWritten}>
+          <TripCardContainer key={travelData.id} isPast={isPast && reviewWritten}>
             <Header>
               <Title>{travelData.travelTitle}</Title>
               {/* 예약이 거절된 상태면 "취소됨"을 표시, 아닌 경우 D-DAY 표시 */}
@@ -37,7 +48,7 @@ const MyCreatedContent = () => {
             </Header>
             <UserInfoContainer>
               <GuideProfile
-                name={guide.userName}
+                name={guide.socialName}
                 userEmailId={guide.userEmail}
                 imgURL={guide.userProfileImg}
                 rating={guide.userRating}
@@ -45,7 +56,10 @@ const MyCreatedContent = () => {
             </UserInfoContainer>
 
             <DateInfo>
-              {`${travelData.travelTeam.travelStartDate} ~ ${travelData.travelTeam.travelEndDate}`}
+              {formatDateRange(
+                travelData.travelTeam.travelStartDate,
+                travelData.travelTeam.travelEndDate,
+              )}
             </DateInfo>
 
             <Team
@@ -53,7 +67,6 @@ const MyCreatedContent = () => {
               mbtiList={travelData.travelTeam.approvedMembersMbti.mbti}
             />
 
-            {/* 상태 표시 */}
             <CurrentUserStatus>
               {/* D-DAY이면서 승인 상태고 후기가 작성되지 않은 경우 후기 작성 버튼 */}
               {isPast && currentUser.status === 'approved' && !reviewWritten && (
@@ -79,7 +92,7 @@ const MyCreatedContent = () => {
   );
 };
 
-export default MyCreatedContent;
+export default MyJoinedContent;
 
 // 스타일 정의는 그대로 유지
 const GridContainer = styled.div`

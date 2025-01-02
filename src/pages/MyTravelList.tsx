@@ -1,11 +1,11 @@
-import MyCreatedContent from '@/components/myTravel/MyCreatedContent';
+import MyJoinedContent from '@/components/myTravel/MyJoinedContent';
 import MyTravelTab from '@/components/myTravel/MyTravelTab';
 
 const MyTravelList = () => {
   return (
     <div>
       <MyTravelTab />
-      <MyCreatedContent />
+      <MyJoinedContent />
     </div>
   );
 };
