@@ -3,6 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
 import styled from '@emotion/styled';
 import { visuallyHidden } from '@/styles/GlobalStyles';
+import useModalStore from '@/stores/useModalStore';
 
 interface ModalProps {
   trigger: React.ReactNode;
@@ -15,6 +16,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ trigger, title, children, description, open, setOpen }) => {
+  const closeModal = useModalStore((state) => state.setModalName);
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
@@ -24,7 +26,7 @@ const Modal: React.FC<ModalProps> = ({ trigger, title, children, description, op
           <Title css={visuallyHidden}>{title}</Title>
           {children}
           <Dialog.Close asChild>
-            <CloseButton aria-label="Close">
+            <CloseButton onClick={() => closeModal(null)}>
               <X size={27} />
             </CloseButton>
           </Dialog.Close>
