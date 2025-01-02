@@ -6,7 +6,7 @@ import { myCreatedTravel } from '@/types/myCreatedTravelType';
 import { Link } from 'react-router-dom';
 import BorderBtn from '../BorderBtn';
 
-const MyTravelContent = () => {
+const MyCreatedContent = () => {
   const { user } = useUserStore((state) => state);
   const { data: myCreatedTravelData } = useGetMyCreatedTravel(user?.userId as string);
 
@@ -87,4 +87,4 @@ const EmptyMessage = styled.div`
   margin: 20px 0;
 `;
 
-export default MyTravelContent;
+export default MyCreatedContent;
