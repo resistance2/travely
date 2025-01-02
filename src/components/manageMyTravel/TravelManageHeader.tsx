@@ -1,9 +1,12 @@
 import { css } from '@emotion/react';
-import BorderBtn from '@/components/BorderBtn';
 import { TravelData } from '@/types/travelDataType';
 import { formatDate } from '@/utils/format';
 import { theme } from '@/styles/theme';
 import useUpdateTravelStatus from '@/hooks/query/useUpdateTravelStatus';
+import ConfirmModal from '../ConfirmModal';
+import useModalStore from '@/stores/useModalStore';
+import { modalId } from '@/constants/modalId';
+import BorderBtn from '../BorderBtn';
 
 interface ManageHeaderProps {
   travelData: TravelData;
@@ -12,26 +15,55 @@ interface ManageHeaderProps {
 }
 
 const TravelManageHeader = ({ travelData, isOngoingTab, setIsOngoingTab }: ManageHeaderProps) => {
+  const setModalName = useModalStore((state) => state.setModalName);
   const { mutate } = useUpdateTravelStatus();
 
+  const isActive = travelData.travelActive;
+
   const handleActiveStatus = () => {
-    mutate({ travelId: travelData.travelId, isActive: !travelData.travelActive });
+    mutate(
+      { travelId: travelData.travelId, isActive: !isActive },
+      {
+        onSuccess: () => setModalName(null),
+      },
+    );
   };
+
+  const handleDelete = () => {};
 
   return (
     <div>
       <div css={titleWrapper}>
         <h1>{travelData.travelTitle}</h1>
         <div css={btnWrapper}>
-          <BorderBtn
-            color={travelData.travelActive ? '#ababab' : theme.colors.primary}
-            onClick={handleActiveStatus}
-          >
-            {travelData.travelActive ? '비활성화하기' : '활성화하기'}
-          </BorderBtn>
-          <BorderBtn color={theme.colors.red} size={'sm'}>
-            삭제
-          </BorderBtn>
+          <ConfirmModal
+            modalId={modalId.my.manageActiveStatus}
+            message={`정말 ${isActive ? '비활성화' : '활성화'} 하시겠습니까?`}
+            onConfirm={handleActiveStatus}
+            trigger={
+              <BorderBtn
+                color={travelData.travelActive ? '#ababab' : theme.colors.primary}
+                onClick={() => setModalName(modalId.my.manageActiveStatus)}
+              >
+                {isActive ? '비활성화하기' : '활성화하기'}
+              </BorderBtn>
+            }
+          />
+
+          <ConfirmModal
+            modalId={modalId.my.travelDelete}
+            message="정말 삭제 하시겠습니까?"
+            onConfirm={handleDelete}
+            trigger={
+              <BorderBtn
+                color={theme.colors.red}
+                size={'sm'}
+                onClick={() => setModalName(modalId.my.travelDelete)}
+              >
+                삭제
+              </BorderBtn>
+            }
+          />
         </div>
       </div>
       <div css={dateWrapper}>
