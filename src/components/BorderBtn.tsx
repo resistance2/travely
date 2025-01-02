@@ -1,4 +1,5 @@
 import { css, SerializedStyles } from '@emotion/react';
+import { forwardRef } from 'react';
 interface BorderBtnProps {
   children: React.ReactNode;
   color: string;
@@ -10,27 +11,23 @@ interface BorderBtnProps {
   className?: string;
 }
 
-const BorderBtn = ({
-  children,
-  color,
-  size,
-  onClick,
-  customStyle,
-  type,
-  hover = 'scale',
-  className = '',
-}: BorderBtnProps) => {
-  return (
-    <button
-      css={[borderBtn(color, size, hover), customStyle]}
-      onClick={onClick}
-      type={type}
-      className={className}
-    >
-      {children}
-    </button>
-  );
-};
+const BorderBtn = forwardRef<HTMLButtonElement, BorderBtnProps>(
+  ({ children, color, size, onClick, customStyle, type, hover = 'scale', className = '' }, ref) => {
+    return (
+      <button
+        ref={ref}
+        css={[borderBtn(color, size, hover), customStyle]}
+        onClick={onClick}
+        type={type}
+        className={className}
+      >
+        {children}
+      </button>
+    );
+  },
+);
+
+BorderBtn.displayName = 'BorderBtn';
 
 export default BorderBtn;
 
