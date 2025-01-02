@@ -1,48 +1,72 @@
+import GuideCard from '@/components/findGuideList/GuideCard';
 import TagCardWrap from '@/components/TagCardWrap';
 import TravelCard from '@/components/traveList/TravelCard';
-import travelCardMockData from '@/data/travelCardMockData';
+// import travelCardMockData from '@/data/travelCardMockData';
+import useUserStore from '@/stores/useUserStore';
+import { IGuideCard } from '@/types/guideCardType';
+import { ITravelCard } from '@/types/travelCardType';
 import { css } from '@emotion/react';
-// import { useQuery } from '@tanstack/react-query';
-// import axios from 'axios';
-// import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const mockDatas = travelCardMockData;
+// const mockDatas = travelCardMockData;
 
 const Home = () => {
-  //api 수정되면 수정예정입니다 주석 삭제하지 말아주세요.
-  // const user = useUserStore((state)=>state.user)
-  // // const [cardDatas, setCardDatas] = useState(null);
-  // // const { data, isLoading, isError } = useQuery({
-  // //   queryKey: ['home-travel-list'],
-  // //   queryFn: () => fetchHomeTravelList(userId),
-  // // });
-  // // const fetchHomeTravelList = async (userId: string) => {
-  // //   try {
-  // //     const res = await axios.post('http://3.37.101.147:3000/api/v1/travels/home-travel-list', {
-  // //       userId,
-  // //     });
-  // //     return res.data.data.travels;
-  // //   } catch (error) {
-  // //     console.error('여행 목록을 조회하는데 실패했습니다: ' + error);
-  // //     throw error;
-  // //   }
-  // // };
-  // // useEffect(() => {
-  // //   if (data) {
-  // //     setCardDatas(data);
-  // //   }
-  // // }, [data]);
+  const user = useUserStore((state) => state.user);
+  const userId = user ? user.userId : null;
+  const {
+    data: travelData,
+    isLoading: isTravelLoading,
+    isError: isTravelError,
+  } = useQuery({
+    queryKey: ['home-travel-list', userId],
+    queryFn: () => fetchHomeTravelList(userId),
+  });
 
-  // // if (isLoading) {
-  // //   return <p>loading...</p>;
-  // // }
+  const {
+    data: guideData,
+    isLoading: isGuideLoading,
+    isError: isGuideError,
+  } = useQuery({
+    queryKey: ['home-guide-list', userId],
+    queryFn: () => fetchHomeGuideList(userId),
+  });
 
-  // // if (isError) {
-  // //   return null;
-  // // }
+  const fetchHomeTravelList = async (userId: string | null): Promise<ITravelCard[]> => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/api/v1/travels/travel-list?userId=${userId}&page=1&size=8`,
+      );
+      return res.data.data.travels;
+    } catch (error) {
+      console.error('여행 목록을 조회하는데 실패했습니다: ' + error);
+      throw error;
+    }
+  };
 
-  // console.log(cardDatas);
+  const fetchHomeGuideList = async (userId: string | null): Promise<IGuideCard[]> => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/api/v1/travels-guide/travel-list?userId=${userId}&page=1&size=8`,
+      );
+
+      return res.data.data.travels;
+    } catch (error) {
+      console.error('여행 목록을 조회하는데 실패했습니다: ' + error);
+      throw error;
+    }
+  };
+
+  if (isTravelLoading || isGuideLoading) {
+    return <p>loading...</p>;
+  }
+
+  if (isTravelError || isGuideError) {
+    alert('오류가 발생했습니다.');
+    return null;
+  }
+
   return (
     <div css={home}>
       <TagCardWrap shape="square" />
@@ -52,9 +76,25 @@ const Home = () => {
           <Link to="/travel-list">🔥 함께 떠나요 NEW</Link>
         </h3>
         <div className="grid">
-          {mockDatas.map((data, i) => (
-            <TravelCard cardData={data} key={i} />
-          ))}
+          {/* 데이터 length 0 일때 처리  */}
+          {travelData?.length === 0 ? (
+            <p>데이터가 없습니다.</p>
+          ) : (
+            travelData?.map((data, i) => <TravelCard cardData={data} key={i} />)
+          )}
+        </div>
+      </div>
+
+      <div className="card-wrap">
+        <h3>
+          <Link to="/travel-list">🔥 가이드 찾아요 NEW</Link>
+        </h3>
+        <div className="grid">
+          {guideData?.length === 0 ? (
+            <p>데이터가 없습니다.</p>
+          ) : (
+            guideData?.map((data, i) => <GuideCard cardData={data} key={i} />)
+          )}
         </div>
       </div>
     </div>
@@ -81,6 +121,9 @@ const home = css`
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+    &:last-child {
+      margin-top: 50px;
     }
   }
 `;

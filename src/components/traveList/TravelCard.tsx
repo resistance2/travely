@@ -11,7 +11,7 @@ interface ITravelCardDataProps {
 }
 
 const TravelCard: React.FC<ITravelCardDataProps> = ({ cardData }) => {
-  const { thumbnail, travelTitle, createdBy, travelPrice, review, tag, bookmark } = cardData;
+  const { thumbnail, travelTitle, createdBy, price, review, tag, bookmark } = cardData;
   return (
     <Link to="/travel-detail">
       <div css={card}>
@@ -23,7 +23,7 @@ const TravelCard: React.FC<ITravelCardDataProps> = ({ cardData }) => {
           <div>
             <p className="user-name">{createdBy.userName}</p>
             <div className="price">
-              <Price price={travelPrice} />
+              <Price price={price} />
             </div>
             <div className="rating-tags">
               <Rating rating={Number(review.travelScore)} reviewCount={Number(review.reviewCnt)} />
