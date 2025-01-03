@@ -1,36 +1,39 @@
 import FiledBtn from '@/components/FiledBtn';
 import GrayBack from '@/components/GrayBack';
-import { TagsType } from '@/types/tagType';
+import { theme } from '@/styles/theme';
+import { TagType } from '@/types/tagType';
 import { css } from '@emotion/react';
 import { useState } from 'react';
 
+const TAGS: TagType[] = [
+  'Food',
+  'Culture',
+  'Healing',
+  'Nature',
+  'Sports',
+  'Festival',
+  'K-POP',
+  'K-DRAMA',
+  'JEJU',
+  'etc.',
+] as const;
+
 const ChoiceTags = () => {
-  const [choicedTag, setChoicedTag] = useState<TagsType[]>([]);
-  const tags: TagsType[] = [
-    'FOOD',
-    'CULTURE',
-    'HEALING',
-    'NATURE',
-    'SPORTS',
-    'FESTIVAL',
-    'K-POP',
-    'K-DRAMA',
-    'JEJU',
-    'ETC',
-  ];
-  const handleTag = (tag: TagsType) => {
-    if (choicedTag.includes(tag)) {
-      setChoicedTag(choicedTag.filter((t) => t !== tag));
+  const [choseTag, setChoseTag] = useState<TagType[]>([]);
+
+  const handleTag = (tag: TagType) => {
+    if (choseTag.includes(tag)) {
+      setChoseTag(choseTag.filter((t) => t !== tag));
     } else {
-      setChoicedTag([...choicedTag, tag]);
+      setChoseTag([...choseTag, tag]);
     }
   };
   return (
     <GrayBack title={'태그'} padding={true}>
       <div css={tagsWrapper}>
-        {tags.map((tag) => (
+        {TAGS.map((tag) => (
           <FiledBtn
-            color={choicedTag.includes(tag) ? '#4A95F2' : '#d6d6d6'}
+            color={choseTag.includes(tag) ? theme.colors.primary : '#d6d6d6'}
             size={'mdHeight'}
             onClick={() => handleTag(tag)}
             key={tag}

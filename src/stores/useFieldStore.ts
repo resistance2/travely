@@ -1,10 +1,11 @@
+import { TravelTeamData } from '@/types/travelDataType';
 import { create } from 'zustand';
 
-export type Options =
-  | 'inclusionList'
-  | 'notInclusionList'
+export type FieldsOptions =
+  | 'includeList'
+  | 'excludeList'
   | 'faqs'
-  | 'userGuide'
+  | 'meetingTime'
   | 'courseList'
   | 'scheduleList';
 
@@ -13,99 +14,77 @@ interface Faqs {
   answer: string;
 }
 
-export interface Schedule {
-  date: string;
-  members: string;
-}
+export type Schedule = Pick<TravelTeamData, 'travelStartDate' | 'travelEndDate' | 'personLimit'>;
 
 interface Fields {
-  inclusionList: string[];
-  notInclusionList: string[];
-  faqs: Faqs[];
-  userGuide: string[];
-  courseList: string[];
-  scheduleList: Schedule[];
+  includeList: string[] | null;
+  excludeList: string[] | null;
+  faqs: Faqs[] | null;
+  meetingTime: string[] | null;
+  courseList: string[] | null;
+  scheduleList: Schedule[] | null;
 }
 
 interface State {
   fields: Fields;
 }
 interface Action {
-  addField: (option: Options, newField: string | Schedule, answer?: string) => void;
-  removeField: (option: Options, index: number) => void;
-  resetField: () => void;
+  actions: {
+    addField: (option: FieldsOptions, newField: string | Schedule, answer?: string) => void;
+    removeField: (option: FieldsOptions, index: number) => void;
+    resetField: () => void;
+  };
 }
+
+const initialState: State = {
+  fields: {
+    includeList: null,
+    excludeList: null,
+    faqs: null,
+    meetingTime: null,
+    courseList: null,
+    scheduleList: null,
+  },
+};
 
 const useFieldStore = create<State & Action>((set) => ({
   fields: {
-    inclusionList: [],
-    notInclusionList: [],
-    faqs: [],
-    userGuide: [],
-    courseList: [],
-    scheduleList: [],
+    ...initialState.fields,
   },
-  addField: (option: Options, newField: string | Schedule, answer?: string) =>
-    set((state) => {
-      if (option === 'faqs') {
+
+  actions: {
+    addField: (option: FieldsOptions, newField: string | Schedule, answer?: string) =>
+      set((state) => {
+        const updatedField =
+          option === 'faqs'
+            ? [...(state.fields.faqs || []), { question: newField as string, answer: answer || '' }]
+            : [...(state.fields[option] || []), newField];
         return {
           fields: {
             ...state.fields,
-            faqs: [...state.fields.faqs, { question: newField as string, answer: answer || '' }],
+            [option]: updatedField,
           },
         };
-      } else if (option === 'scheduleList') {
+      }),
+
+    removeField: (option: FieldsOptions, index: number) =>
+      set((state) => {
+        const updatedField = (state.fields[option] || []).filter((_, i) => i !== index);
         return {
           fields: {
             ...state.fields,
-            scheduleList: [...state.fields.scheduleList, newField as Schedule],
+            [option]: updatedField,
           },
         };
-      } else {
-        return {
-          fields: {
-            ...state.fields,
-            [option]: [...(state.fields[option] as string[]), newField as string],
-          },
-        };
-      }
-    }),
-  removeField: (option: Options, index: number) =>
-    set((state) => {
-      if (option === 'faqs') {
-        return {
-          fields: {
-            ...state.fields,
-            faqs: state.fields.faqs.filter((_, i) => i !== index),
-          },
-        };
-      } else if (option === 'scheduleList') {
-        return {
-          fields: {
-            ...state.fields,
-            scheduleList: state.fields.scheduleList.filter((_, i) => i !== index),
-          },
-        };
-      } else {
-        return {
-          fields: {
-            ...state.fields,
-            [option]: (state.fields[option] as string[]).filter((_, i) => i !== index),
-          },
-        };
-      }
-    }),
-  resetField: () =>
-    set({
-      fields: {
-        inclusionList: [],
-        notInclusionList: [],
-        faqs: [],
-        userGuide: [],
-        courseList: [],
-        scheduleList: [],
-      },
-    }),
+      }),
+
+    resetField: () =>
+      set({
+        fields: {
+          ...initialState.fields,
+        },
+      }),
+  },
 }));
 
 export default useFieldStore;

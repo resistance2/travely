@@ -1,30 +1,31 @@
 import GrayBack from '@/components/GrayBack';
 import { CirclePlus } from 'lucide-react';
 import { css } from '@emotion/react';
-import useFieldStore, { Options } from '@/stores/useFieldStore';
-import { useRef, useState } from 'react';
+import useFieldStore, { FieldsOptions } from '@/stores/useFieldStore';
+import { useRef } from 'react';
 import DetailsList from '@/components/addTravel/DetailsList';
 import Thumbnail from '@/components/addTravel/Thumbnail';
+import useComposing from '@/hooks/custom/useComposing';
 
 interface DetailsProps {
   title: string;
 }
 
 const Details = ({ title }: DetailsProps) => {
-  const [isComposing, setIsComposing] = useState(false);
-  const addField = useFieldStore((state) => state.addField);
+  const { setIsComposing, handleKeyDown } = useComposing();
+  const addField = useFieldStore((state) => state.actions.addField);
   const newFieldRef = useRef<HTMLInputElement>(null);
   const answer = useRef<HTMLTextAreaElement>(null);
 
-  let option: Options = 'inclusionList';
+  let option: FieldsOptions = 'includeList';
   if (title === '포함내용') {
-    option = 'inclusionList';
+    option = 'includeList';
   } else if (title === '미포함내용') {
-    option = 'notInclusionList';
+    option = 'excludeList';
   } else if (title === 'FAQ') {
     option = 'faqs';
   } else if (title === '이용안내') {
-    option = 'userGuide';
+    option = 'meetingTime';
   }
 
   const addFieldPmCheck = () => {
@@ -46,12 +47,6 @@ const Details = ({ title }: DetailsProps) => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !isComposing) {
-      addFieldPmCheck();
-    }
-  };
-
   return (
     <GrayBack title={title} padding={true}>
       {title === '이용안내' ? (
@@ -62,7 +57,7 @@ const Details = ({ title }: DetailsProps) => {
             <input
               css={textBox}
               ref={newFieldRef}
-              onKeyDown={(e) => handleKeyDown(e)}
+              onKeyDown={(e) => handleKeyDown(e, addFieldPmCheck)}
               onCompositionStart={() => setIsComposing(true)}
               onCompositionEnd={() => setIsComposing(false)}
               maxLength={40}
@@ -91,7 +86,7 @@ const Details = ({ title }: DetailsProps) => {
               <input
                 css={textBox}
                 ref={newFieldRef}
-                onKeyDown={(e) => handleKeyDown(e)}
+                onKeyDown={(e) => handleKeyDown(e, addFieldPmCheck)}
                 onCompositionStart={() => setIsComposing(true)}
                 onCompositionEnd={() => setIsComposing(false)}
                 maxLength={40}
