@@ -23,8 +23,7 @@ const DetailsList = ({ option }: DetailsListProps) => {
   return (
     <ul>
       {option === 'faqs'
-        ? fields.faqs &&
-          fields.faqs.map((faq, index) => (
+        ? fields.faqs?.map((faq, index) => (
             <li key={index}>
               <div css={faqList}>
                 <div>
@@ -56,8 +55,7 @@ const DetailsList = ({ option }: DetailsListProps) => {
               ) : null}
             </li>
           ))
-        : fields[option] &&
-          fields[option].map((field, index) => (
+        : fields[option]?.map((field, index) => (
             <li key={index}>
               <div css={list}>
                 <Dot size={22} />
