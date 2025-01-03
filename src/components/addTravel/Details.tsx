@@ -17,15 +17,15 @@ const Details = ({ title }: DetailsProps) => {
   const newFieldRef = useRef<HTMLInputElement>(null);
   const answer = useRef<HTMLTextAreaElement>(null);
 
-  let option: FieldsOptions = 'inclusionList';
+  let option: FieldsOptions = 'includeList';
   if (title === '포함내용') {
-    option = 'inclusionList';
+    option = 'includeList';
   } else if (title === '미포함내용') {
-    option = 'notInclusionList';
+    option = 'excludeList';
   } else if (title === 'FAQ') {
     option = 'faqs';
   } else if (title === '이용안내') {
-    option = 'userGuide';
+    option = 'meetingTime';
   }
 
   const addFieldPmCheck = () => {

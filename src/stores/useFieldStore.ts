@@ -2,10 +2,10 @@ import { TravelTeamData } from '@/types/travelDataType';
 import { create } from 'zustand';
 
 export type FieldsOptions =
-  | 'inclusionList'
-  | 'notInclusionList'
+  | 'includeList'
+  | 'excludeList'
   | 'faqs'
-  | 'userGuide'
+  | 'meetingTime'
   | 'courseList'
   | 'scheduleList';
 
@@ -17,10 +17,10 @@ interface Faqs {
 export type Schedule = Pick<TravelTeamData, 'travelStartDate' | 'travelEndDate' | 'personLimit'>;
 
 interface Fields {
-  inclusionList: string[] | null;
-  notInclusionList: string[] | null;
+  includeList: string[] | null;
+  excludeList: string[] | null;
   faqs: Faqs[] | null;
-  userGuide: string[] | null;
+  meetingTime: string[] | null;
   courseList: string[] | null;
   scheduleList: Schedule[] | null;
 }
@@ -38,10 +38,10 @@ interface Action {
 
 const initialState: State = {
   fields: {
-    inclusionList: null,
-    notInclusionList: null,
+    includeList: null,
+    excludeList: null,
     faqs: null,
-    userGuide: null,
+    meetingTime: null,
     courseList: null,
     scheduleList: null,
   },
