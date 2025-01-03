@@ -49,22 +49,21 @@ const ScheduleTeam = () => {
     <div css={scheduleWrapper}>
       <p>일정 및 팀 추가</p>
       <ul>
-        {scheduleList &&
-          scheduleList.map((schedule, index) => (
-            <li key={index}>
-              <div css={scheduleItem}>
-                <div>
-                  <span>
-                    {`${formatDate(schedule.travelStartDate)} ~ ${formatDate(schedule.travelEndDate)} / ${schedule.personLimit}인`}
-                  </span>
-                  <button onClick={() => removeField('scheduleList', index)}>
-                    <X size={20} />
-                  </button>
-                </div>
-                <Team max={Number(schedule.personLimit)} />
+        {scheduleList?.map((schedule, index) => (
+          <li key={index}>
+            <div css={scheduleItem}>
+              <div>
+                <span>
+                  {`${formatDate(schedule.travelStartDate)} ~ ${formatDate(schedule.travelEndDate)} / ${schedule.personLimit}인`}
+                </span>
+                <button onClick={() => removeField('scheduleList', index)}>
+                  <X size={20} />
+                </button>
               </div>
-            </li>
-          ))}
+              <Team max={Number(schedule.personLimit)} />
+            </div>
+          </li>
+        ))}
       </ul>
       {(isAddFindGuidePage || isAddTravelPage) && (
         <div css={scheduleAddWrapper}>

@@ -24,18 +24,17 @@ const Course = () => {
     <div css={courseWrapper}>
       <p>여행 코스</p>
       <ul>
-        {courseList &&
-          courseList.map((course, index) => (
-            <li key={index}>
-              <div css={courseItem}>
-                <MapPin css={{ marginRight: '10px' }} />
-                <span>{course}</span>
-                <button onClick={() => removeField('courseList', index)}>
-                  <X size={20} />
-                </button>
-              </div>
-            </li>
-          ))}
+        {courseList?.map((course, index) => (
+          <li key={index}>
+            <div css={courseItem}>
+              <MapPin css={{ marginRight: '10px' }} />
+              <span>{course}</span>
+              <button onClick={() => removeField('courseList', index)}>
+                <X size={20} />
+              </button>
+            </div>
+          </li>
+        ))}
       </ul>
       <div css={courseAddWrapper}>
         <MapPin css={{ marginRight: '10px' }} />
@@ -75,6 +74,7 @@ const courseItem = css`
   padding: 10px 20px;
   & button {
     color: #888;
+    margin-bottom: -5px;
     margin-left: 10px;
     transition: all 0.2s ease-in-out;
     :hover {
