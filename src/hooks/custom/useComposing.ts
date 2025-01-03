@@ -7,7 +7,7 @@ const useComposing = () => {
     e: React.KeyboardEvent<T>,
     callback: () => void,
   ) => {
-    if (e.type === 'keydown' && !isComposing) {
+    if (e.key === 'Enter' && !isComposing) {
       callback();
     }
   };
