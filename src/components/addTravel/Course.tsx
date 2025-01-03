@@ -1,14 +1,14 @@
 import { plusBtn, textBox } from '@/components/addTravel/Details';
+import useComposing from '@/hooks/custom/useComposing';
 import useFieldStore from '@/stores/useFieldStore';
 import { css } from '@emotion/react';
 import { CirclePlus, MapPin, X } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 const Course = () => {
-  const [isComposing, setIsComposing] = useState(false);
-  const fields = useFieldStore((state) => state.fields);
-  const addField = useFieldStore((state) => state.addField);
-  const removeField = useFieldStore((state) => state.removeField);
+  const { setIsComposing, handleKeyDown } = useComposing();
+  const courseList = useFieldStore((state) => state.fields.courseList);
+  const { addField, removeField } = useFieldStore((state) => state.actions);
   const courseRef = useRef<HTMLInputElement>(null);
 
   const handleAddCourse = () => {
@@ -20,27 +20,22 @@ const Course = () => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !isComposing) {
-      handleAddCourse();
-    }
-  };
-
   return (
     <div css={courseWrapper}>
       <p>여행 코스</p>
       <ul>
-        {fields.courseList.map((course, index) => (
-          <li key={index}>
-            <div css={courseList}>
-              <MapPin css={{ marginRight: '10px' }} />
-              <span>{course}</span>
-              <button onClick={() => removeField('courseList', index)}>
-                <X size={20} />
-              </button>
-            </div>
-          </li>
-        ))}
+        {courseList &&
+          courseList.map((course, index) => (
+            <li key={index}>
+              <div css={courseItem}>
+                <MapPin css={{ marginRight: '10px' }} />
+                <span>{course}</span>
+                <button onClick={() => removeField('courseList', index)}>
+                  <X size={20} />
+                </button>
+              </div>
+            </li>
+          ))}
       </ul>
       <div css={courseAddWrapper}>
         <MapPin css={{ marginRight: '10px' }} />
@@ -48,7 +43,7 @@ const Course = () => {
           css={textBox}
           ref={courseRef}
           type="text"
-          onKeyDown={(e) => handleKeyDown(e)}
+          onKeyDown={(e) => handleKeyDown(e, handleAddCourse)}
           onCompositionStart={() => setIsComposing(true)}
           onCompositionEnd={() => setIsComposing(false)}
           placeholder="40자 내외로 여행 코스를 추가해주세요."
@@ -70,7 +65,7 @@ const courseWrapper = css`
     font-size: 18px;
   }
 `;
-const courseList = css`
+const courseItem = css`
   display: flex;
   align-items: center;
   text-align: center;

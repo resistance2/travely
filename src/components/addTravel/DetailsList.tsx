@@ -1,16 +1,16 @@
 import { css } from '@emotion/react';
-import useFieldStore, { Options } from '@/stores/useFieldStore';
+import useFieldStore, { FieldsOptions } from '@/stores/useFieldStore';
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, Dot, X } from 'lucide-react';
 
 interface DetailsListProps {
-  option: Options;
+  option: FieldsOptions;
 }
 
 const DetailsList = ({ option }: DetailsListProps) => {
   const [answerView, setAnswerView] = useState<boolean[]>([]);
   const fields = useFieldStore((state) => state.fields);
-  const removeField = useFieldStore((state) => state.removeField);
+  const removeField = useFieldStore((state) => state.actions.removeField);
 
   const answerViewHandler = (index: number) => {
     setAnswerView((prev) => {
@@ -23,9 +23,10 @@ const DetailsList = ({ option }: DetailsListProps) => {
   return (
     <ul>
       {option === 'faqs'
-        ? fields.faqs.map((faq, index) => (
+        ? fields.faqs &&
+          fields.faqs.map((faq, index) => (
             <li key={index}>
-              <div css={faqlist}>
+              <div css={faqList}>
                 <div>
                   <Dot size={24} />
                   <p>{faq.question}</p>
@@ -55,15 +56,12 @@ const DetailsList = ({ option }: DetailsListProps) => {
               ) : null}
             </li>
           ))
-        : fields[option].map((field, index) => (
+        : fields[option] &&
+          fields[option].map((field, index) => (
             <li key={index}>
               <div css={list}>
                 <Dot size={22} />
-                {typeof field === 'string' ? (
-                  <p>{field}</p>
-                ) : (
-                  <p>{`${field.date} / ${field.members}`}</p>
-                )}
+                {typeof field === 'string' && <p>{field}</p>}
                 <button onClick={() => removeField(option, index)}>
                   <X size={20} />
                 </button>
@@ -93,7 +91,7 @@ const list = css`
   }
 `;
 
-const faqlist = css`
+const faqList = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
