@@ -2,10 +2,10 @@ import BorderBtn from '@/components/BorderBtn';
 import { auth } from '@/firebase';
 import useModalStore from '@/stores/useModalStore';
 import useUserStore from '@/stores/useUserStore';
-import { css } from '@emotion/react';
 import { signOut } from 'firebase/auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 const MyAccount = () => {
   const navigate = useNavigate();
@@ -28,21 +28,38 @@ const MyAccount = () => {
   }, [user, navigate, setModalName]);
 
   return (
-    <div css={myAccountWrap}>
-      <h2>내 계정</h2>
+    <MyAccountWrap>
+      <UserSummary>
+        {user && user.userProfileImage ? (
+          <ProfileImage src={user.userProfileImage} alt="프로필 이미지" />
+        ) : null}
+      </UserSummary>
       {user && (
         <BorderBtn color="#888" size="sm" className="btn-logout" onClick={logout}>
           로그아웃
         </BorderBtn>
       )}
-    </div>
+    </MyAccountWrap>
   );
 };
 
 export default MyAccount;
 
-const myAccountWrap = css`
-  .btn-logout {
-    margin-top: 10px;
-  }
+const MyAccountWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+
+const UserSummary = styled.div`
+  height: 180px;
+`;
+
+const ProfileImage = styled.img`
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
 `;
