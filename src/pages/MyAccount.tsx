@@ -3,14 +3,21 @@ import { auth } from '@/firebase';
 import useModalStore from '@/stores/useModalStore';
 import useUserStore from '@/stores/useUserStore';
 import { signOut } from 'firebase/auth';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { Camera } from 'lucide-react';
 
 const MyAccount = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore((state) => state);
   const setModalName = useModalStore((state) => state.setModalName);
+  const [isEditing, setIsEditing] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState(user?.PhoneNumber || '');
+  const [mbti, setMbti] = useState(user?.MBTI || '');
+  const [profileImage, setProfileImage] = useState(user?.userProfileImage || '');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -27,11 +34,57 @@ const MyAccount = () => {
     }
   }, [user, navigate, setModalName]);
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveClick = () => {
+    if (user) {
+      setUser({
+        ...user,
+        PhoneNumber: phoneNumber,
+        MBTI: mbti,
+        userProfileImage: profileImage,
+      });
+    }
+    setIsEditing(false);
+  };
+
+  const handleCameraClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <MyAccountWrap>
       <UserSummary>
         {user && user.userProfileImage ? (
-          <ProfileImage src={user.userProfileImage} alt="프로필 이미지" />
+          <ProfileImageWrapper>
+            <ProfileImage src={user.userProfileImage} alt="프로필 이미지" />
+            {isEditing && (
+              <>
+                <CameraIcon onClick={handleCameraClick}>
+                  <Camera />
+                </CameraIcon>
+                <HiddenFileInput
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                />
+              </>
+            )}
+          </ProfileImageWrapper>
         ) : null}
         <SocialName>{user?.socialName}</SocialName>
         <Email>{user?.userEmail}</Email>
@@ -44,8 +97,15 @@ const MyAccount = () => {
         </Details>
         <Details>
           <Title>전화번호</Title>
-          {/* //user?.PhoneNumber 가 있다면 보여주고 없다면 '미정' */}
-          <Content>{user?.PhoneNumber || '미정'}</Content>
+          {isEditing ? (
+            <Input
+              type="text"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+          ) : (
+            <Content>{user?.PhoneNumber || '미정'}</Content>
+          )}
         </Details>
         <Details>
           <Title>이메일</Title>
@@ -53,15 +113,25 @@ const MyAccount = () => {
         </Details>
         <Details>
           <Title>MBTI</Title>
-          <Content>{user?.MBTI || '미정'}</Content>
+          {isEditing ? (
+            <Input type="text" value={mbti} onChange={(e) => setMbti(e.target.value)} />
+          ) : (
+            <Content>{user?.MBTI || '미정'}</Content>
+          )}
         </Details>
       </UserDetails>
       <Footer>
-        <BorderBtn color="#4a95f2" size="sm" className="btn-logout">
-          프로필 수정
-        </BorderBtn>
+        {isEditing ? (
+          <BorderBtn color="#4a95f2" size="sm" onClick={handleSaveClick}>
+            저장
+          </BorderBtn>
+        ) : (
+          <BorderBtn color="#4a95f2" size="sm" onClick={handleEditClick}>
+            프로필 수정
+          </BorderBtn>
+        )}
         {user && (
-          <BorderBtn color="#888" size="sm" className="btn-logout" onClick={logout}>
+          <BorderBtn color="#888" size="sm" onClick={logout}>
             로그아웃
           </BorderBtn>
         )}
@@ -86,12 +156,33 @@ const UserSummary = styled.div`
   align-items: center;
 `;
 
+const ProfileImageWrapper = styled.div`
+  position: relative;
+`;
+
 const ProfileImage = styled.img`
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 10px;
+`;
+
+const CameraIcon = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: white;
+  border-radius: 50%;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+`;
+
+const HiddenFileInput = styled.input`
+  display: none;
 `;
 
 const SocialName = styled.p`
@@ -125,6 +216,15 @@ const Title = styled.p`
 const Content = styled.p`
   font-size: 18px;
   width: 80%;
+`;
+
+const Input = styled.input`
+  width: 40%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 `;
 
 const Footer = styled.div`
