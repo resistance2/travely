@@ -12,7 +12,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['ENFJ', 'ISFP'],
     },
-    reviewCnt: 26,
+    commentCnt: 26,
   },
   {
     thumbnail: '/src/assets/guide-card-thumb.png',
@@ -25,7 +25,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['ESFP', 'INTJ', 'ESTJ', 'ENTP', 'ISTJ', 'ISFJ'],
     },
-    reviewCnt: 49,
+    commentCnt: 49,
   },
   {
     thumbnail: '/src/assets/guide-card-thumb.png',
@@ -38,7 +38,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['ISFJ', 'ENFP', 'INTJ', 'INFJ'],
     },
-    reviewCnt: 11,
+    commentCnt: 11,
   },
   {
     thumbnail: '/src/assets/guide-card-thumb.png',
@@ -51,7 +51,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['ENFP', 'ENTP', 'ENFJ'],
     },
-    reviewCnt: 40,
+    commentCnt: 40,
   },
   {
     thumbnail: '/src/assets/guide-card-thumb.png',
@@ -64,7 +64,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['INFP'],
     },
-    reviewCnt: 1,
+    commentCnt: 1,
   },
   {
     thumbnail: '/src/assets/guide-card-thumb.png',
@@ -77,7 +77,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['INFP', 'ISTP', 'INFJ', 'ESTP', 'INTP'],
     },
-    reviewCnt: 27,
+    commentCnt: 27,
   },
   {
     thumbnail: '/src/assets/guide-card-thumb.png',
@@ -90,7 +90,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['ESTJ', 'ISFJ', 'ISTJ', 'ENTP', 'ISFP', 'INFP'],
     },
-    reviewCnt: 36,
+    commentCnt: 36,
   },
   {
     thumbnail: '/src/assets/guide-card-thumb.png',
@@ -103,7 +103,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['ENTJ', 'INTJ', 'ISTJ', 'ESTP', 'ISFJ', 'ENFJ'],
     },
-    reviewCnt: 43,
+    commentCnt: 43,
   },
   {
     thumbnail: '/src/assets/guide-card-thumb.png',
@@ -116,7 +116,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['INTJ', 'ESTJ', 'ESFJ', 'INTP'],
     },
-    reviewCnt: 3,
+    commentCnt: 3,
   },
   {
     thumbnail: '/src/assets/guide-card-thumb.png',
@@ -129,7 +129,7 @@ const guideCardMockData: IGuideCard[] = [
       personLimit: 6,
       mbti: ['ENFP', 'ESTP', 'ISFP'],
     },
-    reviewCnt: 17,
+    commentCnt: 17,
   },
 ];
 

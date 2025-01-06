@@ -2,17 +2,57 @@ import useSectionsStore from '@/stores/useSectionsStore';
 import styled from '@emotion/styled';
 import { CircleMinus, CirclePlus } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import useImageStore from '@/stores/useImageStore';
+import useHandleImageUpload from '@/hooks/custom/useHandleImageUpload';
+// import useCreateTravel from '@/hooks/query/useCreateTravel';
+import useAddTravelStore from '@/stores/useAddTravelStore';
+import useFieldStore from '@/stores/useFieldStore';
+import useUserStore from '@/stores/useUserStore';
 
-interface FloatingMenuProps {
-  onClick: () => void;
-}
-
-const FloatingMenu = ({ onClick }: FloatingMenuProps) => {
+const FloatingMenu = () => {
   const sections = useSectionsStore((state) => state.sections);
   const setOpenSection = useSectionsStore((state) => state.setOpenSection);
   const location = useLocation();
+  // const fields = useFieldStore((state) => state.fields);
+  const setData = useAddTravelStore((state) => state.setData);
 
   const menuHeight = location.pathname === '/add-for-find-guide' ? '260px' : '520px';
+
+  const images = useImageStore((state) => state.images);
+  const { uploadImages } = useHandleImageUpload(images);
+  // const { mutate } = useCreateTravel();
+
+  // fields: {
+  //   scheduleList: [], >> 팀
+  // },
+
+  const submitAddTravel = () => {
+    const fields = useFieldStore.getState().fields;
+    const thumbnail = useImageStore.getState().images.thumbnail;
+    const meetingLocation = useImageStore.getState().images.meetingSpace;
+    const includedItems = fields.inclusionList;
+    const excludedItems = fields.notInclusionList;
+    const FAQ = fields.faqs;
+    const travelCourse = fields.courseList;
+    const meetingTime = fields.userGuide;
+    const userId = useUserStore.getState().user?.userId;
+    const team = fields.scheduleList;
+    setData({
+      includedItems,
+      excludedItems,
+      FAQ,
+      travelCourse,
+      meetingLocation,
+      thumbnail,
+      meetingTime,
+      userId,
+      team,
+    });
+    uploadImages(); // 이미지 업로드 성공한다음 데이터 수집해야함
+    const data = useAddTravelStore.getState().data;
+    console.log(data);
+    // mutate(data);
+  };
 
   return (
     <MenuContainer menuHeight={menuHeight}>
@@ -107,7 +147,7 @@ const FloatingMenu = ({ onClick }: FloatingMenuProps) => {
 
       <BottomButtons>
         <TempSaveButton>임시저장</TempSaveButton>
-        <CompleteButton onClick={onClick}>작성완료</CompleteButton>
+        <CompleteButton onClick={submitAddTravel}>작성완료</CompleteButton>
       </BottomButtons>
     </MenuContainer>
   );

@@ -1,30 +1,27 @@
 import FiledBtn from '@/components/FiledBtn';
 import GrayBack from '@/components/GrayBack';
-import { TagsType } from '@/types/tagType';
+import { tagDatas } from '@/data/tagDatas';
+import useAddTravelStore from '@/stores/useAddTravelStore';
+import { TagType } from '@/types/tagType';
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ChoiceTags = () => {
-  const [choicedTag, setChoicedTag] = useState<TagsType[]>([]);
-  const tags: TagsType[] = [
-    'FOOD',
-    'CULTURE',
-    'HEALING',
-    'NATURE',
-    'SPORTS',
-    'FESTIVAL',
-    'K-POP',
-    'K-DRAMA',
-    'JEJU',
-    'ETC',
-  ];
-  const handleTag = (tag: TagsType) => {
+  const [choicedTag, setChoicedTag] = useState<TagType[]>([]);
+  const setData = useAddTravelStore((state) => state.setData);
+  const tags = tagDatas.map((tag) => tag.name);
+  const handleTag = (tag: TagType) => {
     if (choicedTag.includes(tag)) {
       setChoicedTag(choicedTag.filter((t) => t !== tag));
     } else {
       setChoicedTag([...choicedTag, tag]);
     }
   };
+
+  useEffect(() => {
+    setData({ tag: choicedTag });
+  }, [choicedTag, setData]);
+
   return (
     <GrayBack title={'태그'} padding={true}>
       <div css={tagsWrapper}>
