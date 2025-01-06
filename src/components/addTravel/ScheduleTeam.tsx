@@ -1,22 +1,23 @@
 import { css } from '@emotion/react';
 import useFieldStore, { Schedule } from '@/stores/useFieldStore';
 import { CirclePlus, X } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import Team from '@/components/Team';
 import { useLocation } from 'react-router-dom';
+import { formatDate } from '@/utils/format';
+import useComposing from '@/hooks/custom/useComposing';
 
 const ScheduleTeam = () => {
-  const [isComposing, setIsComposing] = useState(false);
-  const fields = useFieldStore((state) => state.fields);
-  const addField = useFieldStore((state) => state.addField);
-  const removeField = useFieldStore((state) => state.removeField);
+  const { setIsComposing, handleKeyDown } = useComposing();
+  const scheduleList = useFieldStore((state) => state.fields.scheduleList);
+  const { addField, removeField } = useFieldStore((state) => state.actions);
   const startDateRef = useRef<HTMLInputElement>(null);
   const endDateRef = useRef<HTMLInputElement>(null);
   const membersRef = useRef<HTMLSelectElement>(null);
   const location = useLocation();
 
   const handleAddSchedule = () => {
-    if (fields.scheduleList.length >= 4) {
+    if (scheduleList && scheduleList.length >= 4) {
       alert('일정은 최대 4개까지 추가할 수 있습니다.');
       return;
     }
@@ -27,8 +28,9 @@ const ScheduleTeam = () => {
         membersRef.current.value.trim() !== ''
       ) {
         const newSchedule: Schedule = {
-          date: `${startDateRef.current.value} ~ ${endDateRef.current.value}`,
-          members: membersRef.current.value,
+          personLimit: Number(membersRef.current.value.slice(0, 1)),
+          travelStartDate: startDateRef.current.value,
+          travelEndDate: endDateRef.current.value,
         };
         addField('scheduleList', newSchedule);
         startDateRef.current.value = '';
@@ -38,31 +40,32 @@ const ScheduleTeam = () => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !isComposing) {
-      handleAddSchedule();
-    }
-  };
+  const isAddFindGuidePage =
+    location.pathname === '/add-for-find-guide' && scheduleList && scheduleList.length < 1;
+
+  const isAddTravelPage = location.pathname === '/add-travel';
 
   return (
     <div css={scheduleWrapper}>
       <p>일정 및 팀 추가</p>
       <ul>
-        {fields.scheduleList.map((schedule, index) => (
+        {scheduleList?.map((schedule, index) => (
           <li key={index}>
-            <div css={scheduleList}>
+            <div css={scheduleItem}>
               <div>
-                <span>{`${schedule.date} / ${schedule.members}인`}</span>
+                <span>
+                  {`${formatDate(schedule.travelStartDate)} ~ ${formatDate(schedule.travelEndDate)} / ${schedule.personLimit}인`}
+                </span>
                 <button onClick={() => removeField('scheduleList', index)}>
                   <X size={20} />
                 </button>
               </div>
-              <Team max={Number(schedule.members)} />
+              <Team max={Number(schedule.personLimit)} />
             </div>
           </li>
         ))}
       </ul>
-      {location.pathname === '/add-for-find-guide' && fields.scheduleList.length < 1 && (
+      {(isAddFindGuidePage || isAddTravelPage) && (
         <div css={scheduleAddWrapper}>
           <div css={inputRowWrapper}>
             <label css={labelStyle}>일정</label>
@@ -71,7 +74,7 @@ const ScheduleTeam = () => {
               ref={startDateRef}
               type="date"
               placeholder="시작 날짜"
-              onKeyDown={(e) => handleKeyDown(e)}
+              onKeyDown={(e) => handleKeyDown(e, handleAddSchedule)}
               onCompositionStart={() => setIsComposing(true)}
               onCompositionEnd={() => setIsComposing(false)}
             />
@@ -81,7 +84,7 @@ const ScheduleTeam = () => {
               ref={endDateRef}
               type="date"
               placeholder="종료 날짜"
-              onKeyDown={(e) => handleKeyDown(e)}
+              onKeyDown={(e) => handleKeyDown(e, handleAddSchedule)}
               onCompositionStart={() => setIsComposing(true)}
               onCompositionEnd={() => setIsComposing(false)}
             />
@@ -99,11 +102,15 @@ const ScheduleTeam = () => {
                 <option value="" disabled>
                   본인제외
                 </option>
-                {[1, 2, 3, 4, 5, 6, 7].map((num) => (
-                  <option key={num} value={num}>
-                    {num}명
-                  </option>
-                ))}
+                {Array.from(
+                  { length: 8 },
+                  (_, idx) =>
+                    idx !== 0 && (
+                      <option key={idx} value={idx}>
+                        {idx}명
+                      </option>
+                    ),
+                )}
               </select>
             </div>
             <button css={plusBtn} onClick={handleAddSchedule}>
@@ -126,7 +133,7 @@ const scheduleWrapper = css`
   }
 `;
 
-const scheduleList = css`
+const scheduleItem = css`
   display: flex;
   gap: 16px;
   flex-direction: column;

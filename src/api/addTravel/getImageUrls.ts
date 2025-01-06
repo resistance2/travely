@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const S3_URL = import.meta.env.VITE_S3_URL;
+const S3_URL = import.meta.env.VITE_SERVER_URL;
 
 const getImageUrls = async (preparedImageData: FormData | null) => {
   if (preparedImageData) {

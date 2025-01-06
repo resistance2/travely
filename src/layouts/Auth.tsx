@@ -13,11 +13,12 @@ import kakaoLogo from '@/assets/kakao-icon.svg';
 import basicProfile from '@/assets/basicProfile.png';
 import axios from 'axios';
 import useUserStore from '@/stores/useUserStore';
+import { modalId } from '@/constants/modalId';
 
 const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
   const { user, setUser } = useUserStore((state) => state);
   const { modalName, setModalName } = useModalStore((state) => state);
-  const isOpen = 'modal-login' === modalName;
+  const isOpen = modalId.main.login === modalName;
 
   const postLogin = async (userInfo: FirebaseUser) => {
     const user = {
@@ -93,7 +94,7 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
           }}
         >
           <Dialog.Trigger asChild>
-            <FiledBtn color="#4a95f2" onClick={() => setModalName('modal-login')}>
+            <FiledBtn color="#4a95f2" onClick={() => setModalName(modalId.main.login)}>
               로그인
             </FiledBtn>
           </Dialog.Trigger>

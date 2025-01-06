@@ -1,33 +1,46 @@
 import FiledBtn from '@/components/FiledBtn';
 import GrayBack from '@/components/GrayBack';
-import { tagDatas } from '@/data/tagDatas';
 import useAddTravelStore from '@/stores/useAddTravelStore';
+import { theme } from '@/styles/theme';
 import { TagType } from '@/types/tagType';
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 
+const TAGS: TagType[] = [
+  'Food',
+  'Culture',
+  'Healing',
+  'Nature',
+  'Sports',
+  'Festival',
+  'K-POP',
+  'K-DRAMA',
+  'JEJU',
+  'etc.',
+] as const;
+
 const ChoiceTags = () => {
-  const [choicedTag, setChoicedTag] = useState<TagType[]>([]);
   const setData = useAddTravelStore((state) => state.setData);
-  const tags = tagDatas.map((tag) => tag.name);
+  const [choseTag, setChoseTag] = useState<TagType[]>([]);
+
   const handleTag = (tag: TagType) => {
-    if (choicedTag.includes(tag)) {
-      setChoicedTag(choicedTag.filter((t) => t !== tag));
+    if (choseTag.includes(tag)) {
+      setChoseTag(choseTag.filter((t) => t !== tag));
     } else {
-      setChoicedTag([...choicedTag, tag]);
+      setChoseTag([...choseTag, tag]);
     }
   };
 
   useEffect(() => {
-    setData({ tag: choicedTag });
-  }, [choicedTag, setData]);
+    setData({ tag: choseTag });
+  }, [choseTag, setData]);
 
   return (
     <GrayBack title={'태그'} padding={true}>
       <div css={tagsWrapper}>
-        {tags.map((tag) => (
+        {TAGS.map((tag) => (
           <FiledBtn
-            color={choicedTag.includes(tag) ? '#4A95F2' : '#d6d6d6'}
+            color={choseTag.includes(tag) ? theme.colors.primary : '#d6d6d6'}
             size={'mdHeight'}
             onClick={() => handleTag(tag)}
             key={tag}
