@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import App from '@/App.tsx';
 import GlobalStyles from '@/styles/GlobalStyles';
 import { theme, muiTheme } from '@/styles/theme';
+import Toast from './components/Toast';
 
 const queryClient = new QueryClient();
 
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
           <GlobalStyles />
           <App />
+          <Toast />
         </QueryClientProvider>
       </EmotionThemeProvider>
     </MUIThemeProvider>
