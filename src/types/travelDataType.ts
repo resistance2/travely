@@ -76,10 +76,10 @@ export interface AddTravelData {
   travelCourse: string[] | null;
   tag: TagType[] | null;
   team: Pick<TravelTeamData, 'personLimit' | 'travelStartDate' | 'travelEndDate'>[] | null;
-  price: number | null;
+  travelPrice: number;
   includedItems: string[] | null;
   excludedItems: string[] | null;
   meetingTime: string[] | null;
   FAQ: { question: string; answer: string }[] | null;
-  meetingLocation: string | null;
+  meetingPlace: string | null;
 }

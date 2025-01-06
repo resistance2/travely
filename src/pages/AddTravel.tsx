@@ -19,8 +19,8 @@ const AddTravel = () => {
       setData({ travelTitle });
     },
 
-    changePrice: (price: number) => {
-      setData({ price });
+    changePrice: (travelPrice: number) => {
+      setData({ travelPrice });
     },
   };
 
