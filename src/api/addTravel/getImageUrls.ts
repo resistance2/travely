@@ -10,7 +10,7 @@ const getImageUrls = async (preparedImageData: FormData | null) => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      const imageUrls = response.data.imageUrls;
+      const imageUrls = response.data;
       if (!imageUrls) {
         throw new Error('이미지 URL을 받아오는데 실패했습니다.');
       }

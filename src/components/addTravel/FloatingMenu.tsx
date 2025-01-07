@@ -2,17 +2,115 @@ import useSectionsStore from '@/stores/useSectionsStore';
 import styled from '@emotion/styled';
 import { CircleMinus, CirclePlus } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import useImageStore from '@/stores/useImageStore';
+import useHandleImageUpload from '@/hooks/custom/useHandleImageUpload';
+import useCreateTravel from '@/hooks/query/useCreateTravel';
+import useAddTravelStore from '@/stores/useAddTravelStore';
+import useFieldStore from '@/stores/useFieldStore';
+import useUserStore from '@/stores/useUserStore';
+import { AddTravelData } from '@/types/travelDataType';
 
-interface FloatingMenuProps {
-  onClick: () => void;
-}
-
-const FloatingMenu = ({ onClick }: FloatingMenuProps) => {
+const FloatingMenu = () => {
   const sections = useSectionsStore((state) => state.sections);
   const setOpenSection = useSectionsStore((state) => state.setOpenSection);
   const location = useLocation();
+  const setData = useAddTravelStore((state) => state.setData);
 
   const menuHeight = location.pathname === '/add-for-find-guide' ? '260px' : '520px';
+
+  const images = useImageStore((state) => state.images);
+  const { uploadImages } = useHandleImageUpload(images);
+  const { mutate } = useCreateTravel();
+
+  const validateAddTravel = (data: AddTravelData): boolean => {
+    const { userId, travelTitle, travelContent, travelCourse, tag, team, travelPrice } = data;
+
+    if (!userId || userId.trim().length === 0) {
+      alert('유저 ID는 필수입니다.');
+      return false;
+    }
+
+    if (!travelTitle || travelTitle.trim().length === 0 || travelTitle.length > 30) {
+      alert('여행 제목은 필수이며 30자 이내여야 합니다.');
+      return false;
+    }
+
+    if (!travelContent || travelContent.trim().length === 0) {
+      alert('상품 소개는 필수입니다.');
+      return false;
+    }
+
+    if (!Array.isArray(travelCourse) || travelCourse.length === 0) {
+      alert('여행 코스는 필수입니다.');
+      return false;
+    }
+
+    if (!Array.isArray(tag) || tag.length === 0) {
+      alert('태그는 최소 1개 이상 선택해주세요.');
+      return false;
+    }
+
+    if (!Array.isArray(team) || team.length === 0) {
+      alert('팀 정보는 필수입니다.');
+      return false;
+    }
+
+    if (travelPrice === 0) {
+      const userConfirmed = window.confirm('여행 가격이 0원입니다. 계속 하시겠습니까?');
+      if (!userConfirmed) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async () => {
+    const data = useAddTravelStore.getState().data;
+
+    if (validateAddTravel(data)) {
+      try {
+        const { thumbnail, meetingSpace } = await uploadImages();
+        setData({ thumbnail: thumbnail[0], meetingPlace: meetingSpace[0] });
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
+
+      if (!data.thumbnail || data.thumbnail.trim().length === 0) {
+        console.log(data);
+        console.error('썸네일 등록에 오류가 있습니다.');
+        return false;
+      }
+      console.log(data);
+      mutate(data);
+    } else {
+      return false;
+    }
+  };
+
+  const submitAddTravel = () => {
+    const fields = useFieldStore.getState().fields;
+    const includedItems = fields.includeList;
+    const excludedItems = fields.excludeList;
+    const FAQ = fields.faqs;
+    const travelCourse = fields.courseList;
+    const meetingTime = fields.meetingTime;
+    const userId = useUserStore.getState().user?.userId;
+    const team = fields.scheduleList;
+
+    setData({
+      includedItems,
+      excludedItems,
+      FAQ,
+      travelCourse,
+      meetingTime,
+      userId,
+      team,
+    });
+
+    handleSubmit();
+  };
 
   return (
     <MenuContainer menuHeight={menuHeight}>
@@ -107,7 +205,7 @@ const FloatingMenu = ({ onClick }: FloatingMenuProps) => {
 
       <BottomButtons>
         <TempSaveButton>임시저장</TempSaveButton>
-        <CompleteButton onClick={onClick}>작성완료</CompleteButton>
+        <CompleteButton onClick={submitAddTravel}>작성완료</CompleteButton>
       </BottomButtons>
     </MenuContainer>
   );

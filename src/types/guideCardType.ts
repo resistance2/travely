@@ -1,8 +1,7 @@
 export interface IGuideCard {
-  readonly thumbnail: string; // 이미지 경로
-  readonly travelTitle: string; // 카드의 제목
+  readonly thumbnail: string;
+  readonly travelTitle: string;
   readonly createdBy: {
-    // 작성자
     readonly userId: string;
     readonly userName: string;
   };
@@ -10,5 +9,5 @@ export interface IGuideCard {
     readonly personLimit: number;
     readonly mbti: string[];
   };
-  readonly reviewCnt: number;
+  readonly commentCnt: number;
 }

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import GrayBack from '@/components/GrayBack';
+import useAddTravelStore from '@/stores/useAddTravelStore';
 import useImageStore from '@/stores/useImageStore';
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
@@ -10,6 +11,7 @@ const Introduction = () => {
   const [imgLimit, setImgLimit] = useState(false);
   const [value, setValue] = useState('');
   const setIntroSrcs = useImageStore((state) => state.setIntroSrcs);
+  const setData = useAddTravelStore((state) => state.setData);
 
   useEffect(() => {
     const regex = /<img\s+[^>]*src="([^"]+)"[^>]*>/g;
@@ -29,6 +31,7 @@ const Introduction = () => {
       }, 3000);
     }
     setIntroSrcs(newSrcs);
+    setData({ travelContent: value });
   }, [value]);
 
   const modules = {

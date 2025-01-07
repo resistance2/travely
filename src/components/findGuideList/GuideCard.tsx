@@ -10,7 +10,7 @@ interface IGuideCardDataProps {
 }
 
 const GuideCard: React.FC<IGuideCardDataProps> = ({ cardData }) => {
-  const { thumbnail = defaultThumb, travelTitle, createdBy, team, reviewCnt } = cardData;
+  const { thumbnail = defaultThumb, travelTitle, createdBy, team, commentCnt } = cardData;
 
   return (
     <Link to="/travel-detail">
@@ -31,7 +31,7 @@ const GuideCard: React.FC<IGuideCardDataProps> = ({ cardData }) => {
             <p className="user-name">{createdBy.userName}</p>
             <div className="comment">
               <MessageCircleMore size={19} />
-              <span>{reviewCnt}</span>
+              <span>{commentCnt}</span>
             </div>
           </div>
         </div>

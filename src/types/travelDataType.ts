@@ -1,3 +1,4 @@
+import { TagType } from '@/types/tagType';
 import { Review } from './reviewType';
 
 type Status = 'waiting' | 'approved' | 'rejected';
@@ -66,4 +67,20 @@ export interface TravelDetailData {
   totalRating: number;
   bookmark: number;
   isBookmark: boolean;
+}
+
+export interface AddTravelData {
+  userId: string | null;
+  thumbnail: string | null;
+  travelTitle: string | null;
+  travelContent: string | null;
+  travelCourse: string[] | null;
+  tag: TagType[] | null;
+  team: Pick<TravelTeamData, 'personLimit' | 'travelStartDate' | 'travelEndDate'>[] | null;
+  travelPrice: number;
+  includedItems: string[] | null;
+  excludedItems: string[] | null;
+  meetingTime: string[] | null;
+  FAQ: { question: string; answer: string }[] | null;
+  meetingPlace: string | null;
 }

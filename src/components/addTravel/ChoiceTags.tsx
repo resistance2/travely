@@ -1,9 +1,10 @@
 import FiledBtn from '@/components/FiledBtn';
 import GrayBack from '@/components/GrayBack';
+import useAddTravelStore from '@/stores/useAddTravelStore';
 import { theme } from '@/styles/theme';
 import { TagType } from '@/types/tagType';
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const TAGS: TagType[] = [
   'Food',
@@ -19,6 +20,7 @@ const TAGS: TagType[] = [
 ] as const;
 
 const ChoiceTags = () => {
+  const setData = useAddTravelStore((state) => state.setData);
   const [choseTag, setChoseTag] = useState<TagType[]>([]);
 
   const handleTag = (tag: TagType) => {
@@ -28,6 +30,11 @@ const ChoiceTags = () => {
       setChoseTag([...choseTag, tag]);
     }
   };
+
+  useEffect(() => {
+    setData({ tag: choseTag });
+  }, [choseTag, setData]);
+
   return (
     <GrayBack title={'태그'} padding={true}>
       <div css={tagsWrapper}>
