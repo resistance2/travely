@@ -14,15 +14,22 @@ interface TravelTeamProps {
   travelId: string;
   teamId: string;
   isOngoing: boolean;
+  hasAccount: boolean;
   handleHasData: (hasData: boolean) => void;
 }
 
-const TravelTeam = ({ travelId, teamId, isOngoing, handleHasData }: TravelTeamProps) => {
+const TravelTeam = ({
+  travelId,
+  teamId,
+  isOngoing,
+  hasAccount,
+  handleHasData,
+}: TravelTeamProps) => {
   const pageContainer = usePageStore((state) => state.pageContainer);
-  const currentTeam = pageContainer.find((page) => page.paginationId === teamId);
+  const currentPage = pageContainer.find((page) => page.paginationId === teamId)?.currentPage || 1;
   const { data: teamData } = useGetManageTravelTeams(
     travelId,
-    currentTeam?.currentPage || 1,
+    currentPage,
     MANAGE_COUNT_PER_PAGE,
     teamId,
   );
@@ -44,7 +51,7 @@ const TravelTeam = ({ travelId, teamId, isOngoing, handleHasData }: TravelTeamPr
           <Team max={teamData.personLimit} mbtiList={userMBTIList} />
           {teamData.appliedUsers ? (
             <div>
-              <UserTable data={teamData.appliedUsers} />
+              <UserTable data={teamData.appliedUsers} teamId={teamId} hasAccount={hasAccount} />
               <MultiPagination pageData={teamData.pagination} teamId={teamData.teamId} />
             </div>
           ) : (

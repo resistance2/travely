@@ -1,14 +1,16 @@
 import { css } from '@emotion/react';
 import { ApplicationUserData } from '@/types/travelDataType';
 import Profile from '@/components/Profile';
-import FiledBtn from '@/components/FiledBtn';
 import { formatDate } from '@/utils/format';
+import UserStatusWaiting from './UserStatusWaiting';
 
 interface UserTableProps {
   data: ApplicationUserData[];
+  teamId: string;
+  hasAccount: boolean;
 }
 
-const UserTable = ({ data }: UserTableProps) => {
+const UserTable = ({ data, teamId, hasAccount }: UserTableProps) => {
   return (
     <table css={tableWrapper}>
       <thead>
@@ -35,14 +37,12 @@ const UserTable = ({ data }: UserTableProps) => {
             <td>{formatDate(user.appliedAt)}</td>
             <td css={{ minWidth: '145px' }}>
               {user.status === 'waiting' ? (
-                <div css={{ display: 'flex', gap: '5px' }}>
-                  <FiledBtn color={'#4A95F2'} size={'sm'}>
-                    승인
-                  </FiledBtn>
-                  <FiledBtn color={'#d7d7d7'} size={'sm'}>
-                    거절
-                  </FiledBtn>
-                </div>
+                <UserStatusWaiting
+                  teamId={teamId}
+                  userId={user.userId}
+                  userName={user.userName}
+                  hasAccount={hasAccount}
+                />
               ) : user.status === 'approved' ? (
                 '승인'
               ) : (

@@ -15,6 +15,7 @@ export interface TravelData {
   updateAt: string;
   teamTeams: string[];
   travelActive: boolean;
+  accountNumber: string | null;
 }
 export interface TravelTeamData {
   teamId: string;

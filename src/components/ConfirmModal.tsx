@@ -7,7 +7,7 @@ import { theme } from '@/styles/theme';
 interface ConfirmModalProps {
   modalId: string;
   trigger: React.ReactNode;
-  message: string;
+  message: string | React.ReactNode;
   onConfirm?: () => void;
 }
 
@@ -19,7 +19,7 @@ const ConfirmModal = ({ modalId, trigger, message, onConfirm }: ConfirmModalProp
   return (
     <Modal open={isModalOpen} trigger={trigger}>
       <div css={wrapper}>
-        <p>{message}</p>
+        {typeof message === 'string' ? <p>{message}</p> : <div css={customMessage}>{message}</div>}
         <div css={{ display: 'flex', gap: '20px' }}>
           <FiledBtn color={theme.colors.primary} size={'mdHeight'} onClick={onConfirm}>
             예
@@ -47,4 +47,10 @@ const wrapper = css`
     font-weight: 500;
     color: #333;
   }
+`;
+
+const customMessage = css`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 `;
