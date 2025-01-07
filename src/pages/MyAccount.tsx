@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Camera } from 'lucide-react';
+import useUpdateProfile from '@/hooks/query/useUpdateProfile';
 
 const MyAccount = () => {
   const navigate = useNavigate();
@@ -17,6 +18,14 @@ const MyAccount = () => {
   const [mbti, setMbti] = useState(user?.MBTI || '');
   const [profileImage, setProfileImage] = useState(user?.userProfileImage || '');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const updateProfile = useUpdateProfile();
+
+  useEffect(() => {
+    console.log('User state updated:', user);
+    console.log(user?.PhoneNumber);
+    console.log(user?.MBTI);
+    console.log(user?.userProfileImage);
+  }, [user]);
 
   const logout = async () => {
     try {
@@ -38,18 +47,31 @@ const MyAccount = () => {
     setIsEditing(true);
   };
 
+  // const handleSaveClick = () => {
+  //   if (user) {
+  //     setUser({
+  //       ...user,
+  //       PhoneNumber: phoneNumber,
+  //       MBTI: mbti,
+  //       userProfileImage: profileImage,
+  //     });
+  //   }
+  //   setIsEditing(false);
+  // };
+
   const handleSaveClick = () => {
     if (user) {
-      setUser({
-        ...user,
-        PhoneNumber: phoneNumber,
-        MBTI: mbti,
-        userProfileImage: profileImage,
+      updateProfile.mutate({
+        profileData: {
+          userId: user.userId,
+          profileImage,
+          mbti,
+          phoneNumber: String(phoneNumber),
+        },
       });
+      setIsEditing(false);
     }
-    setIsEditing(false);
   };
-
   const handleCameraClick = () => {
     fileInputRef.current?.click();
   };
