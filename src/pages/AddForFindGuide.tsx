@@ -3,17 +3,13 @@ import Introduction from '@/components/addTravel/Introduction';
 import ScheduleTeam from '@/components/addTravel/ScheduleTeam';
 import Thumbnail from '@/components/addTravel/Thumbnail';
 import GrayBack from '@/components/GrayBack';
-import useHandleImageUpload from '@/hooks/custom/useHandleImageUpload';
 import { addTravelWrapper, noneStyleInput, pageLayoutWrapper } from '@/pages/AddTravel';
-import useImageStore from '@/stores/useImageStore';
 import useSectionsStore from '@/stores/useSectionsStore';
 import { useRef } from 'react';
 
 const AddForFindGuide = () => {
   const sections = useSectionsStore((state) => state.sections);
-  const images = useImageStore((state) => state.images);
   const titleRef = useRef<HTMLInputElement>(null);
-  const { uploadImages } = useHandleImageUpload(images);
 
   return (
     <div css={pageLayoutWrapper}>
@@ -32,7 +28,7 @@ const AddForFindGuide = () => {
         <ScheduleTeam />
       </div>
 
-      <FloatingMenu onClick={uploadImages} />
+      <FloatingMenu />
     </div>
   );
 };
