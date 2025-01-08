@@ -15,14 +15,12 @@ const useUpdateProfile = () => {
       queryClient.invalidateQueries({ queryKey: ['update-profile', userId] });
 
       setUser((prevUser) => {
-        console.log('Previous user state:', prevUser);
         const updatedUser = {
           ...prevUser,
           PhoneNumber: data.phoneNumber,
           MBTI: data.mbti,
           userProfileImage: data.userProfileImage,
         } as User;
-        console.log('Updated user state:', updatedUser);
         return updatedUser;
       });
     },

@@ -66,11 +66,10 @@ const MyAccount = () => {
       return;
     }
     if (user) {
-      console.log('Saving profile with image file:', profileImageFile); // 디버깅 로그 추가
       updateProfile.mutate({
         profileData: {
           userId: user.userId,
-          profileImage: profileImageFile, // 파일 객체를 전송
+          profileImage: profileImageFile,
           mbti,
           phoneNumber: String(phoneNumber),
         },
@@ -124,11 +123,7 @@ const MyAccount = () => {
         <Details>
           <Title>전화번호</Title>
           {isEditing ? (
-            <Input
-              type="text"
-              value={phoneNumber}
-              onChange={handlePhoneNumberChange} // 수정된 부분
-            />
+            <Input type="text" value={phoneNumber} onChange={handlePhoneNumberChange} />
           ) : (
             <Content>{user?.PhoneNumber || '미정'}</Content>
           )}
