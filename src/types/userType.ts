@@ -16,5 +16,5 @@ export type User = {
 export interface UpdateProfileResponse {
   phoneNumber: string;
   mbti: string;
-  userProfileImage: string;
+  userProfileImage: string | File;
 }

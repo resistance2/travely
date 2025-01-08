@@ -5,14 +5,16 @@ const SERVER = import.meta.env.VITE_SERVER_URL;
 
 const updateProfile = async (profile: {
   userId: string;
-  profileImage: string;
+  profileImage: File | null;
   mbti: string;
   phoneNumber: string;
 }): Promise<UpdateProfileResponse> => {
   try {
     const formData = new FormData();
     formData.append('userId', profile.userId);
-    formData.append('profileImage', profile.profileImage);
+    if (profile.profileImage) {
+      formData.append('profileImage', profile.profileImage); // 파일 객체를 추가
+    }
     formData.append('mbti', profile.mbti);
     formData.append('phoneNumber', profile.phoneNumber);
 

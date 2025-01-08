@@ -16,7 +16,10 @@ const MyAccount = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(user?.PhoneNumber || '');
   const [mbti, setMbti] = useState(user?.MBTI || '');
-  const [profileImage, setProfileImage] = useState(user?.userProfileImage || '');
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(
+    user?.userProfileImage || null,
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateProfile = useUpdateProfile();
 
@@ -47,24 +50,13 @@ const MyAccount = () => {
     setIsEditing(true);
   };
 
-  // const handleSaveClick = () => {
-  //   if (user) {
-  //     setUser({
-  //       ...user,
-  //       PhoneNumber: phoneNumber,
-  //       MBTI: mbti,
-  //       userProfileImage: profileImage,
-  //     });
-  //   }
-  //   setIsEditing(false);
-  // };
-
   const handleSaveClick = () => {
     if (user) {
+      console.log('Saving profile with image file:', profileImageFile); // 디버깅 로그 추가
       updateProfile.mutate({
         profileData: {
           userId: user.userId,
-          profileImage,
+          profileImage: profileImageFile, // 파일 객체를 전송
           mbti,
           phoneNumber: String(phoneNumber),
         },
@@ -72,6 +64,7 @@ const MyAccount = () => {
       setIsEditing(false);
     }
   };
+
   const handleCameraClick = () => {
     fileInputRef.current?.click();
   };
@@ -79,20 +72,17 @@ const MyAccount = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setProfileImageFile(file);
+      setProfileImagePreview(URL.createObjectURL(file) as string);
     }
   };
 
   return (
     <MyAccountWrap>
       <UserSummary>
-        {user && user.userProfileImage ? (
+        {user && profileImagePreview ? (
           <ProfileImageWrapper>
-            <ProfileImage src={user.userProfileImage} alt="프로필 이미지" />
+            <ProfileImage src={profileImagePreview} alt="프로필 이미지" />
             {isEditing && (
               <>
                 <CameraIcon onClick={handleCameraClick}>
