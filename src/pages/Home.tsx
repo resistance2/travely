@@ -77,7 +77,6 @@ const Home = () => {
           <Link to="/travel-list">🔥 함께 떠나요 NEW</Link>
         </h3>
         <div className="grid">
-          {/* 데이터 length 0 일때 처리  */}
           {travelData?.length === 0 ? (
             <p>데이터가 없습니다.</p>
           ) : (

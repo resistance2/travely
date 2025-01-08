@@ -10,10 +10,10 @@ interface IGuideCardDataProps {
 }
 
 const GuideCard: React.FC<IGuideCardDataProps> = ({ cardData }) => {
-  const { thumbnail = defaultThumb, travelTitle, createdBy, team, commentCnt } = cardData;
+  const { id, thumbnail = defaultThumb, travelTitle, createdBy, team, commentCnt } = cardData;
 
   return (
-    <Link to="/travel-detail">
+    <Link to={`/${id}`}>
       <div css={card}>
         <div className="card-img">
           <img src={thumbnail} alt="" />

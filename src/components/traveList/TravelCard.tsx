@@ -11,12 +11,13 @@ interface ITravelCardDataProps {
 }
 
 const TravelCard: React.FC<ITravelCardDataProps> = ({ cardData }) => {
-  const { thumbnail, travelTitle, createdBy, price, review, tag, bookmark } = cardData;
+  const { id, thumbnail, travelTitle, createdBy, price, review, tag, bookmark } = cardData;
   return (
-    <Link to="/travel-detail">
+    <Link to={`/travel-detail/${id}`}>
       <div css={card}>
         <div className="card-img">
           <img src={thumbnail} alt="" />
+          <div className="img-cover"></div>
         </div>
         <div className="card-content">
           <p className="title">{travelTitle}</p>
@@ -67,6 +68,19 @@ const card = () => css`
     height: 180px;
     overflow: hidden;
     border-radius: 4px 4px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    .img-cover {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.02);
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
   }
 
   .card-content {

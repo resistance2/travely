@@ -13,6 +13,7 @@ import useAddTravelStore from '@/stores/useAddTravelStore';
 const AddTravel = () => {
   const sections = useSectionsStore((state) => state.sections);
   const setData = useAddTravelStore((state) => state.setData);
+  const data = useAddTravelStore((state) => state.data);
 
   const changeHandlers = {
     changeTitle: (travelTitle: string) => {
@@ -34,6 +35,7 @@ const AddTravel = () => {
             type="text"
             placeholder="30자 내외로 작성해주세요."
             onChange={(e) => changeHandlers.changeTitle(e.target.value)}
+            value={data.travelTitle || ''}
           />
         </GrayBack>
         <Thumbnail type="thumbnail" />
@@ -47,6 +49,7 @@ const AddTravel = () => {
             type="number"
             placeholder="0"
             onChange={(e) => changeHandlers.changePrice(Number(e.target.value))}
+            value={data.travelPrice}
           />
           <span css={{ marginRight: '5px' }}>원</span>
           <span css={{ fontSize: '14px' }}>/ 1인</span>

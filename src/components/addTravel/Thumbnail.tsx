@@ -107,7 +107,7 @@ export default Thumbnail;
 const thumbnailSize = (thumbnail: string) => css`
   width: 100%;
   height: 400px;
-  background-image: url(${thumbnail});
+  background-image: ${thumbnail === '' ? 'none' : `url(${thumbnail})`};
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;

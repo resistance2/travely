@@ -6,6 +6,7 @@ interface State {
 
 interface Action {
   setOpenSection: (section: string) => void;
+  resetSections: () => void;
 }
 
 const useSectionsStore = create<State & Action>((set) => ({
@@ -19,6 +20,7 @@ const useSectionsStore = create<State & Action>((set) => ({
         return { sections: [...state.sections, section] };
       }
     }),
+  resetSections: () => set({ sections: [] }),
 }));
 
 export default useSectionsStore;

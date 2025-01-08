@@ -24,6 +24,10 @@ const ChoiceTags = () => {
   const [choseTag, setChoseTag] = useState<TagType[]>([]);
 
   const handleTag = (tag: TagType) => {
+    if (choseTag.length === 3 && !choseTag.includes(tag)) {
+      alert('태그는 최대 3개까지 선택 가능합니다.');
+      return;
+    }
     if (choseTag.includes(tag)) {
       setChoseTag(choseTag.filter((t) => t !== tag));
     } else {

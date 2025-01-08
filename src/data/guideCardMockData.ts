@@ -2,6 +2,7 @@ import { IGuideCard } from '@/types/guideCardType';
 
 const guideCardMockData: IGuideCard[] = [
   {
+    id: '0',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '국밥투어 해주실분 구합니다',
     createdBy: {
@@ -15,6 +16,7 @@ const guideCardMockData: IGuideCard[] = [
     commentCnt: 26,
   },
   {
+    id: '1',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '서울 맛집 잘 아시는분 구합니다',
     createdBy: {
@@ -28,6 +30,7 @@ const guideCardMockData: IGuideCard[] = [
     commentCnt: 49,
   },
   {
+    id: '2',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '반려동물 제주도 여행 계획 해주실분?',
     createdBy: {
@@ -41,6 +44,7 @@ const guideCardMockData: IGuideCard[] = [
     commentCnt: 11,
   },
   {
+    id: '3',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '등산 동호회 가이드 해주실 분',
     createdBy: {
@@ -54,6 +58,7 @@ const guideCardMockData: IGuideCard[] = [
     commentCnt: 40,
   },
   {
+    id: '4',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '서울 야경 투어 계획 해주실 분',
     createdBy: {
@@ -67,6 +72,7 @@ const guideCardMockData: IGuideCard[] = [
     commentCnt: 1,
   },
   {
+    id: '5',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '국밥투어 해주실분 구합니다',
     createdBy: {
@@ -80,6 +86,7 @@ const guideCardMockData: IGuideCard[] = [
     commentCnt: 27,
   },
   {
+    id: '6',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '서울 맛집 잘 아시는분 구합니다',
     createdBy: {
@@ -93,6 +100,7 @@ const guideCardMockData: IGuideCard[] = [
     commentCnt: 36,
   },
   {
+    id: '7',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '반려동물 제주도 여행 계획 해주실분?',
     createdBy: {
@@ -106,6 +114,7 @@ const guideCardMockData: IGuideCard[] = [
     commentCnt: 43,
   },
   {
+    id: '8',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '등산 동호회 가이드 해주실 분',
     createdBy: {
@@ -119,6 +128,7 @@ const guideCardMockData: IGuideCard[] = [
     commentCnt: 3,
   },
   {
+    id: '9',
     thumbnail: '/src/assets/guide-card-thumb.png',
     travelTitle: '서울 야경 투어 계획 해주실 분',
     createdBy: {

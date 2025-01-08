@@ -1,4 +1,5 @@
 export interface IGuideCard {
+  readonly id: string;
   readonly thumbnail: string;
   readonly travelTitle: string;
   readonly createdBy: {

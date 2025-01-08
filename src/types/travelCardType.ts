@@ -1,6 +1,7 @@
 import { TagType } from '@/types/tagType';
 
 export interface ITravelCard {
+  readonly id: string; //여행고유 아이디
   readonly thumbnail: string; // 이미지 경로
   readonly travelTitle: string; // 카드의 제목
   readonly createdBy: {

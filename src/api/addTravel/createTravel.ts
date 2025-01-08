@@ -1,12 +1,12 @@
 import { AddTravelData } from '@/types/travelDataType';
 import axios from 'axios';
-interface IRes {
+interface ICreateTravelRes {
   success: boolean;
   data: AddTravelData;
 }
 const createTravel = async (data: AddTravelData): Promise<boolean> => {
   try {
-    const res = await axios.post<IRes>(
+    const res = await axios.post<ICreateTravelRes>(
       `${import.meta.env.VITE_SERVER_URL}/api/v1/travels/add-travel`,
       {
         ...data,
