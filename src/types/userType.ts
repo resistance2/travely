@@ -4,8 +4,17 @@ export type User = {
   userEmail: string;
   isVerifiedUser: boolean;
   userId: string;
+  MBTI?: string;
+  PhoneNumber?: string;
+
   // myCreatedTravel: string[];
   // myPassedTravel: string[];
   // myReviews: string[];
   // myBookmark: string[];
 };
+
+export interface UpdateProfileResponse {
+  phoneNumber: string;
+  mbti: string;
+  userProfileImage: string | File;
+}

@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 
 interface IUseUserStore {
   user: User | null;
-  setUser: (newState: User | null) => void;
+  setUser: (newState: User | null | ((prevState: User | null) => User | null)) => void;
 }
 
 const useUserStore = create<IUseUserStore>()(
@@ -12,12 +12,10 @@ const useUserStore = create<IUseUserStore>()(
     (set) => ({
       user: null,
       setUser: (newState) => {
-        if (newState === null) {
-          set({ user: null });
+        if (typeof newState === 'function') {
+          set((state) => ({ user: newState(state.user) }));
         } else {
-          set((state) => ({
-            user: state.user ? { ...state.user, ...newState } : newState,
-          }));
+          set({ user: newState });
         }
       },
     }),
