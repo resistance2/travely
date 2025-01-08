@@ -7,7 +7,14 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { Camera } from 'lucide-react';
+import {
+  normalizePhoneNumber,
+  formatPhoneNumber,
+  isValidPhoneNumber,
+} from '@/utils/phoneValidation';
+
 import useUpdateProfile from '@/hooks/query/useUpdateProfile';
+import Toast, { ShowToast } from '@/components/Toast';
 
 const MyAccount = () => {
   const navigate = useNavigate();
@@ -23,13 +30,6 @@ const MyAccount = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateProfile = useUpdateProfile();
 
-  useEffect(() => {
-    console.log('User state updated:', user);
-    console.log(user?.PhoneNumber);
-    console.log(user?.MBTI);
-    console.log(user?.userProfileImage);
-  }, [user]);
-
   const logout = async () => {
     try {
       await signOut(auth);
@@ -41,6 +41,11 @@ const MyAccount = () => {
 
   const handleMbtiChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setMbti(e.target.value);
+  };
+
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedPhone = formatPhoneNumber(e.target.value);
+    setPhoneNumber(formattedPhone);
   };
 
   useEffect(() => {
@@ -55,6 +60,11 @@ const MyAccount = () => {
   };
 
   const handleSaveClick = () => {
+    const normalizedPhone = normalizePhoneNumber(phoneNumber);
+    if (!isValidPhoneNumber(normalizedPhone)) {
+      ShowToast('유효한 전화번호 형식이 아닙니다.', 'failed');
+      return;
+    }
     if (user) {
       console.log('Saving profile with image file:', profileImageFile); // 디버깅 로그 추가
       updateProfile.mutate({
@@ -117,7 +127,7 @@ const MyAccount = () => {
             <Input
               type="text"
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={handlePhoneNumberChange} // 수정된 부분
             />
           ) : (
             <Content>{user?.PhoneNumber || '미정'}</Content>
@@ -170,6 +180,7 @@ const MyAccount = () => {
         )}
       </EditProfile>
       <Logout>{user && <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>}</Logout>
+      <Toast />
     </MyAccountWrap>
   );
 };
