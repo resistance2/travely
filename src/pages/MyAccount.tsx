@@ -131,8 +131,12 @@ const MyAccount = () => {
             <Content>{user?.MBTI || '미정'}</Content>
           )}
         </Details>
+        <Details>
+          <Title>계좌 번호</Title>
+          <Content>{user?.PhoneNumber || '미등록'}</Content> {/* 수정 필요 */}
+        </Details>
       </UserDetails>
-      <Footer>
+      <EditProfile>
         {isEditing ? (
           <BorderBtn color="#4a95f2" size="sm" onClick={handleSaveClick}>
             저장
@@ -142,12 +146,8 @@ const MyAccount = () => {
             프로필 수정
           </BorderBtn>
         )}
-        {user && (
-          <BorderBtn color="#888" size="sm" onClick={logout}>
-            로그아웃
-          </BorderBtn>
-        )}
-      </Footer>
+      </EditProfile>
+      <Logout>{user && <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>}</Logout>
     </MyAccountWrap>
   );
 };
@@ -239,10 +239,23 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
-const Footer = styled.div`
+const EditProfile = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 40px;
   margin-top: 40px;
+`;
+
+const Logout = styled.div`
+  margin-top: 100px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+`;
+
+const LogoutBtn = styled.button`
+  text-decoration: underline;
+  color: #999999;
 `;
