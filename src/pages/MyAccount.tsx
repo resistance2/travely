@@ -39,6 +39,10 @@ const MyAccount = () => {
     }
   };
 
+  const handleMbtiChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setMbti(e.target.value);
+  };
+
   useEffect(() => {
     if (!user) {
       setModalName(null);
@@ -126,7 +130,25 @@ const MyAccount = () => {
         <Details>
           <Title>MBTI</Title>
           {isEditing ? (
-            <Input type="text" value={mbti} onChange={(e) => setMbti(e.target.value)} />
+            <Select value={mbti} onChange={handleMbtiChange}>
+              <option value="">선택</option>
+              <option value="ISTJ">ISTJ</option>
+              <option value="ISFJ">ISFJ</option>
+              <option value="INFJ">INFJ</option>
+              <option value="INTJ">INTJ</option>
+              <option value="ISTP">ISTP</option>
+              <option value="ISFP">ISFP</option>
+              <option value="INFP">INFP</option>
+              <option value="INTP">INTP</option>
+              <option value="ESTP">ESTP</option>
+              <option value="ESFP">ESFP</option>
+              <option value="ENFP">ENFP</option>
+              <option value="ENTP">ENTP</option>
+              <option value="ESTJ">ESTJ</option>
+              <option value="ESFJ">ESFJ</option>
+              <option value="ENFJ">ENFJ</option>
+              <option value="ENTJ">ENTJ</option>
+            </Select>
           ) : (
             <Content>{user?.MBTI || '미정'}</Content>
           )}
@@ -223,6 +245,27 @@ const Title = styled.p`
   font-size: 18px;
   font-weight: bold;
   width: 20%;
+`;
+
+const Select = styled.select`
+  width: 40%;
+  padding: 8px 30px 8px 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #fff;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><path fill="gray" d="M0 3l5 5 5-5H0z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center; /* 화살표 위치 조정 */
+  background-size: 14px; /* 화살표 크기 조정 */
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #4a95f2;
+  }
 `;
 
 const Content = styled.p`
