@@ -2,6 +2,7 @@ import { ITravelCard } from '@/types/travelCardType';
 
 const travelCardMockData: ITravelCard[] = [
   {
+    id: '0',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '대한민국 국밥 TOP 30',
     createdBy: {
@@ -17,6 +18,7 @@ const travelCardMockData: ITravelCard[] = [
     bookmark: false,
   },
   {
+    id: '1',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '서울 최고의 김치찌개 맛집',
     createdBy: {
@@ -32,6 +34,7 @@ const travelCardMockData: ITravelCard[] = [
     bookmark: false,
   },
   {
+    id: '2',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '강릉 해변에서 즐기는 바비큐',
     createdBy: {
@@ -47,6 +50,7 @@ const travelCardMockData: ITravelCard[] = [
     bookmark: true,
   },
   {
+    id: '3',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '부산의 밤을 즐기는 방법',
     createdBy: {
@@ -62,6 +66,7 @@ const travelCardMockData: ITravelCard[] = [
     bookmark: false,
   },
   {
+    id: '4',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '전주 한옥마을 힐링 투어',
     createdBy: {
@@ -77,6 +82,7 @@ const travelCardMockData: ITravelCard[] = [
     bookmark: true,
   },
   {
+    id: '5',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '대한민국 국밥 TOP 30',
     createdBy: {
@@ -92,6 +98,7 @@ const travelCardMockData: ITravelCard[] = [
     bookmark: false,
   },
   {
+    id: '6',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '서울 최고의 김치찌개 맛집',
     createdBy: {
@@ -107,6 +114,7 @@ const travelCardMockData: ITravelCard[] = [
     bookmark: false,
   },
   {
+    id: '7',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '강릉 해변에서 즐기는 바비큐',
     createdBy: {
@@ -122,6 +130,7 @@ const travelCardMockData: ITravelCard[] = [
     bookmark: true,
   },
   {
+    id: '8',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '부산의 밤을 즐기는 방법',
     createdBy: {
@@ -137,6 +146,7 @@ const travelCardMockData: ITravelCard[] = [
     bookmark: false,
   },
   {
+    id: '9',
     thumbnail: '/src/assets/thumb.png',
     travelTitle: '전주 한옥마을 힐링 투어',
     createdBy: {
