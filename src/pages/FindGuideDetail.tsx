@@ -39,7 +39,6 @@ const detailWrapper = css`
   width: 680px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   gap: 20px;
   color: #333;
 `;
