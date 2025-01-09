@@ -8,7 +8,7 @@ import useAddTravelStore from '@/stores/useAddTravelStore';
 const useHandleAddTravel = () => {
   const setData = useAddTravelStore((state) => state.setData);
   const images = useImageStore((state) => state.images);
-  const uploadImages = useHandleImageUpload(images).uploadImages;
+  const uploadImages = useHandleImageUpload().uploadImages;
   const mutate = useCreateTravel().mutate;
 
   const submitAddTravel = async () => {
@@ -16,7 +16,7 @@ const useHandleAddTravel = () => {
 
     if (validateAddTravel(data)) {
       try {
-        const { thumbnail, meetingSpace } = await uploadImages();
+        const { thumbnail, meetingSpace } = await uploadImages(images);
         setData({ thumbnail: thumbnail[0], meetingPlace: meetingSpace[0] });
       } catch (error) {
         console.error(error);

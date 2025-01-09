@@ -9,11 +9,13 @@ import Introduction from '@/components/addTravel/Introduction';
 import FloatingMenu from '@/components/addTravel/FloatingMenu';
 import useSectionsStore from '@/stores/useSectionsStore';
 import useAddTravelStore from '@/stores/useAddTravelStore';
+import useHandleAddTravel from '@/hooks/custom/useHandleAddTravel';
 
 const AddTravel = () => {
   const sections = useSectionsStore((state) => state.sections);
   const setData = useAddTravelStore((state) => state.setData);
   const data = useAddTravelStore((state) => state.data);
+  const handleAddTravel = useHandleAddTravel().handleAddTravel;
 
   const changeHandlers = {
     changeTitle: (travelTitle: string) => {
@@ -61,7 +63,7 @@ const AddTravel = () => {
         {sections.includes('FAQ') && <Details title={'FAQ'} />}
       </div>
 
-      <FloatingMenu />
+      <FloatingMenu onSubmit={handleAddTravel} />
     </div>
   );
 };

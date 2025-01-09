@@ -34,8 +34,8 @@ function Rating({ rating, reviewCount, customStyle, size = 'small' }: IRatingPro
     <div css={[ratingWrap(size), customStyle]}>
       <Star size={sizeMap[size].Star} fill="#FFBF00" stroke="#FFBF00" />
       <p className="score">
-        {isValidRatingNumber(rating) ? rating.toPrecision(2) : ''}
-        {reviewCount && <span>({reviewCount})</span>}
+        {isValidRatingNumber(rating) ? rating.toPrecision(2) : 0}
+        {reviewCount ? `(${reviewCount})` : ''}
       </p>
     </div>
   );
