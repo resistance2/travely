@@ -37,7 +37,7 @@ const FloatingMenu = ({ onSubmit }: FloatingMenuProps) => {
             </ToggleIcon>
           </MenuItem>
           <MenuItem>
-            <span>상품 소개</span>
+            <span>글 내용</span>
           </MenuItem>
           <MenuItem>
             <span>일정 및 팀 추가</span>
