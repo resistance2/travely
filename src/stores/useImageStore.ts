@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
 export interface ImageStore {
-  thumbnail: string;
-  meetingSpace: string;
-  introSrcs: string[];
+  thumbnail: File | null;
+  meetingSpace: File | null;
+  introSrcs: File[];
 }
 
 interface State {
@@ -11,38 +11,42 @@ interface State {
 }
 
 interface Action {
-  setThumbnail: (thumbnail: string) => void;
-  setIntroSrcs: (introSrcs: string[]) => void;
-  setMeetingSpace: (meetingSpace: string) => void;
-  resetImages: () => void;
+  actions: {
+    setThumbnail: (thumbnail: File) => void;
+    setIntroSrcs: (introSrcs: File[]) => void;
+    setMeetingSpace: (meetingSpace: File) => void;
+    resetImages: () => void;
+  };
 }
 
 const useImageStore = create<State & Action>((set) => ({
   images: {
-    thumbnail: '',
-    meetingSpace: '',
+    thumbnail: null,
+    meetingSpace: null,
     introSrcs: [],
   },
-  setThumbnail: (thumbnail: string) =>
-    set((state) => {
-      return { images: { ...state.images, thumbnail } };
-    }),
-  setMeetingSpace: (meetingSpace: string) =>
-    set((state) => {
-      return { images: { ...state.images, meetingSpace } };
-    }),
-  setIntroSrcs: (introSrcs: string[]) =>
-    set((state) => {
-      return { images: { ...state.images, introSrcs } };
-    }),
-  resetImages: () =>
-    set({
-      images: {
-        thumbnail: '',
-        introSrcs: [],
-        meetingSpace: '',
-      },
-    }),
+  actions: {
+    setThumbnail: (thumbnail: File) =>
+      set((state) => {
+        return { images: { ...state.images, thumbnail } };
+      }),
+    setMeetingSpace: (meetingSpace: File) =>
+      set((state) => {
+        return { images: { ...state.images, meetingSpace } };
+      }),
+    setIntroSrcs: (introSrcs: File[]) =>
+      set((state) => {
+        return { images: { ...state.images, introSrcs } };
+      }),
+    resetImages: () =>
+      set({
+        images: {
+          thumbnail: null,
+          meetingSpace: null,
+          introSrcs: [],
+        },
+      }),
+  },
 }));
 
 export default useImageStore;

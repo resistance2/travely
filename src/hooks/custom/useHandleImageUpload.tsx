@@ -1,29 +1,22 @@
-import getImageUrls from '@/api/addTravel/getImageUrls';
 import { ImageStore } from '@/stores/useImageStore';
 import prepareImageUpload from '@/utils/prepareImageUpload';
-import { useMutation } from '@tanstack/react-query';
 import { useRef } from 'react';
+import useGetImageUrls from '../query/useGetImageUrls';
 
-const useHandleImageUpload = (images: ImageStore) => {
+const useHandleImageUpload = () => {
   const preparedImageData = useRef<FormData | null>(null);
+  const { mutateAsync } = useGetImageUrls();
 
-  const { mutateAsync } = useMutation({
-    mutationFn: getImageUrls,
-    onError: (error) => {
-      console.warn(error);
-    },
-    onSettled: () => {
-      preparedImageData.current = null;
-    },
-  });
-
-  const uploadImages = async () => {
-    if (images.thumbnail === '') {
-      alert('썸네일은 필수입니다.');
-      return;
-    }
+  const uploadImages = async (images: ImageStore) => {
     preparedImageData.current = prepareImageUpload(images);
-    const res = await mutateAsync(preparedImageData.current);
+    const res = await mutateAsync(
+      { preparedImageData: preparedImageData.current },
+      {
+        onSettled: () => {
+          preparedImageData.current = null;
+        },
+      },
+    );
     return res;
   };
 
