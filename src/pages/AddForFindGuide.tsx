@@ -74,7 +74,7 @@ const AddForFindGuide = () => {
           />
         </GrayBack>
         {sections.includes('대표이미지') && <Thumbnail type="thumbnail" />}
-        <Introduction />
+        <Introduction title="내용" />
         <ScheduleTeam />
       </div>
 

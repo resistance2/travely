@@ -27,6 +27,7 @@ const SideBar = ({ travelId, travelData }: SideBarProps) => {
 export default SideBar;
 
 const sideContainer = css`
+  width: 340px;
   display: flex;
   flex-direction: column;
   gap: 14px;

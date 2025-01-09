@@ -8,6 +8,10 @@ import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
+interface IntroductionProps {
+  title?: string;
+}
+
 const QUILL_MODULE = {
   toolbar: {
     container: [
@@ -26,7 +30,7 @@ const QUILL_MODULE = {
   },
 };
 
-const Introduction = () => {
+const Introduction = ({ title = '상품 소개' }: IntroductionProps) => {
   const [imgLimit, setImgLimit] = useState(false);
   const [value, setValue] = useState('');
   const { setIntroSrcs } = useImageStore((state) => state.actions);
@@ -71,7 +75,7 @@ const Introduction = () => {
   };
 
   return (
-    <GrayBack title={'상품 소개'}>
+    <GrayBack title={title}>
       <ReactQuill value={value} onChange={setValue} modules={QUILL_MODULE} css={textbox} />
       {imgLimit ? (
         <p css={{ fontSize: '14px', color: '#ff2020' }}>이미지는 최대 4장까지 첨부 가능합니다.</p>
