@@ -1,4 +1,4 @@
-import { TravelTeamData } from '@/types/travelDataType';
+import { TeamData } from '@/types/guideFindDataType';
 import { create } from 'zustand';
 
 export type FieldsOptions =
@@ -14,15 +14,14 @@ interface Faqs {
   answer: string;
 }
 
-export type Schedule = Pick<TravelTeamData, 'travelStartDate' | 'travelEndDate' | 'personLimit'>;
-
 interface Fields {
+  content: string;
   includeList: string[] | null;
   excludeList: string[] | null;
   faqs: Faqs[] | null;
   meetingTime: string[] | null;
   courseList: string[] | null;
-  scheduleList: Schedule[] | null;
+  scheduleList: TeamData[] | null;
 }
 
 interface State {
@@ -30,7 +29,8 @@ interface State {
 }
 interface Action {
   actions: {
-    addField: (option: FieldsOptions, newField: string | Schedule, answer?: string) => void;
+    setContent: (newDescription: string) => void;
+    addField: (option: FieldsOptions, newField: string | TeamData, answer?: string) => void;
     removeField: (option: FieldsOptions, index: number) => void;
     resetField: () => void;
   };
@@ -38,6 +38,7 @@ interface Action {
 
 const initialState: State = {
   fields: {
+    content: '',
     includeList: null,
     excludeList: null,
     faqs: null,
@@ -53,7 +54,17 @@ const useFieldStore = create<State & Action>((set) => ({
   },
 
   actions: {
-    addField: (option: FieldsOptions, newField: string | Schedule, answer?: string) =>
+    setContent: (newDescription: string) =>
+      set((state) => {
+        return {
+          fields: {
+            ...state.fields,
+            content: newDescription,
+          },
+        };
+      }),
+
+    addField: (option: FieldsOptions, newField: string | TeamData, answer?: string) =>
       set((state) => {
         const updatedField =
           option === 'faqs'
@@ -73,7 +84,7 @@ const useFieldStore = create<State & Action>((set) => ({
         return {
           fields: {
             ...state.fields,
-            [option]: updatedField,
+            [option]: updatedField?.length !== 0 ? updatedField : null,
           },
         };
       }),
