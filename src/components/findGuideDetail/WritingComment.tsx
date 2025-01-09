@@ -39,7 +39,12 @@ const WritingComment = ({ isEdit = false }: WritingCommentProps) => {
     <form css={container} onSubmit={handleSubmit}>
       <p>{user.socialName}</p>
       <div css={fieldWrapper}>
-        <input value={comment} onChange={(e) => setComment(e.target.value)} />
+        <input
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          placeholder="댓글을 입력해주세요."
+          aria-label="댓글 입력"
+        />
         <FiledBtn color={theme.colors.primary} size="sm" type="submit">
           {isEdit ? '수정' : '등록'}
         </FiledBtn>
@@ -59,6 +64,7 @@ const container = css`
 const fieldWrapper = css`
   display: flex;
   justify-content: space-between;
+  margin-top: 8px;
   input {
     width: 100%;
   }
