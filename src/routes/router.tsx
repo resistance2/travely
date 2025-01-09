@@ -16,6 +16,7 @@ import MyAccount from '@/pages/MyAccount';
 import FindGuideList from '@/pages/FindGuideList';
 import AddForFindGuide from '@/pages/AddForFindGuide';
 import MyFindGuide from '@/pages/MyFindGuide';
+import FindGuideDetail from '@/pages/FindGuideDetail';
 
 const PATH = {
   HOME: '/',
@@ -113,6 +114,10 @@ const router = createBrowserRouter([
           {
             path: 'find-guide',
             element: <FindGuideList />,
+          },
+          {
+            path: 'find-guide-detail/:guidePostId',
+            element: <FindGuideDetail />,
           },
           {
             path: 'add-for-find-guide',
