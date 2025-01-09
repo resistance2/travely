@@ -1,17 +1,17 @@
 import getImageUrls from '@/api/addTravel/getImageUrls';
-import { IMAGE_UPLOAD } from '@/constants/queyKey';
-import { useQuery } from '@tanstack/react-query';
+import { ShowToast } from '@/components/Toast';
+import { useMutation } from '@tanstack/react-query';
 
-interface UseImageUploadPM {
+interface UseImageUploadProps {
   preparedImageData: FormData | null;
-  enabled: boolean;
 }
 
-const useGetImageUrls = ({ preparedImageData, enabled }: UseImageUploadPM) => {
-  return useQuery({
-    queryKey: [IMAGE_UPLOAD, preparedImageData],
-    queryFn: () => getImageUrls(preparedImageData),
-    enabled,
+const useGetImageUrls = () => {
+  return useMutation({
+    mutationFn: ({ preparedImageData }: UseImageUploadProps) => getImageUrls(preparedImageData),
+    onError: () => {
+      ShowToast('이미지 업로드 중 오류가 발생하였습니다. 다시 시도해주세요', 'failed');
+    },
   });
 };
 export default useGetImageUrls;
