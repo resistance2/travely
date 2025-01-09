@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import useFieldStore, { Schedule } from '@/stores/useFieldStore';
+import useFieldStore from '@/stores/useFieldStore';
 import { CirclePlus, X } from 'lucide-react';
 import { useRef } from 'react';
 import Team from '@/components/Team';
@@ -27,7 +27,7 @@ const ScheduleTeam = () => {
         endDateRef.current.value.trim() !== '' &&
         membersRef.current.value.trim() !== ''
       ) {
-        const newSchedule: Schedule = {
+        const newSchedule = {
           personLimit: Number(membersRef.current.value.slice(0, 1)),
           travelStartDate: startDateRef.current.value,
           travelEndDate: endDateRef.current.value,
@@ -40,9 +40,7 @@ const ScheduleTeam = () => {
     }
   };
 
-  const isAddFindGuidePage =
-    location.pathname === '/add-for-find-guide' && scheduleList && scheduleList.length < 1;
-
+  const isAddFindGuidePage = location.pathname === '/add-for-find-guide' && !scheduleList;
   const isAddTravelPage = location.pathname === '/add-travel';
 
   return (
