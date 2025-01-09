@@ -1,7 +1,8 @@
 import { AddTravelData } from '@/types/travelDataType';
 
-export const isValidRatingNumber = (rating: number) =>
-  !Number.isNaN(rating) && rating >= 0 && rating <= 5;
+export const isValidRatingNumber = (rating: number) => {
+  return !Number.isNaN(rating) && rating >= 0 && rating <= 5 && typeof rating === 'number';
+};
 
 export const validateAddTravel = (data: AddTravelData): boolean => {
   const { userId, travelTitle, travelContent, travelCourse, tag, team, travelPrice } = data;
