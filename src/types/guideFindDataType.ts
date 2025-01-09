@@ -1,6 +1,8 @@
 import { TravelTeamData } from './travelDataType';
 
-export type TeamData = Pick<
+export type TeamData = Pick<TravelTeamData, 'travelStartDate' | 'travelEndDate' | 'personLimit'>;
+
+export type DetailTeam = Pick<
   TravelTeamData,
   'teamId' | 'travelStartDate' | 'travelEndDate' | 'personLimit'
 >;
@@ -34,7 +36,7 @@ export interface FindGuideDetailData {
   title: string;
   content: string;
   thumbnail: string | null;
-  team: TeamData[] | null;
+  team: DetailTeam[] | null;
   createdAt: string;
   commentList: Comment[] | null;
 }
