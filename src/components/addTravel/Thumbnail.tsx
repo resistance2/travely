@@ -4,16 +4,17 @@ import { css } from '@emotion/react';
 import { ImagePlus } from 'lucide-react';
 import { ChangeEvent, useState } from 'react';
 
+type ThumbnailType = 'thumbnail' | 'meetingSpace';
+
 interface ThumbnailProps {
-  type: 'thumbnail' | 'meetingSpace';
+  type: ThumbnailType;
 }
 
 const Thumbnail = ({ type }: ThumbnailProps) => {
   const [errMessage, setErrMessage] = useState('');
-  const thumbnail = useImageStore((state) => state.images.thumbnail);
-  const setThumbnail = useImageStore((state) => state.setThumbnail);
-  const setMeetingSpace = useImageStore((state) => state.setMeetingSpace);
-  const meetingSpace = useImageStore((state) => state.images.meetingSpace);
+  const { thumbnail, meetingSpace } = useImageStore((state) => state.images);
+  const { setThumbnail, setMeetingSpace } = useImageStore((state) => state.actions);
+
   const validateFile = (file: File): string | null => {
     if (file.size > 5 * 1024 * 1024) {
       return '파일 크기는 5MB 이하여야 합니다.';
@@ -27,79 +28,52 @@ const Thumbnail = ({ type }: ThumbnailProps) => {
     return null;
   };
 
-  const processFile = (file: File, onLoadCallback: (imageData: string) => void) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const imageData = reader.result as string;
-      onLoadCallback(imageData);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleFileChange = async (
-    e: ChangeEvent<HTMLInputElement>,
-    setErrMessage: (message: string) => void,
-    onSuccess: (imageData: string) => void,
-  ) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>, type: ThumbnailType) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const errorMessage = validateFile(file);
       if (errorMessage) {
         setErrMessage(errorMessage);
-        setTimeout(() => {
-          setErrMessage('');
-        }, 3000);
+        setTimeout(() => setErrMessage(''), 3000);
         return;
       }
-      processFile(file, onSuccess);
+
+      if (type === 'thumbnail') {
+        setThumbnail(file);
+      } else if (type === 'meetingSpace') {
+        setMeetingSpace(file);
+      }
     }
   };
 
-  const handleThumbnailChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    await handleFileChange(e, setErrMessage, (imageData) => {
-      setThumbnail(imageData);
-    });
+  const getPreviewUrl = (file: File | null) => {
+    return file ? URL.createObjectURL(file) : '';
   };
 
-  const handleMeetingLocationChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    await handleFileChange(e, setErrMessage, (imageData) => {
-      setMeetingSpace(imageData);
-    });
+  const DATA_OF_TYPE = {
+    thumbnail: {
+      title: '대표 이미지',
+      image: thumbnail,
+    },
+    meetingSpace: {
+      title: '만나는 장소',
+      image: meetingSpace,
+    },
   };
 
-  if (type === 'thumbnail') {
-    return (
-      <>
-        <GrayBack title="대표 이미지">
-          <div css={thumbnailSize(thumbnail)}>
-            <button onClick={() => document.getElementById('thumbnailUpload')?.click()}>
-              <ImagePlus size={100} css={{ color: '#fff' }} />
-            </button>
-            <input id="thumbnailUpload" type="file" onChange={(e) => handleThumbnailChange(e)} />
-          </div>
-        </GrayBack>
-        <p css={{ fontSize: '14px', color: '#ff2020' }}>{errMessage}</p>
-      </>
-    );
-  } else if (type === 'meetingSpace') {
-    return (
-      <>
-        <GrayBack title="만나는 장소">
-          <div css={thumbnailSize(meetingSpace)}>
-            <button onClick={() => document.getElementById('meetingLocationUpload')?.click()}>
-              <ImagePlus size={100} css={{ color: '#fff' }} />
-            </button>
-            <input
-              id="meetingLocationUpload"
-              type="file"
-              onChange={(e) => handleMeetingLocationChange(e)}
-            />
-          </div>
-        </GrayBack>
-        <p css={{ fontSize: '14px', color: '#ff2020' }}>{errMessage}</p>
-      </>
-    );
-  }
+  return (
+    <>
+      <GrayBack title={DATA_OF_TYPE[type].title}>
+        <div css={thumbnailSize(getPreviewUrl(DATA_OF_TYPE[type].image))}>
+          <button onClick={() => document.getElementById(type)?.click()}>
+            <ImagePlus size={100} css={{ color: '#fff' }} />
+          </button>
+          <input id={type} type="file" onChange={(e) => handleFileChange(e, type)} />
+        </div>
+      </GrayBack>
+      <p css={{ fontSize: '14px', color: '#ff2020' }}>{errMessage}</p>
+    </>
+  );
 };
 
 export default Thumbnail;
