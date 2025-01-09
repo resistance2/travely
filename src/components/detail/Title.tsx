@@ -1,19 +1,26 @@
 import { css } from '@emotion/react';
 import Rating from '../Rating';
+import { formatDate } from '@/utils/format';
 
 interface TitleProps {
   title: string;
   rating?: number;
   reviewCount?: number;
+  createdAt?: string;
 }
 
-const Title = ({ title, rating, reviewCount }: TitleProps) => {
+const Title = ({ title, rating, reviewCount, createdAt }: TitleProps) => {
   return (
     <div css={titleWrapper}>
       <h1>{title}</h1>
-      {rating && !Number.isNaN(reviewCount) && (
-        <Rating size="large" rating={rating} reviewCount={reviewCount} />
-      )}
+      <div css={optionsWrapper}>
+        <div>
+          {rating && !Number.isNaN(reviewCount) && (
+            <Rating size="large" rating={rating} reviewCount={reviewCount} />
+          )}
+        </div>
+        {createdAt && <span>게시일: {formatDate(createdAt)}</span>}
+      </div>
     </div>
   );
 };
@@ -28,5 +35,14 @@ const titleWrapper = css`
     font-size: 24px;
     font-weight: 600;
     color: #333;
+  }
+`;
+
+const optionsWrapper = css`
+  display: flex;
+  justify-content: space-between;
+  span {
+    font-size: 14px;
+    color: #888;
   }
 `;
