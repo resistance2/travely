@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 
 interface ThumbnailProps {
   thumbnail: string;
-  tag: string[];
+  tag?: string[];
 }
 
 const Thumbnail = ({ thumbnail, tag }: ThumbnailProps) => {
@@ -22,7 +22,7 @@ const thumbnailWrapper = css`
   overflow: hidden;
   img {
     width: 100%;
-    height: 360px;
+    max-height: 400px;
     object-fit: cover;
   }
   div {
