@@ -1,27 +1,20 @@
-import useHandleAddTravel from '@/hooks/custom/useHandleAddTravel';
 import useSectionsStore from '@/stores/useSectionsStore';
 import styled from '@emotion/styled';
 import { CircleMinus, CirclePlus } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
-const ADD_TRAVEL = 'add-travel';
 const ADD_FOR_FIND_GUIDE = 'add-for-find-guide';
 
-const FloatingMenu = () => {
+interface FloatingMenuProps {
+  onSubmit?: () => void;
+}
+
+const FloatingMenu = ({ onSubmit }: FloatingMenuProps) => {
   const sections = useSectionsStore((state) => state.sections);
   const setOpenSection = useSectionsStore((state) => state.setOpenSection);
   const location = useLocation();
   const pathName = location.pathname;
   const menuHeight = pathName === `/${ADD_FOR_FIND_GUIDE}` ? '260px' : '520px';
-  const handleAddTravel = useHandleAddTravel().handleAddTravel;
-
-  const submitHandler = () => {
-    if (pathName === `/${ADD_TRAVEL}`) {
-      handleAddTravel();
-    } else if (pathName === `/${ADD_FOR_FIND_GUIDE}`) {
-      //가이드 찾아요
-    }
-  };
 
   return (
     <MenuContainer menuHeight={menuHeight}>
@@ -116,7 +109,7 @@ const FloatingMenu = () => {
 
       <BottomButtons>
         <TempSaveButton>임시저장</TempSaveButton>
-        <CompleteButton onClick={submitHandler}>작성완료</CompleteButton>
+        <CompleteButton onClick={onSubmit}>작성완료</CompleteButton>
       </BottomButtons>
     </MenuContainer>
   );
