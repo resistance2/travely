@@ -1,7 +1,6 @@
+import { SERVER } from '@/constants/url';
 import { UpdateProfileResponse } from '@/types/userType';
 import axios from 'axios';
-
-const SERVER = import.meta.env.VITE_SERVER_URL;
 
 const updateProfile = async (profile: {
   userId: string;
