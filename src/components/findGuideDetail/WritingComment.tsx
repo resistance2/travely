@@ -2,21 +2,39 @@ import useUserStore from '@/stores/useUserStore';
 import FiledBtn from '../FiledBtn';
 import { theme } from '@/styles/theme';
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import usePostComment from '@/hooks/query/usePostComment';
-import { useParams } from 'react-router-dom';
 import { ShowToast } from '../Toast';
+import { ChevronLast } from 'lucide-react';
+import usePatchComment from '@/hooks/query/usePatchComment';
 
 interface WritingCommentProps {
   isEdit?: boolean;
+  guidePostId: string;
+  commentId?: string;
+  oldComment?: string;
+  onEditChange?: () => void;
 }
 
-const WritingComment = ({ isEdit = false }: WritingCommentProps) => {
+const WritingComment = ({
+  isEdit = false,
+  guidePostId,
+  commentId,
+  oldComment,
+  onEditChange,
+}: WritingCommentProps) => {
   const [comment, setComment] = useState('');
-  const { guidePostId } = useParams();
   const user = useUserStore((state) => state.user);
-  const { mutate } = usePostComment();
-  if (!user || !guidePostId) return null;
+  const { mutate: postMutate } = usePostComment();
+  const { mutate: patchMutate } = usePatchComment(guidePostId);
+
+  useEffect(() => {
+    if (isEdit && oldComment) {
+      setComment(oldComment);
+    }
+  }, [isEdit, oldComment]);
+
+  if (!user) return <p css={undefinedUser}>댓글 등록은 로그인 후 가능합니다.</p>;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,20 +42,37 @@ const WritingComment = ({ isEdit = false }: WritingCommentProps) => {
       ShowToast('댓글을 입력해주세요', 'failed');
       return;
     }
-
-    mutate(
-      { userId: user.userId, guidePostId, comment },
-      {
-        onSuccess: () => {
-          setComment('');
+    if (isEdit && commentId && onEditChange) {
+      patchMutate(
+        { userId: user.userId, commentId, comment },
+        {
+          onSuccess: () => {
+            onEditChange();
+          },
         },
-      },
-    );
+      );
+    } else {
+      postMutate(
+        { userId: user.userId, guidePostId, comment },
+        {
+          onSuccess: () => {
+            setComment('');
+          },
+        },
+      );
+    }
   };
 
   return (
     <form css={container} onSubmit={handleSubmit}>
-      <p>{user.socialName}</p>
+      <div css={fieldHeader}>
+        <p>{user.socialName}</p>
+        {isEdit && (
+          <button onClick={onEditChange} type="button">
+            <ChevronLast stroke="#888" size="20" />
+          </button>
+        )}
+      </div>
       <div css={fieldWrapper}>
         <input
           value={comment}
@@ -61,6 +96,17 @@ const container = css`
   padding: 20px;
 `;
 
+const fieldHeader = css`
+  display: flex;
+  justify-content: space-between;
+  button {
+    transition: transform 0.2s ease-in-out;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+`;
+
 const fieldWrapper = css`
   display: flex;
   justify-content: space-between;
@@ -68,4 +114,11 @@ const fieldWrapper = css`
   input {
     width: 100%;
   }
+`;
+
+const undefinedUser = css`
+  margin: 26px auto;
+  color: #888;
+  font-size: 16px;
+  font-weight: 600;
 `;
