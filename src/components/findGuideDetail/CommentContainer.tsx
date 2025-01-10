@@ -5,14 +5,15 @@ import { css } from '@emotion/react';
 
 interface CommentContainerProps {
   commentListData: Comment[];
+  guidePostId: string;
 }
 
-const CommentContainer = ({ commentListData }: CommentContainerProps) => {
+const CommentContainer = ({ commentListData, guidePostId }: CommentContainerProps) => {
   return (
     <div css={container}>
       <h2>댓글</h2>
-      <WritingComment />
-      <CommentList commentListData={commentListData} />
+      <WritingComment guidePostId={guidePostId} />
+      <CommentList commentListData={commentListData} guidePostId={guidePostId} />
     </div>
   );
 };
@@ -20,6 +21,7 @@ const CommentContainer = ({ commentListData }: CommentContainerProps) => {
 export default CommentContainer;
 
 const container = css`
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
