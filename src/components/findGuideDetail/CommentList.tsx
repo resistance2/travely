@@ -42,7 +42,7 @@ const CommentItem = ({ comment: data, guidePostId }: { comment: Comment; guidePo
   const handleDeleteComment = (id: string) => {
     if (user && data.commentId === id) {
       mutate(
-        { commentId: id, userId: user },
+        { commentId: id },
         {
           onSuccess: () => {
             setModalName(null);

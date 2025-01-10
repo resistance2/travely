@@ -3,15 +3,10 @@ import { ShowToast } from '@/components/Toast';
 import { FIND_GUIDE_DETAIL } from '@/constants/queyKey';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-interface UseDeleteCommentProps {
-  commentId: string;
-  userId: string;
-}
-
 const useDeleteComment = (guidePostId: string) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ commentId, userId }: UseDeleteCommentProps) => deleteComment(commentId, userId),
+    mutationFn: ({ commentId }: { commentId: string }) => deleteComment(commentId),
     onSuccess: () => {
       ShowToast('댓글이 삭제되었습니다.', 'success');
       queryClient.invalidateQueries({ queryKey: [FIND_GUIDE_DETAIL, guidePostId] });
