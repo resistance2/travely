@@ -8,4 +8,7 @@ export const modalId = {
     manageUserStatusApprove: 'manage-user-status-approve',
     manageUserStatusReject: 'manage-user-status-reject',
   },
+  findGuide: {
+    commentDelete: 'comment-delete',
+  },
 } as const;
