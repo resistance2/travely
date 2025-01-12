@@ -1,6 +1,5 @@
+import { SERVER } from '@/constants/url';
 import axios from 'axios';
-
-const SERVER = import.meta.env.SERVER_URL;
 
 const updateBookmark = async (
   userId: string,

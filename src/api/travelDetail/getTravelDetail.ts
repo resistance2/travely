@@ -1,7 +1,6 @@
+import { SERVER } from '@/constants/url';
 import { TravelDetailData } from '@/types/travelDataType';
 import axios from 'axios';
-
-const SERVER = import.meta.env.VITE_SERVER_URL;
 
 const getTravelDetail = async (travelId: string): Promise<TravelDetailData | null> => {
   try {

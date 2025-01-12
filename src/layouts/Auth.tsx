@@ -14,6 +14,7 @@ import basicProfile from '@/assets/basicProfile.png';
 import axios from 'axios';
 import useUserStore from '@/stores/useUserStore';
 import { modalId } from '@/constants/modalId';
+import { SERVER } from '@/constants/url';
 
 const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
   const { user, setUser } = useUserStore((state) => state);
@@ -27,7 +28,7 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
       userProfileImage: userInfo.photoURL,
     };
     try {
-      const result = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/users/login`, {
+      const result = await axios.post(`${SERVER}/api/v1/users/login`, {
         ...user,
       });
       const {
