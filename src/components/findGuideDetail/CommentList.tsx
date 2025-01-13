@@ -4,7 +4,7 @@ import { Comment } from '@/types/guideFindDataType';
 import { css } from '@emotion/react';
 import { PencilLine, Trash2 } from 'lucide-react';
 import { formatDate } from '@/utils/format';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import WritingComment from './WritingComment';
 import useDeleteComment from '@/hooks/query/useDeleteComment';
 import ConfirmModal from '../ConfirmModal';
@@ -17,10 +17,9 @@ interface CommentListProps {
 }
 
 const CommentList = ({ guidePostId, commentListData: data }: CommentListProps) => {
-  const commentList = [...data].reverse();
   return (
     <div css={listContainer}>
-      {commentList.map((comment) => (
+      {data.map((comment) => (
         <CommentItem key={comment.commentId} comment={comment} guidePostId={guidePostId} />
       ))}
     </div>
@@ -29,6 +28,7 @@ const CommentList = ({ guidePostId, commentListData: data }: CommentListProps) =
 
 const CommentItem = ({ comment: data, guidePostId }: { comment: Comment; guidePostId: string }) => {
   const [isEdit, setIsEdit] = useState(false);
+  const deleteButtonRef = useRef<HTMLButtonElement>(null);
   const user = useUserStore((state) => state.user?.userId);
   const setModalName = useModalStore((state) => state.setModalName);
   const { mutate } = useDeleteComment(guidePostId);
@@ -84,14 +84,17 @@ const CommentItem = ({ comment: data, guidePostId }: { comment: Comment; guidePo
                   <PencilLine stroke="#888" size="20" />
                 </button>
                 <ConfirmModal
-                  modalId={modalId.findGuide.commentDelete}
+                  modalId={`${modalId.findGuide.commentDelete}-${data.commentId}`}
                   message="정말 삭제하시겠습니까?"
                   onConfirm={() => handleDeleteComment(data.commentId)}
                   trigger={
                     <button
-                      onClick={() => setModalName(modalId.findGuide.commentDelete)}
+                      onClick={() =>
+                        setModalName(`${modalId.findGuide.commentDelete}-${data.commentId}`)
+                      }
                       type="button"
                       aria-label="댓글 삭제"
+                      ref={deleteButtonRef}
                     >
                       <Trash2 stroke="#888" size="20" />
                     </button>
