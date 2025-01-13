@@ -15,20 +15,24 @@ import {
 
 import useUpdateProfile from '@/hooks/query/useUpdateProfile';
 import Toast, { ShowToast } from '@/components/Toast';
+import useUpdateAccountNumber from '@/hooks/query/useUpdateAccountNumber';
 
 const MyAccount = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore((state) => state);
   const setModalName = useModalStore((state) => state.setModalName);
   const [isEditing, setIsEditing] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState(user?.PhoneNumber || '');
+  const [isAccountEditing, setIsAccountEditing] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
   const [mbti, setMbti] = useState(user?.MBTI || '');
+  const [accountNumber, setAccountNumber] = useState(user?.accountNumber || '');
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(
     user?.userProfileImage || null,
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateProfile = useUpdateProfile();
+  const updateAccountNumber = useUpdateAccountNumber();
 
   const logout = async () => {
     try {
@@ -46,6 +50,10 @@ const MyAccount = () => {
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedPhone = formatPhoneNumber(e.target.value);
     setPhoneNumber(formattedPhone);
+  };
+
+  const handleAccountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAccountNumber(e.target.value);
   };
 
   useEffect(() => {
@@ -76,6 +84,19 @@ const MyAccount = () => {
       });
       setIsEditing(false);
     }
+  };
+
+  const handleAccountEdit = () => {
+    setIsAccountEditing(true);
+  };
+
+  const handleAccountSave = () => {
+    updateAccountNumber.mutate({
+      userId: user?.userId || '',
+      accountNumber,
+      bankCode: '004',
+    });
+    setIsAccountEditing(false);
   };
 
   const handleCameraClick = () => {
@@ -121,11 +142,29 @@ const MyAccount = () => {
           <Content>{user?.socialName}</Content>
         </Details>
         <Details>
+          <Title>계좌 번호</Title>
+          {isAccountEditing ? (
+            <Content>
+              <Input type="text" value={accountNumber} onChange={handleAccountChange} />
+              <BorderBtn color="gray" size="sm" onClick={handleAccountSave}>
+                저장
+              </BorderBtn>
+            </Content>
+          ) : (
+            <Content>
+              {user?.accountNumber || '미등록'}
+              <BorderBtn color="gray" size="sm" onClick={handleAccountEdit}>
+                계좌 관리
+              </BorderBtn>
+            </Content>
+          )}
+        </Details>
+        <Details>
           <Title>전화번호</Title>
           {isEditing ? (
             <Input type="text" value={phoneNumber} onChange={handlePhoneNumberChange} />
           ) : (
-            <Content>{user?.PhoneNumber || '미정'}</Content>
+            <Content>{user?.phoneNumber || '미정'}</Content>
           )}
         </Details>
         <Details>
@@ -157,10 +196,6 @@ const MyAccount = () => {
           ) : (
             <Content>{user?.MBTI || '미정'}</Content>
           )}
-        </Details>
-        <Details>
-          <Title>계좌 번호</Title>
-          <Content>{user?.PhoneNumber || '미등록'}</Content> {/* 수정 필요 */}
         </Details>
       </UserDetails>
       <EditProfile>
@@ -275,8 +310,10 @@ const Select = styled.select`
 `;
 
 const Content = styled.p`
+  display: flex;
   font-size: 18px;
   width: 80%;
+  justify-content: space-between;
 `;
 
 const Input = styled.input`

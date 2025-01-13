@@ -1,4 +1,5 @@
 import updateProfile from '@/api/myAccount/updateProfile';
+import { ShowToast } from '@/components/Toast';
 import useUserStore from '@/stores/useUserStore';
 import { updateProfileData } from '@/types/updateProfileData';
 import { UpdateProfileResponse, User } from '@/types/userType';
@@ -17,12 +18,16 @@ const useUpdateProfile = () => {
       setUser((prevUser) => {
         const updatedUser = {
           ...prevUser,
-          PhoneNumber: data.phoneNumber,
+          phoneNumber: data.phoneNumber,
           MBTI: data.mbti,
           userProfileImage: data.userProfileImage,
         } as User;
         return updatedUser;
       });
+      ShowToast('프로필이 수정되었습니다.', 'success');
+    },
+    onError: () => {
+      ShowToast('프로필 수정에 실패했습니다.', 'failed');
     },
   });
 };

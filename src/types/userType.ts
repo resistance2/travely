@@ -5,7 +5,8 @@ export type User = {
   isVerifiedUser: boolean;
   userId: string;
   MBTI?: string;
-  PhoneNumber?: string;
+  phoneNumber?: string;
+  accountNumber?: string;
 
   // myCreatedTravel: string[];
   // myPassedTravel: string[];
