@@ -21,7 +21,9 @@ const FindGuideDetail = () => {
         <Title title={title} createdAt={createdAt} />
         {thumbnail && <Thumbnail thumbnail={thumbnail} />}
         <Introduction content={content} />
-        {commentList && <CommentContainer commentListData={commentList} />}
+        {commentList && guidePostId && (
+          <CommentContainer commentListData={commentList} guidePostId={guidePostId} />
+        )}
       </div>
       <div css={sideWrapper}>{team && <SideTravelTeam teams={team} />}</div>
     </div>

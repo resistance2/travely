@@ -9,7 +9,7 @@ const postComment = async (
   try {
     const response = await axios.post(`${SERVER}/api/v1/travels-guide/comments`, {
       userId,
-      travelId: guidePostId,
+      guidePostId,
       comment,
     });
     return response.data.success;
