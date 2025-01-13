@@ -13,7 +13,7 @@ const FindGuideDetail = () => {
 
   if (!findGuideData) return null;
 
-  const { title, createdAt, thumbnail, content, commentList, team } = findGuideData;
+  const { title, createdAt, thumbnail, content, team } = findGuideData;
 
   return (
     <div css={container}>
@@ -21,9 +21,7 @@ const FindGuideDetail = () => {
         <Title title={title} createdAt={createdAt} />
         {thumbnail && <Thumbnail thumbnail={thumbnail} />}
         <Introduction content={content} />
-        {commentList && guidePostId && (
-          <CommentContainer commentListData={commentList} guidePostId={guidePostId} />
-        )}
+        {guidePostId && <CommentContainer guidePostId={guidePostId} />}
       </div>
       <div css={sideWrapper}>{team && <SideTravelTeam teams={team} />}</div>
     </div>
