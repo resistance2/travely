@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const useGetCommentList = (guidePostId: string, page: number) => {
   return useQuery({
-    queryKey: [COMMENT_LIST, guidePostId],
+    queryKey: [COMMENT_LIST, guidePostId, page],
     queryFn: () => getCommentList(guidePostId, page),
   });
 };
