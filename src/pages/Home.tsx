@@ -1,7 +1,8 @@
 import GuideCard from '@/components/findGuideList/GuideCard';
 import TagCardWrap from '@/components/TagCardWrap';
 import TravelCard from '@/components/traveList/TravelCard';
-import { HOME_GUIDE_LIST, HOME_TRAVEL_LIST } from '@/constants/queyKey';
+import { HOME_GUIDE_LIST, HOME_TRAVEL_LIST } from '@/constants/queryKey';
+import { SERVER } from '@/constants/url';
 // import travelCardMockData from '@/data/travelCardMockData';
 import useUserStore from '@/stores/useUserStore';
 import { IGuideCard } from '@/types/guideCardType';
@@ -37,7 +38,7 @@ const Home = () => {
   const fetchHomeTravelList = async (userId: string | null): Promise<ITravelCard[]> => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/api/v1/travels/travel-list?userId=${userId}&page=1&size=8`,
+        `${SERVER}/api/v1/travels/travel-list?userId=${userId}&page=1&size=8`,
       );
       return res.data.data.travels;
     } catch (error) {
@@ -49,7 +50,7 @@ const Home = () => {
   const fetchHomeGuideList = async (userId: string | null): Promise<IGuideCard[]> => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/api/v1/travels-guide/travel-list?userId=${userId}&page=1&size=8`,
+        `${SERVER}/api/v1/travels-guide/travel-list?userId=${userId}&page=1&size=8`,
       );
 
       return res.data.data.travels;

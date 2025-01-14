@@ -6,3 +6,5 @@ export const MY_CREATED_TRAVEL = 'my-created-travel';
 export const MY_JOINED_TRAVEL = 'my-joined-travel';
 export const HOME_TRAVEL_LIST = 'home-travel-list';
 export const HOME_GUIDE_LIST = 'home-guide-list';
+export const FIND_GUIDE_DETAIL = 'find-guide-detail';
+export const COMMENT_LIST = 'comment-list';

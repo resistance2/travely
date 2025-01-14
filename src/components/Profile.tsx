@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import basicProfile from '@/assets/basicProfile.png';
 interface UserProfileProps {
-  url?: string;
+  url: string | null;
   size: string;
 }
 

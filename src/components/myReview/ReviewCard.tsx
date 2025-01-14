@@ -31,7 +31,7 @@ const ReviewCard = ({
           {showUser && review.user && (
             <div css={userProfileStyles}>
               <div className="profile-container">
-                <Profile url={review.imgSrc} size="40px" />
+                {review.imgSrc && <Profile url={review.imgSrc} size="40px" />}
                 <div className="user-info">
                   <div className="name-rating">
                     <div className="name">{review.user.socialName}</div>

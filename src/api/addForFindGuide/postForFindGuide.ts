@@ -1,7 +1,6 @@
+import { SERVER } from '@/constants/url';
 import { AddForFindGuideData } from '@/types/guideFindDataType';
 import axios from 'axios';
-
-const SERVER = import.meta.env.VITE_SERVER_URL;
 
 const postForFindGuide = async (dataToUpload: AddForFindGuideData): Promise<string> => {
   try {

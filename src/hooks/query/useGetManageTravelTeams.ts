@@ -1,5 +1,5 @@
 import getManageTravelTeams from '@/api/manageTravel/getManageTravelTeams';
-import { MANAGE_TRAVEL_TEAMS } from '@/constants/queyKey';
+import { MANAGE_TRAVEL_TEAMS } from '@/constants/queryKey';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetManageTravelTeams = (travelId: string, page: number, size: number, teamId: string) => {

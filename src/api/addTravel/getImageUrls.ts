@@ -1,3 +1,4 @@
+import { SERVER } from '@/constants/url';
 import axios from 'axios';
 
 interface ResponseData {
@@ -6,11 +7,9 @@ interface ResponseData {
   thumbnail: string[];
 }
 
-const S3_URL = import.meta.env.VITE_SERVER_URL;
-
 const getImageUrls = async (preparedImageData: FormData | null): Promise<ResponseData> => {
   try {
-    const response = await axios.post(`${S3_URL}/api/images/upload`, preparedImageData, {
+    const response = await axios.post(`${SERVER}/api/images/upload`, preparedImageData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

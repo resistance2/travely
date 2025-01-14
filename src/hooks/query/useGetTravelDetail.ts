@@ -1,5 +1,5 @@
 import getTravelDetail from '@/api/travelDetail/getTravelDetail';
-import { TRAVEL_DETAIL } from '@/constants/queyKey';
+import { TRAVEL_DETAIL } from '@/constants/queryKey';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetTravelDetail = (travelId: string) => {
