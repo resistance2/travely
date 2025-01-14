@@ -4,62 +4,59 @@ import TravelCard from '@/components/traveList/TravelCard';
 import { tagDatas } from '@/data/tagDatas';
 import { css } from '@emotion/react';
 import { Link, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import SkeletonTravelCard from '@/components/SkeletonTravelCard';
 import scrollToTop from '@/utils/scrollToTop';
-import { ITravelCard } from '@/types/travelCardType';
-import travelCardMockData from '@/data/travelCardMockData';
+import useGetTravelList from '@/hooks/query/useGetTravelList';
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { IGetTravelListReturn } from '@/api/travelList/getTravelList';
+
+interface InfiniteQueryData<TPageData> {
+  pages: TPageData[];
+  pageParams: unknown[];
+}
+type TravelListInfiniteQueryData = InfiniteQueryData<IGetTravelListReturn>;
 
 const TravelList = () => {
+  const queryClient = useQueryClient();
   const location = useLocation();
+  const beforeTag = location.state;
   const path = location.pathname.split('/').filter((item) => item !== '')[1] || '전체';
-  const pageTitle = path === '전체' ? path : tagDatas.filter((data) => data.path === path)[0].name;
-  const [myData, setMyData] = useState<null | ITravelCard[]>(null);
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['my-data'],
-    queryFn: ({ pageParam = 1 }) => fetchCardData(pageParam, 8),
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    initialPageParam: 1,
+  const currentTag = tagDatas.find((data) => data.path === path) || { name: '전체', path: '전체' };
+  const { name: pageTitle, path: searchTag } = currentTag;
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTravelList({
+    tag: searchTag,
   });
-  const { ref, inView } = useInView({
+
+  const { ref } = useInView({
     threshold: 1,
     skip: !hasNextPage,
+    onChange: (inView) => {
+      if (inView && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    },
   });
 
-  const fetchCardData = async (pageParam: number, pageSize: number = 8) => {
-    const CARDDATAS = travelCardMockData;
-
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const startIndex = (pageParam - 1) * pageSize;
-    const endIndex = pageSize * pageParam;
-    const hasMore = endIndex < CARDDATAS.length;
-    const nextCursor = hasMore ? pageParam + 1 : null;
-    const items = CARDDATAS.slice(startIndex, endIndex);
-    return {
-      items,
-      nextCursor,
-    };
-  };
-
   useEffect(() => {
-    if (data) {
-      const newItems = data.pages.flatMap((page) => page.items);
-      setMyData(newItems);
-    }
-  }, [data]);
+    queryClient.setQueryData<TravelListInfiniteQueryData>(['travelList', beforeTag], (oldData) => {
+      if (!oldData) return undefined;
 
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, fetchNextPage, hasNextPage, isFetchingNextPage]);
+      return {
+        ...oldData,
+        pages: oldData.pages.slice(0, 1), // 첫 번째 페이지 데이터만 유지
+        pageParams: oldData.pageParams.slice(0, 1),
+      };
+    });
+  }, [beforeTag, queryClient]);
 
-  if (!myData) {
-    return <p>loaidng</p>;
+  if (!data) {
+    return <p>loading</p>;
   }
+
+  const cardDatas = data.pages.flatMap((page) => page.cardDatas);
+  const currentPage = data.pages[data.pages.length - 1]?.currentPage;
 
   return (
     <div css={travelListWrap}>
@@ -72,13 +69,13 @@ const TravelList = () => {
       </div>
 
       <div className="card-wrap">
-        {myData.map((data, i) => (
-          <TravelCard cardData={data} key={i} />
+        {cardDatas.map((cardData, i) => (
+          <TravelCard cardData={cardData} key={i} />
         ))}
         {isFetchingNextPage && <SkeletonTravelCard />}
       </div>
 
-      {!hasNextPage && (
+      {!hasNextPage && currentPage !== 1 && (
         <BorderBtn
           className="scroll-top"
           color="#4a95f2"
