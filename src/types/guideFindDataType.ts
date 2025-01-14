@@ -31,6 +31,17 @@ export interface Comment {
   comment: string;
 }
 
+export interface PageInfo {
+  currentPage: number;
+  totalPages: number;
+  totalComments: number;
+}
+
+export interface CommentData {
+  commentList: Comment[] | null;
+  pageInfo: PageInfo;
+}
+
 export interface FindGuideDetailData {
   author: Author;
   title: string;
@@ -38,5 +49,4 @@ export interface FindGuideDetailData {
   thumbnail: string | null;
   team: DetailTeam[] | null;
   createdAt: string;
-  commentList: Comment[] | null;
 }
