@@ -1,4 +1,3 @@
-import SideTravelTeam from '@/components/detail/SideTravelTeam';
 import useGetFindGuideDetail from '@/hooks/query/useGetFindGuideDetail';
 import { useParams } from 'react-router-dom';
 import { css } from '@emotion/react';
@@ -6,6 +5,7 @@ import Title from '@/components/detail/Title';
 import Thumbnail from '@/components/detail/Thumbnail';
 import Introduction from '@/components/detail/Introduction';
 import CommentContainer from '@/components/findGuideDetail/CommentContainer';
+import SideBar from '@/components/findGuideDetail/SideBar';
 
 const FindGuideDetail = () => {
   const { guidePostId } = useParams();
@@ -13,7 +13,7 @@ const FindGuideDetail = () => {
 
   if (!findGuideData) return null;
 
-  const { title, createdAt, thumbnail, content, team } = findGuideData;
+  const { title, createdAt, thumbnail, content, team, author } = findGuideData;
 
   return (
     <div css={container}>
@@ -23,7 +23,7 @@ const FindGuideDetail = () => {
         <Introduction content={content} />
         {guidePostId && <CommentContainer guidePostId={guidePostId} />}
       </div>
-      <div css={sideWrapper}>{team && <SideTravelTeam teams={team} />}</div>
+      <SideBar team={team} author={author} />
     </div>
   );
 };
@@ -41,9 +41,4 @@ const detailWrapper = css`
   flex-direction: column;
   gap: 20px;
   color: #333;
-`;
-
-const sideWrapper = css`
-  width: 340px;
-  margin-top: 82px;
 `;
