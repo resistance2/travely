@@ -1,15 +1,12 @@
-import { useNavigateToTravelList } from '@/hooks/custom/useNavigateToTravelList';
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 
 const Nav: React.FC<{ light?: boolean }> = ({ light = false }) => {
-  const navigateToTravelList = useNavigateToTravelList();
-
   return (
     <nav css={nav(light)}>
       <ul>
         <li>
-          <p onClick={() => navigateToTravelList()}>함께 떠나요</p>
+          <Link to="/travel-list">함께 떠나요</Link>
         </li>
         <li>
           <Link to="/find-guide">가이드 찾아요</Link>
@@ -33,9 +30,6 @@ const nav = (light: boolean) => css`
       &:hover {
         color: ${!light && '#333'};
         transition: color 0.2s ease-in-out;
-      }
-      p {
-        cursor: pointer;
       }
     }
   }

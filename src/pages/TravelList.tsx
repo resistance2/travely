@@ -8,7 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import SkeletonTravelCard from '@/components/SkeletonTravelCard';
 import scrollToTop from '@/utils/scrollToTop';
 import useGetTravelList from '@/hooks/query/useGetTravelList';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { IGetTravelListReturn } from '@/api/travelList/getTravelList';
 
@@ -21,10 +21,30 @@ type TravelListInfiniteQueryData = InfiniteQueryData<IGetTravelListReturn>;
 const TravelList = () => {
   const queryClient = useQueryClient();
   const location = useLocation();
-  const beforeTag = location.state;
   const path = location.pathname.split('/').filter((item) => item !== '')[1] || '전체';
   const currentTag = tagDatas.find((data) => data.path === path) || { name: '전체', path: '전체' };
   const { name: pageTitle, path: searchTag } = currentTag;
+
+  const resetQueryData = useCallback(
+    (key: string) => {
+      console.log(key);
+      queryClient.setQueryData<TravelListInfiniteQueryData>(['travelList', key], (data) => {
+        if (data) {
+          return {
+            pages: data.pages.slice(0, 1),
+            pageParams: data.pageParams.slice(0, 1),
+          };
+        }
+        return undefined;
+      });
+    },
+    [queryClient],
+  );
+
+  useEffect(() => {
+    resetQueryData(path);
+  }, [path, resetQueryData]);
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTravelList({
     tag: searchTag,
   });
@@ -32,24 +52,15 @@ const TravelList = () => {
   const { ref } = useInView({
     threshold: 1,
     skip: !hasNextPage,
-    onChange: (inView) => {
-      if (inView && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
-      }
-    },
+    onChange: useCallback(
+      (inView: boolean) => {
+        if (inView && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      [hasNextPage, isFetchingNextPage, fetchNextPage],
+    ),
   });
-
-  useEffect(() => {
-    queryClient.setQueryData<TravelListInfiniteQueryData>(['travelList', beforeTag], (oldData) => {
-      if (!oldData) return undefined;
-
-      return {
-        ...oldData,
-        pages: oldData.pages.slice(0, 1), // 첫 번째 페이지 데이터만 유지
-        pageParams: oldData.pageParams.slice(0, 1),
-      };
-    });
-  }, [beforeTag, queryClient]);
 
   if (!data) {
     return <p>loading</p>;

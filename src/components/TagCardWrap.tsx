@@ -1,5 +1,6 @@
 import { tagDatas } from '@/data/tagDatas';
 import { css } from '@emotion/react';
+import { Link } from 'react-router-dom';
 import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -9,7 +10,6 @@ import 'swiper/css/scrollbar';
 import FiledBtn from '@/components/FiledBtn';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
-import { useNavigateToTravelList } from '@/hooks/custom/useNavigateToTravelList';
 
 interface ITagCardWrap {
   shape?: 'round' | 'square';
@@ -19,24 +19,20 @@ const tags = tagDatas;
 function TagCardWrap({ shape = 'round' }: ITagCardWrap) {
   const [isEnd, setIsEnd] = useState(false);
   const [isBeginning, setIsBeginning] = useState(true);
-  const navigateToTravelList = useNavigateToTravelList();
 
   if (shape === 'round') {
     return (
       <ul css={tagCardWrap}>
-        {tags.map((tag, i) => {
-          const { name, imgSrc, path } = tag;
-          return (
-            <li key={i}>
+        {tags.map((tag, i) => (
+          <li key={i}>
+            <Link to={`/travel-list/${tag.path}`}>
               <div className="tag-img">
-                <img src={imgSrc} alt={name} />
+                <img src={tag.imgSrc} alt={tag.name} />
               </div>
-              <p className="tag-name" onClick={() => navigateToTravelList(path)}>
-                {name}
-              </p>
-            </li>
-          );
-        })}
+              <p className="tag-name">{tag.name}</p>
+            </Link>
+          </li>
+        ))}
       </ul>
     );
   } else {
@@ -72,21 +68,20 @@ function TagCardWrap({ shape = 'round' }: ITagCardWrap) {
             disableOnInteraction: false,
           }}
         >
-          {tags.map((tag, i) => {
-            const { name, imgSrc, path } = tag;
-            return (
-              <SwiperSlide key={i}>
-                <div className="card">
-                  <div className="card-img" onClick={() => navigateToTravelList(path)}>
-                    <img src={imgSrc} alt={name} />
+          {tags.map((tag, i) => (
+            <SwiperSlide key={i}>
+              <div className="card">
+                <Link to={`/travel-list/${tag.path}`}>
+                  <div className="card-img">
+                    <img src={tag.imgSrc} alt={tag.name} />
                   </div>
 
-                  <p>{name}</p>
+                  <p>{tag.name}</p>
                   <FiledBtn children="둘러보기" color="#fff" size="sm" />
-                </div>
-              </SwiperSlide>
-            );
-          })}
+                </Link>
+              </div>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     );
