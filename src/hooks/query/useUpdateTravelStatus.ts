@@ -1,5 +1,5 @@
 import updateTravelActiveStatus from '@/api/myCreatedTravel/updateTravelActiveStatus';
-import { MANAGE_TRAVEL, MY_CREATED_TRAVEL } from '@/constants/queyKey';
+import { MANAGE_TRAVEL, MY_CREATED_TRAVEL } from '@/constants/queryKey';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useUpdateTravelStatus = () => {

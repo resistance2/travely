@@ -1,7 +1,7 @@
 import GuideCard from '@/components/findGuideList/GuideCard';
 import TagCardWrap from '@/components/TagCardWrap';
 import TravelCard from '@/components/traveList/TravelCard';
-import { HOME_GUIDE_LIST, HOME_TRAVEL_LIST } from '@/constants/queyKey';
+import { HOME_GUIDE_LIST, HOME_TRAVEL_LIST } from '@/constants/queryKey';
 import { SERVER } from '@/constants/url';
 // import travelCardMockData from '@/data/travelCardMockData';
 import useUserStore from '@/stores/useUserStore';

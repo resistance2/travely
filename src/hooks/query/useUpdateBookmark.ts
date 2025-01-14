@@ -1,5 +1,5 @@
 import updateBookmark from '@/api/travelDetail/updateBookmark';
-import { TRAVEL_DETAIL } from '@/constants/queyKey';
+import { TRAVEL_DETAIL } from '@/constants/queryKey';
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
 interface MutationProps {

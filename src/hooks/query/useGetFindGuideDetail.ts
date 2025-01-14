@@ -1,5 +1,5 @@
 import getFindGuideDetail from '@/api/findGuideDetail/getFindGuideDetail';
-import { FIND_GUIDE_DETAIL } from '@/constants/queyKey';
+import { FIND_GUIDE_DETAIL } from '@/constants/queryKey';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetFindGuideDetail = (guidePostId: string) => {

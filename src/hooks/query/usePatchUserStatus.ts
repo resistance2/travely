@@ -1,6 +1,6 @@
 import patchUserStatus from '@/api/manageTravel/patchUserStatus';
 import { ShowToast } from '@/components/Toast';
-import { MANAGE_TRAVEL_TEAMS } from '@/constants/queyKey';
+import { MANAGE_TRAVEL_TEAMS } from '@/constants/queryKey';
 import useModalStore from '@/stores/useModalStore';
 import { TravelTeamData } from '@/types/travelDataType';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
