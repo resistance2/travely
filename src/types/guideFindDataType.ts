@@ -19,7 +19,8 @@ export interface Author {
   userId: string;
   userProfileImage: string;
   socialName: string;
-  userScore: number | null;
+  userScore: number;
+  userEmail: string;
 }
 
 export interface Comment {
@@ -47,6 +48,6 @@ export interface FindGuideDetailData {
   title: string;
   content: string;
   thumbnail: string | null;
-  team: DetailTeam[] | null;
+  team: DetailTeam[];
   createdAt: string;
 }
