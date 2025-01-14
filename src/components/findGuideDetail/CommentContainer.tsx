@@ -18,16 +18,20 @@ const CommentContainer = ({ guidePostId }: CommentContainerProps) => {
     refetch();
   };
 
+  if (!commentData) return null;
+
+  const { pageInfo, commentList } = commentData;
+
   return (
     <div css={container}>
       <h2>댓글</h2>
       <WritingComment guidePostId={guidePostId} />
       <div css={listWrapper}>
-        {commentData?.pageInfo && commentData?.commentList ? (
+        {pageInfo && commentList?.length > 0 ? (
           <>
-            <CommentList commentListData={commentData.commentList} guidePostId={guidePostId} />
+            <CommentList commentListData={commentList} guidePostId={guidePostId} />
             <Pagination
-              count={commentData.pageInfo.totalPages || 0}
+              count={pageInfo.totalPages || 0}
               page={currentPage}
               onChange={handlePage}
               color="primary"
