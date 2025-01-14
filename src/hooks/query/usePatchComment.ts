@@ -1,6 +1,6 @@
 import patchComment from '@/api/findGuideDetail/patchComment';
 import { ShowToast } from '@/components/Toast';
-import { COMMENT_LIST } from '@/constants/queyKey';
+import { COMMENT_LIST } from '@/constants/queryKey';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 

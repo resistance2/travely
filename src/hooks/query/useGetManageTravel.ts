@@ -1,5 +1,5 @@
 import getManageTravel from '@/api/manageTravel/getManageTravel';
-import { MANAGE_TRAVEL } from '@/constants/queyKey';
+import { MANAGE_TRAVEL } from '@/constants/queryKey';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetManageTravel = (travelId: string) => {

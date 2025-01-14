@@ -1,6 +1,6 @@
 import postComment from '@/api/findGuideDetail/postComment';
 import { ShowToast } from '@/components/Toast';
-import { COMMENT_LIST } from '@/constants/queyKey';
+import { COMMENT_LIST } from '@/constants/queryKey';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface UsePostCommentProps {

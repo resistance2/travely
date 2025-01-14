@@ -1,6 +1,6 @@
 import deleteComment from '@/api/findGuideDetail/deleteComment';
 import { ShowToast } from '@/components/Toast';
-import { COMMENT_LIST } from '@/constants/queyKey';
+import { COMMENT_LIST } from '@/constants/queryKey';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useDeleteComment = (guidePostId: string) => {

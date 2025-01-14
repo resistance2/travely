@@ -1,5 +1,5 @@
 import getMyCreatedTravel from '@/api/myCreatedTravel/getMycreatedTravel';
-import { MY_CREATED_TRAVEL } from '@/constants/queyKey';
+import { MY_CREATED_TRAVEL } from '@/constants/queryKey';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetMyCreatedTravel = (userId: string) => {
