@@ -62,7 +62,7 @@ const TravelList = () => {
   });
 
   if (!data) {
-    return <p>loading</p>;
+    return <></>;
   }
 
   const cardDatas = data.pages.flatMap((page) => page.cardDatas);
@@ -79,9 +79,11 @@ const TravelList = () => {
       </div>
 
       <div className="card-wrap">
-        {cardDatas.map((cardData, i) => (
-          <TravelCard cardData={cardData} key={i} />
-        ))}
+        {cardDatas.length === 0 ? (
+          <p>데이터가 없습니다</p>
+        ) : (
+          cardDatas.map((cardData, i) => <TravelCard cardData={cardData} key={i} />)
+        )}
         {isFetchingNextPage && <SkeletonTravelCard />}
       </div>
 
