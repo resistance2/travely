@@ -27,7 +27,6 @@ const TravelList = () => {
 
   const resetQueryData = useCallback(
     (key: string) => {
-      console.log(key);
       queryClient.setQueryData<TravelListInfiniteQueryData>(['travelList', key], (data) => {
         if (data) {
           return {
