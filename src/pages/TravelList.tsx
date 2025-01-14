@@ -41,8 +41,8 @@ const TravelList = () => {
   );
 
   useEffect(() => {
-    resetQueryData(path);
-  }, [path, resetQueryData]);
+    resetQueryData(searchTag);
+  }, [searchTag, resetQueryData]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTravelList({
     tag: searchTag,
