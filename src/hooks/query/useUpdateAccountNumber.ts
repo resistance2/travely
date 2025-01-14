@@ -25,6 +25,7 @@ const useUpdateAccountNumber = () => {
         const updatedUser = {
           ...prevUser,
           accountNumber: variable.accountNumber,
+          bankCode: variable.bankCode,
         };
         return updatedUser;
       });

@@ -7,6 +7,7 @@ export type User = {
   MBTI?: string;
   phoneNumber?: string;
   accountNumber?: string;
+  bankCode?: string;
 
   // myCreatedTravel: string[];
   // myPassedTravel: string[];

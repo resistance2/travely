@@ -17,6 +17,7 @@ import FindGuideList from '@/pages/FindGuideList';
 import AddForFindGuide from '@/pages/AddForFindGuide';
 import MyFindGuide from '@/pages/MyFindGuide';
 import FindGuideDetail from '@/pages/FindGuideDetail';
+import MyBankAccount from '@/components/myPage/MyBankAccount';
 
 const PATH = {
   HOME: '/',
@@ -68,7 +69,7 @@ const router = createBrowserRouter([
                 ),
               },
               {
-                path: 'my-created-travel', // 내가 만든 여행 페이지 경로 추가
+                path: 'my-created-travel',
                 element: (
                   <div>
                     <MyCreatedTravel />
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
                     <h1>마이페이지-받은 문의</h1>
                   </div>
                 ),
+              },
+              {
+                path: 'my-bank-account',
+                element: <MyBankAccount />,
               },
             ],
           },

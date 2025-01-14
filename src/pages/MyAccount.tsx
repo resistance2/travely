@@ -2,37 +2,33 @@ import BorderBtn from '@/components/BorderBtn';
 import { auth } from '@/firebase';
 import useModalStore from '@/stores/useModalStore';
 import useUserStore from '@/stores/useUserStore';
-import { signOut } from 'firebase/auth';
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from '@emotion/styled';
-import { Camera } from 'lucide-react';
 import {
-  normalizePhoneNumber,
   formatPhoneNumber,
   isValidPhoneNumber,
+  normalizePhoneNumber,
 } from '@/utils/phoneValidation';
+import styled from '@emotion/styled';
+import { signOut } from 'firebase/auth';
+import { Camera } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import useUpdateProfile from '@/hooks/query/useUpdateProfile';
 import Toast, { ShowToast } from '@/components/Toast';
-import useUpdateAccountNumber from '@/hooks/query/useUpdateAccountNumber';
+import useUpdateProfile from '@/hooks/query/useUpdateProfile';
 
 const MyAccount = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore((state) => state);
   const setModalName = useModalStore((state) => state.setModalName);
   const [isEditing, setIsEditing] = useState(false);
-  const [isAccountEditing, setIsAccountEditing] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber || '');
   const [mbti, setMbti] = useState(user?.MBTI || '');
-  const [accountNumber, setAccountNumber] = useState(user?.accountNumber || '');
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(
     user?.userProfileImage || null,
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateProfile = useUpdateProfile();
-  const updateAccountNumber = useUpdateAccountNumber();
 
   const logout = async () => {
     try {
@@ -50,10 +46,6 @@ const MyAccount = () => {
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedPhone = formatPhoneNumber(e.target.value);
     setPhoneNumber(formattedPhone);
-  };
-
-  const handleAccountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAccountNumber(e.target.value);
   };
 
   useEffect(() => {
@@ -87,16 +79,7 @@ const MyAccount = () => {
   };
 
   const handleAccountEdit = () => {
-    setIsAccountEditing(true);
-  };
-
-  const handleAccountSave = () => {
-    updateAccountNumber.mutate({
-      userId: user?.userId || '',
-      accountNumber,
-      bankCode: '004',
-    });
-    setIsAccountEditing(false);
+    navigate('/my-page/my-bank-account');
   };
 
   const handleCameraClick = () => {
@@ -143,21 +126,13 @@ const MyAccount = () => {
         </Details>
         <Details>
           <Title>계좌 번호</Title>
-          {isAccountEditing ? (
-            <Content>
-              <Input type="text" value={accountNumber} onChange={handleAccountChange} />
-              <BorderBtn color="gray" size="sm" onClick={handleAccountSave}>
-                저장
-              </BorderBtn>
-            </Content>
-          ) : (
-            <Content>
-              {user?.accountNumber || '미등록'}
-              <BorderBtn color="gray" size="sm" onClick={handleAccountEdit}>
-                계좌 관리
-              </BorderBtn>
-            </Content>
-          )}
+
+          <Content>
+            {user?.accountNumber || '미등록'}
+            <BorderBtn color="gray" size="sm" onClick={handleAccountEdit}>
+              계좌 관리
+            </BorderBtn>
+          </Content>
         </Details>
         <Details>
           <Title>전화번호</Title>
@@ -299,8 +274,8 @@ const Select = styled.select`
   appearance: none;
   background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><path fill="gray" d="M0 3l5 5 5-5H0z"/></svg>');
   background-repeat: no-repeat;
-  background-position: right 10px center; /* 화살표 위치 조정 */
-  background-size: 14px; /* 화살표 크기 조정 */
+  background-position: right 10px center;
+  background-size: 14px;
   cursor: pointer;
 
   &:focus {
