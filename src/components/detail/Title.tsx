@@ -15,9 +15,9 @@ const Title = ({ title, rating, reviewCount, createdAt }: TitleProps) => {
       <h1>{title}</h1>
       <div css={optionsWrapper}>
         <div>
-          {rating && !Number.isNaN(reviewCount) && (
+          {rating || rating === 0 ? (
             <Rating size="large" rating={rating} reviewCount={reviewCount} />
-          )}
+          ) : null}
         </div>
         {createdAt && <span>게시일: {formatDate(createdAt)}</span>}
       </div>

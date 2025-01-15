@@ -11,7 +11,7 @@ const Introduction = ({ content }: { content: string }) => {
   const safeContent = DOMPurify.sanitize(content);
 
   return (
-    <div css={container}>
+    <div>
       <GrayBack title={'여행 소개'}>
         <div
           ref={heightRef}
@@ -25,12 +25,6 @@ const Introduction = ({ content }: { content: string }) => {
 };
 
 export default Introduction;
-
-const container = css`
-  p {
-    font-weight: 600;
-  }
-`;
 
 const wrapper = (isOpen: boolean) => css`
   ${!isOpen &&

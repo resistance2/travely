@@ -128,6 +128,7 @@ const scheduleWrapper = css`
   & p {
     margin: 15px 0 5px;
     font-size: 18px;
+    font-weight: 600;
   }
 `;
 

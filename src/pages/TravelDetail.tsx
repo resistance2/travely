@@ -6,10 +6,12 @@ import Introduction from '@/components/detail/Introduction';
 import { useParams } from 'react-router-dom';
 import useGetTravelDetail from '@/hooks/query/useGetTravelDetail';
 import SideBar from '@/components/travelDetail/SideBar';
+import useUserStore from '@/stores/useUserStore';
 
 const TravelDetail = () => {
   const { travelId } = useParams();
-  const { data: travelData } = useGetTravelDetail(travelId as string);
+  const user = useUserStore((state) => state.user);
+  const { data: travelData } = useGetTravelDetail(travelId as string, user ? user.userId : null);
 
   if (!travelData) return null;
 
@@ -18,7 +20,7 @@ const TravelDetail = () => {
       <TravelInformation>
         <Title
           title={travelData.title}
-          rating={travelData.totalRating}
+          rating={travelData.totalRating || 0}
           reviewCount={travelData.reviews?.length || 0}
         />
         <Thumbnail thumbnail={travelData.thumbnail} tag={travelData.tag} />

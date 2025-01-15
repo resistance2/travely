@@ -62,6 +62,7 @@ const courseWrapper = css`
   & p {
     margin: 15px 0 5px;
     font-size: 18px;
+    font-weight: 600;
   }
 `;
 const courseItem = css`

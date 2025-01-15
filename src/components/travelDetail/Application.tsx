@@ -6,6 +6,8 @@ import { GuideData, TravelTeamData } from '@/types/travelDataType';
 import FiledBtn from '../FiledBtn';
 import { formatDate } from '@/utils/format';
 import useUpdateBookmark from '@/hooks/query/useUpdateBookmark';
+import useUserStore from '@/stores/useUserStore';
+import { ShowToast } from '../Toast';
 
 interface ApplicationProps {
   travelId: string;
@@ -18,9 +20,19 @@ interface ApplicationProps {
 
 const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: ApplicationProps) => {
   const { mutate } = useUpdateBookmark();
+  const user = useUserStore((state) => state.user);
 
   const handleBookmark = () => {
-    mutate({ userId: guide.userId, travelId, isBookmark });
+    if (!user) {
+      ShowToast('로그인 후 이용 가능합니다.', 'failed');
+      return;
+    }
+    if (user.userId === guide.userId) {
+      ShowToast('자신의 글은 북마크 할 수 없습니다.', 'failed');
+      return;
+    } else {
+      mutate({ userId: user.userId, travelId, isBookmark: !isBookmark });
+    }
   };
 
   return (
