@@ -21,7 +21,7 @@ const useUpdateAccountNumber = () => {
       const userId = variable.userId;
       queryClient.invalidateQueries({ queryKey: ['myAccount', userId] });
       setUser((prevUser) => {
-        if (!prevUser) return null;
+        if (!prevUser) throw new Error('사용자 정보가 없습니다');
         const updatedUser = {
           ...prevUser,
           accountNumber: variable.accountNumber,
