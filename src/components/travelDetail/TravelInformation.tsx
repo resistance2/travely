@@ -150,7 +150,6 @@ const courseWrapper = css`
   gap: 10px;
   p {
     ${text};
-    margin-top: 10px;
   }
   div {
     display: flex;
@@ -166,7 +165,6 @@ const noticeWrapper = css`
   margin-bottom: 10px;
   div {
     display: flex;
-    margin: 10px 0;
     img {
       width: 20px;
       height: 20px;
@@ -187,7 +185,6 @@ const meetingWrapper = css`
   gap: 10px;
   p {
     ${text};
-    margin-top: 10px;
   }
   span {
     display: flex;
