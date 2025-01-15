@@ -19,7 +19,10 @@ const MyBankAccount = () => {
   };
 
   const handleAccountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAccountNumber(e.target.value);
+    const value = e.target.value;
+    // 숫자만 허용
+    const onlyNumbers = value.replace(/\D/g, '');
+    setAccountNumber(onlyNumbers);
   };
 
   const handleSaveClick = () => {
@@ -58,7 +61,12 @@ const MyBankAccount = () => {
       </Details>
       <Details>
         <Title>계좌 번호</Title>
-        <Input type="text" placeholder={accountNumber} onChange={handleAccountChange} />
+        <Input
+          type="text"
+          placeholder="계좌번호를 입력해주세요"
+          value={accountNumber}
+          onChange={handleAccountChange}
+        />
       </Details>
       <BorderBtn
         color={isButtonEnabled ? '#4a95f2' : '#ccc'}
