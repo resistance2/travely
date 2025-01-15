@@ -39,7 +39,7 @@ export interface PageInfo {
 }
 
 export interface CommentData {
-  commentList: Comment[] | null;
+  commentList: Comment[];
   pageInfo: PageInfo;
 }
 
