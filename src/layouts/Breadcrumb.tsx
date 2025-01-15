@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const breadcrumbsMap: { [key: string]: string } = {
   'travel-list': '함께 떠나요',
-  'add-travel': '새로운 여행 계획하기',
+  'add-travel': '글 작성',
   bookmark: '북마크',
   'my-page': '마이페이지',
   'my-reviews': '작성한 후기',
@@ -17,6 +17,8 @@ const breadcrumbsMap: { [key: string]: string } = {
   'my-travel': '내 여행',
   'travel-detail': '여행 상세',
   'find-guide': '가이드 찾아요',
+  'add-for-find-guide': '글 작성',
+  'find-guide-detail': '여행 상세',
 };
 
 const tagPath = tagDatas.map((tagData) => tagData.path);
@@ -24,9 +26,12 @@ const tagPath = tagDatas.map((tagData) => tagData.path);
 const BreadCrumb = () => {
   const location = useLocation();
   const paths = location.pathname.split('/').filter((item) => item !== '');
+
+  const filteredPaths = paths.filter((path) => breadcrumbsMap[path]);
+
   if (paths.length === 0) return null;
 
-  paths.forEach((path, _, arr) => {
+  filteredPaths.forEach((path, _, arr) => {
     if (path === 'add-travel' || path === 'travel-detail') {
       arr.unshift('travel-list');
     }
@@ -40,6 +45,9 @@ const BreadCrumb = () => {
     if (tagPath.includes(path as TagPath)) {
       arr.pop();
     }
+    if (path === 'add-for-find-guide' || path === 'find-guide-detail') {
+      arr.unshift('find-guide');
+    }
   });
 
   return (
@@ -49,7 +57,7 @@ const BreadCrumb = () => {
           홈 <ChevronRight size="10" />
         </Link>
       </li>
-      {paths.map((path, i) => {
+      {filteredPaths.map((path, i) => {
         let link = '/';
         link += `${path}/`;
         if (path === 'add-travel') {
@@ -70,7 +78,7 @@ const BreadCrumb = () => {
         return (
           <li key={i + 1}>
             <Link to={link}>{breadcrumbsMap[path]}</Link>
-            {i !== paths.length - 1 && <ChevronRight size="10" />}
+            {i !== filteredPaths.length - 1 && <ChevronRight size="10" />}
           </li>
         );
       })}

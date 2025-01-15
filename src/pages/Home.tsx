@@ -3,7 +3,6 @@ import TagCardWrap from '@/components/TagCardWrap';
 import TravelCard from '@/components/traveList/TravelCard';
 import { HOME_GUIDE_LIST, HOME_TRAVEL_LIST } from '@/constants/queryKey';
 import { SERVER } from '@/constants/url';
-// import travelCardMockData from '@/data/travelCardMockData';
 import useUserStore from '@/stores/useUserStore';
 import { IGuideCard } from '@/types/guideCardType';
 import { ITravelCard } from '@/types/travelCardType';
@@ -11,8 +10,6 @@ import { css } from '@emotion/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
-// const mockDatas = travelCardMockData;
 
 const Home = () => {
   const user = useUserStore((state) => state.user);
@@ -88,7 +85,7 @@ const Home = () => {
 
       <div className="card-wrap">
         <h3>
-          <Link to="/travel-list">🔥 가이드 찾아요 NEW</Link>
+          <Link to="/find-guide">🔥 가이드 찾아요 NEW</Link>
         </h3>
         <div className="grid">
           {guideData?.length === 0 ? (

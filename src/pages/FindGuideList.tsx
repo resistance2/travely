@@ -1,12 +1,55 @@
+import { IGetGuidelListReturn } from '@/api/guideList/getGuideList';
 import BorderBtn from '@/components/BorderBtn';
 import GuideCard from '@/components/findGuideList/GuideCard';
-import guideCardMockData from '@/data/guideCardMockData';
+import useGetGuideList from '@/hooks/query/useGetGuideList';
+import scrollToTop from '@/utils/scrollToTop';
 import { css } from '@emotion/react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
-const mockDatas = guideCardMockData;
+interface InfiniteQueryData<TPageData> {
+  pages: TPageData[];
+  pageParams: unknown[];
+}
+type GuideListInfiniteQueryData = InfiniteQueryData<IGetGuidelListReturn>;
 
 const FindGuide = () => {
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    queryClient.setQueryData<GuideListInfiniteQueryData>(['guideList'], (data) => {
+      if (data) {
+        return {
+          pages: data.pages.slice(0, 1),
+          pageParams: data.pageParams.slice(0, 1),
+        };
+      }
+      return undefined;
+    });
+  }, [queryClient]);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetGuideList();
+
+  const { ref } = useInView({
+    threshold: 1,
+    skip: !hasNextPage,
+    onChange: useCallback(
+      (inView: boolean) => {
+        if (inView && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      [hasNextPage, isFetchingNextPage, fetchNextPage],
+    ),
+  });
+
+  if (!data) {
+    return <></>;
+  }
+
+  const cardDatas = data.pages.flatMap((page) => page.cardDatas);
+  const currentPage = data.pages[data.pages.length - 1]?.currentPage;
+
   return (
     <div css={findGuideWrap}>
       <div className="page-title">
@@ -17,10 +60,25 @@ const FindGuide = () => {
       </div>
 
       <div className="card-wrap">
-        {mockDatas.map((data, i) => (
-          <GuideCard cardData={data} key={i} />
-        ))}
+        {cardDatas.length === 0 ? (
+          <p>데이터가 없습니다</p>
+        ) : (
+          cardDatas.map((data, i) => <GuideCard cardData={data} key={i} />)
+        )}
       </div>
+
+      {!hasNextPage && currentPage !== 1 && (
+        <BorderBtn
+          className="scroll-top"
+          color="#4a95f2"
+          size="full"
+          hover="filled"
+          onClick={() => scrollToTop()}
+        >
+          처음으로
+        </BorderBtn>
+      )}
+      <div className="inView-target" ref={ref}></div>
     </div>
   );
 };
@@ -44,5 +102,11 @@ const findGuideWrap = css`
     grid-template-columns: repeat(4, 250px);
     justify-content: space-between;
     gap: 20px 0;
+  }
+  .inView-target {
+    height: 1px;
+  }
+  .scroll-top {
+    margin-top: 30px;
   }
 `;
