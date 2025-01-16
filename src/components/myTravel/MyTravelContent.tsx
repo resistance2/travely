@@ -10,19 +10,6 @@ const MyCreatedContent = () => {
   const { user } = useUserStore((state) => state);
   const { data: myCreatedTravelData } = useGetMyCreatedTravel(user?.userId as string);
 
-  // const handleEnableCard = (index: number) => {
-  //   setTrips((prevTrips) =>
-  //     prevTrips.map((trip, i) => (i === index ? { ...trip, travelActive: true } : trip)),
-  //   );
-  // };
-  // const handleEnableCard2 = (selectedTravelId: string) => {
-  //   setTrips((prevTrips) =>
-  //     prevTrips.map((trip) =>
-  //       trip.travelId === selectedTravelId ? { ...trip, travelActive: true } : trip,
-  //     ),
-  //   );
-  // };
-
   return (
     <ScrollableContainer>
       {myCreatedTravelData?.travels.length > 0 ? (
@@ -81,6 +68,9 @@ const MyMadeTripsContainer = styled.div`
   gap: 40px;
 `;
 const EmptyMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   font-size: 18px;
   font-weight: bold;
   color: #555;
