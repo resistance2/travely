@@ -9,3 +9,4 @@ export const HOME_GUIDE_LIST = 'home-guide-list';
 export const FIND_GUIDE_DETAIL = 'find-guide-detail';
 export const COMMENT_LIST = 'comment-list';
 export const TRAVEL_LIST = 'travel-list';
+export const BOOKMARK_LIST = 'bookmark-list';

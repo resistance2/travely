@@ -1,10 +1,22 @@
+import { ShowToast } from '@/components/Toast';
 import TravelCard from '@/components/traveList/TravelCard';
+import useGetBookmarkList from '@/hooks/query/useGetBookmarkList';
 import { css } from '@emotion/react';
-import travelCardMockData from '@/data/travelCardMockData';
-
-const bookmarkMockDatas = travelCardMockData;
-
+import { useNavigate } from 'react-router-dom';
 const Bookmark = () => {
+  const navigate = useNavigate();
+  const { data, isLoading, isError } = useGetBookmarkList();
+
+  if (isLoading) {
+    return <></>;
+  }
+
+  if (isError) {
+    ShowToast('북막크 리스트를 불러오는데 오류가 발생했습니다.', 'failed');
+    navigate('/');
+    return null;
+  }
+
   return (
     <div css={bookmarkWrap}>
       <div className="page-title">
@@ -12,9 +24,11 @@ const Bookmark = () => {
       </div>
 
       <div className="card-wrap">
-        {bookmarkMockDatas.map((data, i) => (
-          <TravelCard cardData={data} key={i} />
-        ))}
+        {data && data.length === 0 ? (
+          <div>북마크를 추가해보세요!</div>
+        ) : (
+          data?.map((d, i) => <TravelCard cardData={d} key={i} />)
+        )}
       </div>
     </div>
   );
