@@ -1,4 +1,5 @@
 import getTravelList from '@/api/travelList/getTravelList';
+import { TRAVEL_LIST } from '@/constants/queryKey';
 import { TagPath } from '@/types/tagType';
 import { useInfiniteQuery } from '@tanstack/react-query';
 interface IUseGetTravelList {
@@ -9,7 +10,7 @@ const useGetTravelList = ({ tag }: IUseGetTravelList) => {
   const pageSize = 8;
 
   return useInfiniteQuery({
-    queryKey: ['travelList', tag],
+    queryKey: [TRAVEL_LIST, tag],
     queryFn: ({ pageParam }) => {
       return getTravelList({ page: pageParam, size: pageSize, tag });
     },
