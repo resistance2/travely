@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import useUserStore from '@/stores/useUserStore';
 import useGetMyJoinedTravel from '@/hooks/query/useGetMyJoinedTravel';
 import { myJoinedTravel } from '@/types/myJoinedTravel';
+import ReviewWriteModal from '@/components/myReview/ReviewWriteModal';
 
 // 남은 일수 계산 함수
 const calculateDaysRemaining = (endDateString: string) => {
@@ -70,7 +71,12 @@ const MyJoinedContent = () => {
             <CurrentUserStatus>
               {/* D-DAY이면서 승인 상태고 후기가 작성되지 않은 경우 후기 작성 버튼 */}
               {isPast && currentUser.status === 'approved' && !reviewWritten && (
-                <ReviewButton>후기 작성</ReviewButton>
+                <ReviewWriteModal
+                  reviewTitle={travelData.travelTitle}
+                  guideName={guide.socialName}
+                  userName={user?.socialName as string}
+                  imgURL={travelData.guideInfo.userProfileImg}
+                />
               )}
 
               {/* D-DAY이면서 후기가 작성된 경우 여행 완료 메시지 */}
@@ -149,23 +155,23 @@ const DateInfo = styled.div`
 
 const CurrentUserStatus = styled.div`
   display: flex;
-  justify-content: flex-end;
-  margin-top: 18px;
+  justify-content: center;
+  margin-top: 10px;
   font-size: 14px;
   font-weight: bold;
   color: #444;
 `;
 
-const ReviewButton = styled.button`
-  background-color: #4a95f2;
-  width: 100%;
-  color: white;
-  padding: 4px 0;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-`;
+// const ReviewButton = styled.button`
+//   background-color: #4a95f2;
+//   width: 100%;
+//   color: white;
+//   padding: 4px 0;
+//   border: none;
+//   border-radius: 8px;
+//   cursor: pointer;
+//   font-size: 14px;
+// `;
 
 const CompletionMessage = styled.div`
   font-size: 14px;
