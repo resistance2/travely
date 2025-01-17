@@ -4,6 +4,8 @@ import styled from '@emotion/styled';
 import useUserStore from '@/stores/useUserStore';
 import useGetMyJoinedTravel from '@/hooks/query/useGetMyJoinedTravel';
 import { myJoinedTravel } from '@/types/myJoinedTravel';
+import BorderBtn from '../BorderBtn';
+import { Link } from 'react-router-dom';
 
 // 남은 일수 계산 함수
 const calculateDaysRemaining = (endDateString: string) => {
@@ -28,66 +30,75 @@ const MyJoinedContent = () => {
 
   return (
     <GridContainer>
-      {myJoinedTravelData?.travels?.map((travelData: myJoinedTravel) => {
-        const currentUser = travelData.currentUserStatus; // 현재 사용자 정보
-        const guide = travelData.guideInfo; // 가이드 정보
-        const daysRemaining = calculateDaysRemaining(travelData.travelTeam.travelEndDate); // 남은 일수 계산
-        const isPast = daysRemaining === 'D-day'; // D-0이 지났는지 확인
-        const reviewWritten = travelData.reviewWritten;
+      {myJoinedTravelData?.travels.length > 0 ? (
+        myJoinedTravelData?.travels?.map((travelData: myJoinedTravel) => {
+          const currentUser = travelData.currentUserStatus; // 현재 사용자 정보
+          const guide = travelData.guideInfo; // 가이드 정보
+          const daysRemaining = calculateDaysRemaining(travelData.travelTeam.travelEndDate); // 남은 일수 계산
+          const isPast = daysRemaining === 'D-day'; // D-0이 지났는지 확인
+          const reviewWritten = travelData.reviewWritten;
 
-        return (
-          <TripCardContainer key={travelData.id} isPast={isPast && reviewWritten}>
-            <Header>
-              <Title>{travelData.travelTitle}</Title>
-              {/* 예약이 거절된 상태면 "취소됨"을 표시, 아닌 경우 D-DAY 표시 */}
-              {currentUser.status === 'refused' ? (
-                <StatusCanceled>취소됨</StatusCanceled>
-              ) : (
-                <DaysRemaining>{daysRemaining}</DaysRemaining>
-              )}
-            </Header>
-            <UserInfoContainer>
-              <GuideProfile
-                name={guide.socialName}
-                userEmailId={guide.userEmail}
-                imgURL={guide.userProfileImg}
-                rating={guide.userRating}
+          return (
+            <TripCardContainer key={travelData.id} isPast={isPast && reviewWritten}>
+              <Header>
+                <Title>{travelData.travelTitle}</Title>
+                {/* 예약이 거절된 상태면 "취소됨"을 표시, 아닌 경우 D-DAY 표시 */}
+                {currentUser.status === 'refused' ? (
+                  <StatusCanceled>취소됨</StatusCanceled>
+                ) : (
+                  <DaysRemaining>{daysRemaining}</DaysRemaining>
+                )}
+              </Header>
+              <UserInfoContainer>
+                <GuideProfile
+                  name={guide.socialName}
+                  userEmailId={guide.userEmail}
+                  imgURL={guide.userProfileImg}
+                  rating={guide.userRating}
+                />
+              </UserInfoContainer>
+
+              <DateInfo>
+                {formatDateRange(
+                  travelData.travelTeam.travelStartDate,
+                  travelData.travelTeam.travelEndDate,
+                )}
+              </DateInfo>
+
+              <Team
+                max={travelData.travelTeam.personLimit}
+                mbtiList={travelData.travelTeam.approvedMembersMbti.mbti}
               />
-            </UserInfoContainer>
 
-            <DateInfo>
-              {formatDateRange(
-                travelData.travelTeam.travelStartDate,
-                travelData.travelTeam.travelEndDate,
-              )}
-            </DateInfo>
+              <CurrentUserStatus>
+                {/* D-DAY이면서 승인 상태고 후기가 작성되지 않은 경우 후기 작성 버튼 */}
+                {isPast && currentUser.status === 'approved' && !reviewWritten && (
+                  <ReviewButton>후기 작성</ReviewButton>
+                )}
 
-            <Team
-              max={travelData.travelTeam.personLimit}
-              mbtiList={travelData.travelTeam.approvedMembersMbti.mbti}
-            />
-
-            <CurrentUserStatus>
-              {/* D-DAY이면서 승인 상태고 후기가 작성되지 않은 경우 후기 작성 버튼 */}
-              {isPast && currentUser.status === 'approved' && !reviewWritten && (
-                <ReviewButton>후기 작성</ReviewButton>
-              )}
-
-              {/* D-DAY이면서 후기가 작성된 경우 여행 완료 메시지 */}
-              {isPast && reviewWritten && <CompletionMessage>여행 완료</CompletionMessage>}
-              {isPast && currentUser.status === 'refused' && <p>예약 취소</p>}
-              {/* 아직 D-DAY가 지나지 않은 경우 예약 상태 표시 */}
-              {!isPast && (
-                <>
-                  {currentUser.status === 'approved' && <p>예약 완료</p>}
-                  {currentUser.status === 'waiting' && <p>예약 대기</p>}
-                  {currentUser.status === 'refused' && <p>예약 취소</p>}
-                </>
-              )}
-            </CurrentUserStatus>
-          </TripCardContainer>
-        );
-      })}
+                {/* D-DAY이면서 후기가 작성된 경우 여행 완료 메시지 */}
+                {isPast && reviewWritten && <CompletionMessage>여행 완료</CompletionMessage>}
+                {isPast && currentUser.status === 'refused' && <p>예약 취소</p>}
+                {/* 아직 D-DAY가 지나지 않은 경우 예약 상태 표시 */}
+                {!isPast && (
+                  <>
+                    {currentUser.status === 'approved' && <p>예약 완료</p>}
+                    {currentUser.status === 'waiting' && <p>예약 대기</p>}
+                    {currentUser.status === 'refused' && <p>예약 취소</p>}
+                  </>
+                )}
+              </CurrentUserStatus>
+            </TripCardContainer>
+          );
+        })
+      ) : (
+        <EmptyMessage>
+          여행에 참여해주세요
+          <BorderBtn color="#4a95f2">
+            <Link to="/travel-list">여행 참여하기</Link>
+          </BorderBtn>
+        </EmptyMessage>
+      )}
     </GridContainer>
   );
 };
@@ -170,4 +181,14 @@ const ReviewButton = styled.button`
 const CompletionMessage = styled.div`
   font-size: 14px;
   font-weight: bold;
+`;
+
+const EmptyMessage = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #555;
+  margin: 20px 0;
 `;

@@ -30,6 +30,10 @@ const MyAccount = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateProfile = useUpdateProfile();
 
+  const originalPhoneNumber = user?.phoneNumber || '';
+  const originalMbti = user?.MBTI || '';
+  const originalProfileImage = user?.userProfileImage || null;
+
   const logout = async () => {
     try {
       await signOut(auth);
@@ -46,6 +50,13 @@ const MyAccount = () => {
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedPhone = formatPhoneNumber(e.target.value);
     setPhoneNumber(formattedPhone);
+  };
+
+  const handleCancelEdit = () => {
+    setPhoneNumber(originalPhoneNumber);
+    setMbti(originalMbti);
+    setProfileImagePreview(originalProfileImage);
+    setIsEditing(false);
   };
 
   useEffect(() => {
@@ -175,9 +186,14 @@ const MyAccount = () => {
       </UserDetails>
       <EditProfile>
         {isEditing ? (
-          <BorderBtn color="#4a95f2" size="sm" onClick={handleSaveClick}>
-            저장
-          </BorderBtn>
+          <>
+            <BorderBtn color="gray" size="sm" onClick={handleCancelEdit}>
+              취소
+            </BorderBtn>
+            <BorderBtn color="#4a95f2" size="sm" onClick={handleSaveClick}>
+              저장
+            </BorderBtn>
+          </>
         ) : (
           <BorderBtn color="#4a95f2" size="sm" onClick={handleEditClick}>
             프로필 수정
