@@ -13,7 +13,7 @@ import { Camera } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Toast, { ShowToast } from '@/components/Toast';
+import { ShowToast } from '@/components/Toast';
 import useUpdateProfile from '@/hooks/query/useUpdateProfile';
 
 const MyAccount = () => {
@@ -201,7 +201,6 @@ const MyAccount = () => {
         )}
       </EditProfile>
       <Logout>{user && <LogoutBtn onClick={logout}>로그아웃</LogoutBtn>}</Logout>
-      <Toast />
     </MyAccountWrap>
   );
 };
