@@ -1,33 +1,40 @@
 import { theme } from '@/styles/theme';
 import { css } from '@emotion/react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
-const sideMeunItems = [
+const sideMenuItems = [
   {
     name: '계정',
-    to: 'my-account',
+    activePaths: ['my-account'],
   },
   {
     name: '내 여행',
-    to: 'my-travel-list',
+    activePaths: ['my-travel-list', 'my-created-travel'],
   },
   {
     name: '작성 후기',
-    to: 'my-reviews',
+    activePaths: ['my-reviews'],
   },
   {
     name: '가이드 찾아요',
-    to: 'my-find-guide',
+    activePaths: ['my-find-guide'],
   },
 ];
 
 const MyPageSideMenu = () => {
+  const location = useLocation();
+
   return (
     <nav css={sideMenuStyle}>
       <ul>
-        {sideMeunItems.map((item, index) => (
+        {sideMenuItems.map((item, index) => (
           <li key={index}>
-            <NavLink to={item.to} className={({ isActive }) => (isActive ? 'active' : '')}>
+            <NavLink
+              to={item.activePaths[0]}
+              className={() =>
+                item.activePaths.some((path) => location.pathname.includes(path)) ? 'active' : ''
+              }
+            >
               {item.name}
             </NavLink>
           </li>
