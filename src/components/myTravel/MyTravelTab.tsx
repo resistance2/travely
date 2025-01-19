@@ -1,11 +1,12 @@
 import { useTabStore } from '@/stores/useTabStore';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const MyTravelTab = () => {
   const { selectedTab, setSelectedTab } = useTabStore();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (location.pathname === '/my-page/my-travel-list') {
@@ -13,7 +14,7 @@ const MyTravelTab = () => {
     } else if (location.pathname === '/my-page/my-created-travel') {
       setSelectedTab('내가 만든 여행');
     }
-  }, [setSelectedTab]);
+  }, [location.pathname, setSelectedTab]);
 
   const handleTabClick = (tab: '참여한 여행' | '내가 만든 여행') => {
     setSelectedTab(tab);
