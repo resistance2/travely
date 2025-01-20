@@ -7,6 +7,7 @@ import ConfirmModal from '../ConfirmModal';
 import useModalStore from '@/stores/useModalStore';
 import { modalId } from '@/constants/modalId';
 import BorderBtn from '../BorderBtn';
+import useDeleteTravel from '@/hooks/query/useDeleteTravel';
 
 interface ManageHeaderProps {
   travelData: TravelData;
@@ -16,12 +17,13 @@ interface ManageHeaderProps {
 
 const TravelManageHeader = ({ travelData, isOngoingTab, setIsOngoingTab }: ManageHeaderProps) => {
   const setModalName = useModalStore((state) => state.setModalName);
-  const { mutate } = useUpdateTravelStatus();
+  const { mutate: statusUpdateMutate } = useUpdateTravelStatus();
+  const { mutate: deleteTravelMutate } = useDeleteTravel();
 
   const isActive = travelData.travelActive;
 
   const handleActiveStatus = () => {
-    mutate(
+    statusUpdateMutate(
       { travelId: travelData.travelId, isActive: !isActive },
       {
         onSuccess: () => setModalName(null),
@@ -29,7 +31,9 @@ const TravelManageHeader = ({ travelData, isOngoingTab, setIsOngoingTab }: Manag
     );
   };
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    deleteTravelMutate({ travelId: travelData.travelId });
+  };
 
   return (
     <div>
