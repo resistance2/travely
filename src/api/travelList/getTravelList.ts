@@ -2,6 +2,7 @@ import useUserStore from '@/stores/useUserStore';
 import { TagPath } from '@/types/tagType';
 import { ITravelCard } from '@/types/travelCardType';
 import axios from 'axios';
+import { SERVER } from '@/constants/url';
 
 interface IPageInfo {
   totalElements: number;
@@ -36,7 +37,7 @@ const getTravelList = async ({
 }: IGetTravelList): Promise<IGetTravelListReturn> => {
   const userId = useUserStore.getState().user?.userId;
   const res = await axios.get<IGetTravelListRes>(
-    `${import.meta.env.VITE_SERVER_URL}/api/v1/travels/travel-list?userId=${userId}&page=${page}&size=${size}&tag=${tag === '전체' ? 'all' : tag}`,
+    `${SERVER}/api/v1/travels/travel-list?userId=${userId}&page=${page}&size=${size}&tag=${tag === '전체' ? 'all' : tag}`,
   );
   const { currentPage, hasNext } = res.data.data.pageInfo;
   const cardDatas = res.data.data.travels;

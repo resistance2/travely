@@ -1,9 +1,13 @@
 import Price from '@/components/Price';
 import Rating from '@/components/Rating';
 import Tags from '@/components/Tags';
+import { ShowToast } from '@/components/Toast';
+import useUpdateBookmark from '@/hooks/query/useUpdateBookmark';
+import useUserStore from '@/stores/useUserStore';
 import { ITravelCard } from '@/types/travelCardType';
 import { css } from '@emotion/react';
 import { Bookmark } from 'lucide-react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 interface ITravelCardDataProps {
@@ -12,6 +16,20 @@ interface ITravelCardDataProps {
 
 const TravelCard: React.FC<ITravelCardDataProps> = ({ cardData }) => {
   const { id, thumbnail, travelTitle, createdBy, price, review, tag, bookmark } = cardData;
+  const [isBookmark, setIsBookmark] = useState(bookmark);
+  const { mutate: bookMarkMutate } = useUpdateBookmark();
+  const userId = useUserStore((state) => state.user?.userId);
+
+  const ToggleBookMark = () => {
+    if (!userId) {
+      ShowToast('로그인 후 이용하실 수 있습니다.', 'failed');
+      return;
+    }
+    setIsBookmark((prev) => !prev);
+    const newBookmarkState = !isBookmark;
+    bookMarkMutate({ userId, travelId: id, isBookmark: newBookmarkState });
+  };
+
   return (
     <Link to={`/travel-detail/${id}`}>
       <div css={card}>
@@ -32,12 +50,19 @@ const TravelCard: React.FC<ITravelCardDataProps> = ({ cardData }) => {
             </div>
           </div>
         </div>
-        <p className="book-mark">
+        <p
+          className="book-mark"
+          onClick={(event) => {
+            event.preventDefault();
+            ToggleBookMark();
+          }}
+        >
           <Bookmark
+            className={`check-${isBookmark}`}
             size="23"
-            stroke={bookmark ? '#4a95f2' : '#fff'}
+            stroke={isBookmark ? '#4a95f2' : '#fff'}
             strokeWidth="1.5"
-            fill={bookmark ? '#4a95f2' : 'none'}
+            fill={isBookmark ? '#4a95f2' : 'none'}
           />
         </p>
       </div>
@@ -120,5 +145,23 @@ const card = () => css`
     position: absolute;
     top: 10px;
     right: 10px;
+    svg {
+      filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.3));
+    }
+    svg.check-true {
+      stroke: #4a95f2;
+      fill: #4a95f2;
+    }
+    svg.check-false {
+      stroke: #fff;
+      fill: none;
+    }
+    &:hover {
+      svg.check-false {
+        stroke: #4a95f2;
+        fill: none;
+        filter: drop-shadow(0px 2px 4px rgba(74, 149, 242, 0.3));
+      }
+    }
   }
 `;
