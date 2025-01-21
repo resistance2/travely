@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import Rating from '@/components/Rating';
 import { formatDate } from '@/utils/formatDate';
 import useUpdateTravelStatus from '@/hooks/query/useUpdateTravelStatus';
+import { useNavigate } from 'react-router-dom';
 
 interface ITripCardProps {
   travelId: string;
@@ -27,6 +28,11 @@ const TripCard: React.FC<ITripCardProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const updateTravelStatusMutation = useUpdateTravelStatus();
+  const navigate = useNavigate();
+
+  const handleManageClick = () => {
+    navigate(`/my-page/my-created-travel/manage-my-travel/${travelId}`);
+  };
 
   const handleEnable = () => {
     updateTravelStatusMutation.mutate({ travelId, isActive: true });
@@ -47,7 +53,9 @@ const TripCard: React.FC<ITripCardProps> = ({
         </Price>
         <Buttons>
           <ManageButtonContainer>
-            <ManageButton isDisabled={isDisabled}>관리</ManageButton>
+            <ManageButton isDisabled={isDisabled} onClick={handleManageClick}>
+              관리
+            </ManageButton>
             {badgeCount > 0 && <ManageBadge>{badgeCount}</ManageBadge>}
           </ManageButtonContainer>
           <EditButton isDisabled={isDisabled}>수정</EditButton>
