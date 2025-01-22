@@ -1,11 +1,20 @@
 import getMyJoinedTravel from '@/api/myJoinedTravel/getMyJoinedTravel';
 import { MY_JOINED_TRAVEL } from '@/constants/queryKey';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-const useGetMyJoinedTravel = (userId: string) => {
-  return useQuery({
+interface IUseGetTravelList {
+  userId: string;
+}
+
+const useGetMyJoinedTravel = ({ userId }: IUseGetTravelList) => {
+  const pageSize = 6;
+  return useInfiniteQuery({
     queryKey: [MY_JOINED_TRAVEL, userId],
-    queryFn: () => getMyJoinedTravel(userId),
+    queryFn: ({ pageParam }) => getMyJoinedTravel({ userId, page: pageParam, size: pageSize }),
+    getNextPageParam: (lastPage) => {
+      return lastPage.nextCursor;
+    },
+    initialPageParam: 1,
   });
 };
 

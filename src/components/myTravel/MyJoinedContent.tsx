@@ -6,6 +6,18 @@ import useGetMyJoinedTravel from '@/hooks/query/useGetMyJoinedTravel';
 import { myJoinedTravel } from '@/types/myJoinedTravel';
 import BorderBtn from '../BorderBtn';
 import { Link } from 'react-router-dom';
+import { useInView } from 'react-intersection-observer';
+import { useQueryClient } from '@tanstack/react-query';
+import { IGetMyJoinedTravelReturn } from '@/api/myJoinedTravel/getMyJoinedTravel';
+import { useCallback } from 'react';
+import scrollToTop from '@/utils/scrollToTop';
+
+interface InfiniteQueryData<TPageData> {
+  pages: TPageData[];
+  pageParams: unknown[];
+}
+
+type MyJoinedInfiniteQueryData = InfiniteQueryData<IGetMyJoinedTravelReturn>;
 
 // 남은 일수 계산 함수
 const calculateDaysRemaining = (endDateString: string) => {
@@ -13,7 +25,6 @@ const calculateDaysRemaining = (endDateString: string) => {
   const endDate = new Date(endDateString);
   const timeDiff = endDate.getTime() - today.getTime();
   const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
   // 날짜가 D-0이거나 그 이전이면 'D-DAY'로 처리
   return daysRemaining <= 0 ? 'D-day' : `D-${daysRemaining}`;
 };
@@ -26,80 +37,134 @@ const formatDateRange = (startDate: string, endDate: string) => {
 
 const MyJoinedContent = () => {
   const { user } = useUserStore((state) => state);
-  const { data: myJoinedTravelData } = useGetMyJoinedTravel(user?.userId as string);
+  // const { data: myJoinedTravelData } = useGetMyJoinedTravel(user?.userId as string);
+  const queryClient = useQueryClient();
+
+  const resetQueryData = useCallback(
+    (key: string) => {
+      queryClient.setQueryData<MyJoinedInfiniteQueryData>(['my-joined-travel', key], (data) => {
+        if (data) {
+          return {
+            pages: data.pages.slice(0, 1),
+            pageParams: data.pageParams.slice(0, 1),
+          };
+        }
+        return undefined;
+      });
+    },
+    [queryClient],
+  );
+
+  console.log(resetQueryData);
+
+  // useEffect(() => {
+  //   resetQueryData(userId);
+  // }, [userId, resetQueryData]);
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetMyJoinedTravel({
+    userId: user?.userId || '',
+  });
+
+  const { ref } = useInView({
+    threshold: 1,
+    skip: !hasNextPage,
+    onChange: useCallback(
+      (inView: boolean) => {
+        if (inView && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      [hasNextPage, isFetchingNextPage, fetchNextPage],
+    ),
+  });
+
+  if (!data) {
+    return <></>;
+  }
+
+  const travelDatas = data.pages.flatMap((page) => page.travelDatas);
+  const currentPage = data.pages[data.pages.length - 1]?.currentPage;
 
   return (
-    <GridContainer>
-      {myJoinedTravelData?.travels.length > 0 ? (
-        myJoinedTravelData?.travels?.map((travelData: myJoinedTravel) => {
-          const currentUser = travelData.currentUserStatus; // 현재 사용자 정보
-          const guide = travelData.guideInfo; // 가이드 정보
-          const daysRemaining = calculateDaysRemaining(travelData.travelTeam.travelEndDate); // 남은 일수 계산
-          const isPast = daysRemaining === 'D-day'; // D-0이 지났는지 확인
-          const reviewWritten = travelData.reviewWritten;
+    <>
+      <GridContainer>
+        {travelDatas?.length > 0 ? (
+          travelDatas?.map((travelData: myJoinedTravel) => {
+            const currentUser = travelData.currentUserStatus; // 현재 사용자 정보
+            const guide = travelData.guideInfo; // 가이드 정보
+            const daysRemaining = calculateDaysRemaining(travelData.travelTeam.travelEndDate); // 남은 일수 계산
+            const isPast = daysRemaining === 'D-day'; // D-0이 지났는지 확인
+            const reviewWritten = travelData.reviewWritten;
 
-          return (
-            <TripCardContainer key={travelData.id} isPast={isPast && reviewWritten}>
-              <Header>
-                <Title>{travelData.travelTitle}</Title>
-                {/* 예약이 거절된 상태면 "취소됨"을 표시, 아닌 경우 D-DAY 표시 */}
-                {currentUser.status === 'refused' ? (
-                  <StatusCanceled>취소됨</StatusCanceled>
-                ) : (
-                  <DaysRemaining>{daysRemaining}</DaysRemaining>
-                )}
-              </Header>
-              <UserInfoContainer>
-                <GuideProfile
-                  name={guide.socialName}
-                  userEmailId={guide.userEmail}
-                  imgURL={guide.userProfileImg}
-                  rating={guide.userRating}
+            return (
+              <TripCardContainer key={travelData.id} isPast={isPast && reviewWritten}>
+                <Header>
+                  <Title>{travelData.travelTitle}</Title>
+                  {/* 예약이 거절된 상태면 "취소됨"을 표시, 아닌 경우 D-DAY 표시 */}
+                  {currentUser.status === 'refused' ? (
+                    <StatusCanceled>취소됨</StatusCanceled>
+                  ) : (
+                    <DaysRemaining>{daysRemaining}</DaysRemaining>
+                  )}
+                </Header>
+                <UserInfoContainer>
+                  <GuideProfile
+                    name={guide.socialName}
+                    userEmailId={guide.userEmail}
+                    imgURL={guide.userProfileImg}
+                    rating={guide.userRating}
+                  />
+                </UserInfoContainer>
+
+                <DateInfo>
+                  {formatDateRange(
+                    travelData.travelTeam.travelStartDate,
+                    travelData.travelTeam.travelEndDate,
+                  )}
+                </DateInfo>
+
+                <Team
+                  max={travelData.travelTeam.personLimit}
+                  mbtiList={travelData.travelTeam.approvedMembersMbti.mbti}
                 />
-              </UserInfoContainer>
 
-              <DateInfo>
-                {formatDateRange(
-                  travelData.travelTeam.travelStartDate,
-                  travelData.travelTeam.travelEndDate,
-                )}
-              </DateInfo>
+                <CurrentUserStatus>
+                  {/* D-DAY이면서 승인 상태고 후기가 작성되지 않은 경우 후기 작성 버튼 */}
+                  {isPast && currentUser.status === 'approved' && !reviewWritten && (
+                    <ReviewButton>후기 작성</ReviewButton>
+                  )}
 
-              <Team
-                max={travelData.travelTeam.personLimit}
-                mbtiList={travelData.travelTeam.approvedMembersMbti.mbti}
-              />
-
-              <CurrentUserStatus>
-                {/* D-DAY이면서 승인 상태고 후기가 작성되지 않은 경우 후기 작성 버튼 */}
-                {isPast && currentUser.status === 'approved' && !reviewWritten && (
-                  <ReviewButton>후기 작성</ReviewButton>
-                )}
-
-                {/* D-DAY이면서 후기가 작성된 경우 여행 완료 메시지 */}
-                {isPast && reviewWritten && <CompletionMessage>여행 완료</CompletionMessage>}
-                {isPast && currentUser.status === 'refused' && <p>예약 취소</p>}
-                {/* 아직 D-DAY가 지나지 않은 경우 예약 상태 표시 */}
-                {!isPast && (
-                  <>
-                    {currentUser.status === 'approved' && <p>예약 완료</p>}
-                    {currentUser.status === 'waiting' && <p>예약 대기</p>}
-                    {currentUser.status === 'refused' && <p>예약 취소</p>}
-                  </>
-                )}
-              </CurrentUserStatus>
-            </TripCardContainer>
-          );
-        })
-      ) : (
-        <EmptyMessage>
-          여행에 참여해주세요
-          <BorderBtn color="#4a95f2">
-            <Link to="/travel-list">여행 참여하기</Link>
-          </BorderBtn>
-        </EmptyMessage>
+                  {/* D-DAY이면서 후기가 작성된 경우 여행 완료 메시지 */}
+                  {isPast && reviewWritten && <CompletionMessage>여행 완료</CompletionMessage>}
+                  {isPast && currentUser.status === 'refused' && <p>예약 취소</p>}
+                  {/* 아직 D-DAY가 지나지 않은 경우 예약 상태 표시 */}
+                  {!isPast && (
+                    <>
+                      {currentUser.status === 'approved' && <p>예약 완료</p>}
+                      {currentUser.status === 'waiting' && <p>예약 대기</p>}
+                      {currentUser.status === 'refused' && <p>예약 취소</p>}
+                    </>
+                  )}
+                </CurrentUserStatus>
+              </TripCardContainer>
+            );
+          })
+        ) : (
+          <EmptyMessage>
+            여행에 참여해주세요
+            <BorderBtn color="#4a95f2">
+              <Link to="/travel-list">여행 참여하기</Link>
+            </BorderBtn>
+          </EmptyMessage>
+        )}
+      </GridContainer>
+      {!hasNextPage && currentPage !== 1 && (
+        <StyledBorderBtn color="#4a95f2" size="full" hover="filled" onClick={() => scrollToTop()}>
+          처음으로
+        </StyledBorderBtn>
       )}
-    </GridContainer>
+      <InviewTarget ref={ref} />
+    </>
   );
 };
 
@@ -191,4 +256,12 @@ const EmptyMessage = styled.div`
   font-weight: bold;
   color: #555;
   margin: 20px 0;
+`;
+
+const InviewTarget = styled.div`
+  height: 1px;
+`;
+
+const StyledBorderBtn = styled(BorderBtn)`
+  margin-top: 30px;
 `;
