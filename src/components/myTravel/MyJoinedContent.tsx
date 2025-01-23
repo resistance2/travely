@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useQueryClient } from '@tanstack/react-query';
 import { IGetMyJoinedTravelReturn } from '@/api/myJoinedTravel/getMyJoinedTravel';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import scrollToTop from '@/utils/scrollToTop';
 import { MY_JOINED_TRAVEL } from '@/constants/queryKey';
 
@@ -38,7 +38,6 @@ const formatDateRange = (startDate: string, endDate: string) => {
 
 const MyJoinedContent = () => {
   const { user } = useUserStore((state) => state);
-  // const { data: myJoinedTravelData } = useGetMyJoinedTravel(user?.userId as string);
   const queryClient = useQueryClient();
 
   const resetQueryData = useCallback(
@@ -58,9 +57,11 @@ const MyJoinedContent = () => {
 
   console.log(resetQueryData);
 
-  // useEffect(() => {
-  //   resetQueryData(userId);
-  // }, [userId, resetQueryData]);
+  useEffect(() => {
+    if (user?.userId) {
+      resetQueryData(user.userId);
+    }
+  }, [user?.userId, resetQueryData]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetMyJoinedTravel({
     userId: user?.userId || '',
