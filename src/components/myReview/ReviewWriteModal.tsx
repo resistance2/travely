@@ -14,8 +14,14 @@ import FileUploadBtn from '@/components/FileUploadBtn';
 export interface ReviewWriteModalProps {
   reviewTitle: string;
   userName: string;
-  guideName: string;
-  imgURL?: string;
+  guideInfo: {
+    socialName: string;
+    userProfileImg: string;
+    userId: string;
+    userEmail: string; // 추가
+    userRating: number; // 추가
+  };
+  travelThumbnail?: string;
 }
 
 const isValidFile = (file: File) => {
@@ -23,12 +29,15 @@ const isValidFile = (file: File) => {
   return validTypes.includes(file.type);
 };
 
-const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWriteModalProps) => {
+const ReviewWriteModal = ({
+  reviewTitle,
+  guideInfo,
+  travelThumbnail: imgURL,
+}: ReviewWriteModalProps) => {
   const [open, setOpen] = useState(false);
   const [travelRating, setTravelRating] = useState(0);
   const [userRating, setUserRating] = useState(0);
   const [files, setFiles] = useState<File[]>([]);
-  console.log(userName);
 
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -71,7 +80,8 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
           <FiledBtn
             color={theme.colors.primary}
             customStyle={css`
-              width: 240px;
+              width: 100%;
+              margin: -5px auto;
             `}
           >
             후기 작성
@@ -98,21 +108,33 @@ const ReviewWriteModal = ({ reviewTitle, userName, guideName, imgURL }: ReviewWr
               <div css={textAreaContainer}>
                 <textarea placeholder="리뷰를 작성해주세요" />
               </div>
+
               <FileUploadBtn
                 files={files}
                 handleFileUpload={handleFileUpload}
                 setFiles={setFiles}
               />
+
               <div css={guideReviewContainer}>
                 <div className="advice">함께한 가이드가 훌륭했다면 별점을 남겨주세요</div>
                 <div className="guideInfo">
-                  <GuideProfile name={guideName} userEmailId="sonjeongwo" />
+                  <GuideProfile
+                    name={guideInfo.socialName}
+                    userEmailId={guideInfo.userEmail}
+                    imgURL={guideInfo.userProfileImg}
+                  />
                   <div
                     css={css`
                       transform: translateY(2px);
                     `}
                   >
-                    <StarRating rating={userRating} setRating={setUserRating} />
+                    <div
+                      css={css`
+                        margin-left: 10px;
+                      `}
+                    >
+                      <StarRating rating={userRating} setRating={setUserRating} />
+                    </div>
                   </div>
                 </div>
               </div>
