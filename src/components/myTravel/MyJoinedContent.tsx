@@ -55,8 +55,6 @@ const MyJoinedContent = () => {
     [queryClient],
   );
 
-  console.log(resetQueryData);
-
   useEffect(() => {
     if (user?.userId) {
       resetQueryData(user.userId);
