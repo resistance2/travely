@@ -11,10 +11,11 @@ import useGetTravelList from '@/hooks/query/useGetTravelList';
 import { useCallback, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { IGetTravelListReturn } from '@/api/travelList/getTravelList';
+import { TRAVEL_LIST } from '@/constants/queryKey';
 
 interface InfiniteQueryData<TPageData> {
   pages: TPageData[];
-  pageParams: unknown[];
+  pageParams: number[];
 }
 type TravelListInfiniteQueryData = InfiniteQueryData<IGetTravelListReturn>;
 
@@ -27,7 +28,7 @@ const TravelList = () => {
 
   const resetQueryData = useCallback(
     (key: string) => {
-      queryClient.setQueryData<TravelListInfiniteQueryData>(['travelList', key], (data) => {
+      queryClient.setQueryData<TravelListInfiniteQueryData>([TRAVEL_LIST, key], (data) => {
         if (data) {
           return {
             pages: data.pages.slice(0, 1),

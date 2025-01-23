@@ -11,10 +11,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { IGetMyJoinedTravelReturn } from '@/api/myJoinedTravel/getMyJoinedTravel';
 import { useCallback } from 'react';
 import scrollToTop from '@/utils/scrollToTop';
+import { MY_JOINED_TRAVEL } from '@/constants/queryKey';
 
 interface InfiniteQueryData<TPageData> {
   pages: TPageData[];
-  pageParams: unknown[];
+  pageParams: number[];
 }
 
 type MyJoinedInfiniteQueryData = InfiniteQueryData<IGetMyJoinedTravelReturn>;
@@ -42,7 +43,7 @@ const MyJoinedContent = () => {
 
   const resetQueryData = useCallback(
     (key: string) => {
-      queryClient.setQueryData<MyJoinedInfiniteQueryData>(['my-joined-travel', key], (data) => {
+      queryClient.setQueryData<MyJoinedInfiniteQueryData>([MY_JOINED_TRAVEL, key], (data) => {
         if (data) {
           return {
             pages: data.pages.slice(0, 1),
