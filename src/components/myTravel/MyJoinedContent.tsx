@@ -12,6 +12,7 @@ import { IGetMyJoinedTravelReturn } from '@/api/myJoinedTravel/getMyJoinedTravel
 import { useCallback, useEffect } from 'react';
 import scrollToTop from '@/utils/scrollToTop';
 import { MY_JOINED_TRAVEL } from '@/constants/queryKey';
+import ReviewWriteModal from '@/components/myReview/ReviewWriteModal';
 
 interface InfiniteQueryData<TPageData> {
   pages: TPageData[];
@@ -19,7 +20,6 @@ interface InfiniteQueryData<TPageData> {
 }
 
 type MyJoinedInfiniteQueryData = InfiniteQueryData<IGetMyJoinedTravelReturn>;
-import ReviewWriteModal from '@/components/myReview/ReviewWriteModal';
 
 // 남은 일수 계산 함수
 const calculateDaysRemaining = (endDateString: string) => {
