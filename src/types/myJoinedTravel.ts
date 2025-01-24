@@ -20,4 +20,5 @@ export interface myJoinedTravel {
     status: string;
   };
   reviewWritten: boolean;
+  thumbnail?: string;
 }
