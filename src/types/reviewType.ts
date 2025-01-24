@@ -5,7 +5,7 @@ export interface Review {
   title: string;
   content: string;
   imgSrc?: string;
-  createdAt?: Date;
+  createdAt?: string;
   reviewCount: number;
   rating: number;
   user?: User;

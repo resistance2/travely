@@ -1,11 +1,11 @@
 import DeleteIcon from '@/components/DeleteIcon';
 import { textEllipsis } from '@/styles/GlobalStyles';
 import { Review } from '@/types/reviewType';
-import { dateToString } from '@/utils/dataToString';
 
 import { css } from '@emotion/react';
 import Rating from '@/components/Rating';
 import Profile from '../Profile';
+import { formatDate } from '@/utils/format';
 
 interface ReviewCardProps {
   review: Review;
@@ -31,13 +31,13 @@ const ReviewCard = ({
           {showUser && review.user && (
             <div css={userProfileStyles}>
               <div className="profile-container">
-                {review.imgSrc && <Profile url={review.imgSrc} size="40px" />}
+                <Profile url={review.user.userProfileImage} size="30px" />
                 <div className="user-info">
                   <div className="name-rating">
                     <div className="name">{review.user.socialName}</div>
                   </div>
                   <p className="createAt">
-                    {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
+                    {review?.createdAt ? formatDate(review.createdAt) : ''}
                   </p>
                 </div>
               </div>
@@ -45,9 +45,7 @@ const ReviewCard = ({
           )}
           {showTitle && review?.title && <h2>{review.title}</h2>}
           {showDate && (
-            <p className="createAt">
-              {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
-            </p>
+            <p className="createAt">{review?.createdAt ? formatDate(review.createdAt) : ''}</p>
           )}
           <div className="ratingContainer">
             <Rating rating={Number(review.rating)} />
