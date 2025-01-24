@@ -1,19 +1,6 @@
 import { SERVER } from '@/constants/url';
+import { Review } from '@/types/reviewType';
 import axios from 'axios';
-
-export interface Review {
-  id: string;
-  travelId: string;
-  reviewImg: string[];
-  content: string;
-  travelScore: number;
-  createdDate: string;
-  travelTitle: string;
-  socialName: string;
-  userProfileImage: string;
-  userEmail: string;
-  isVerifiedUser: boolean;
-}
 
 interface PageInfo {
   page: number;
