@@ -63,8 +63,8 @@ const ReviewCard = ({
         {Array.isArray(review.imgSrc) &&
           review.imgSrc.length > 0 &&
           review.imgSrc.map((src, index) => (
-            <div className="imgContainer">
-              <img key={index} src={src} alt="리뷰 이미지" />
+            <div key={index + src} className="imgContainer">
+              <img src={src} alt="리뷰 이미지" />
             </div>
           ))}
       </div>

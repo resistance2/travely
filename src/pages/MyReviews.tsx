@@ -1,4 +1,5 @@
 import ReviewCard from '@/components/myReview/ReviewCard';
+import { REVIEW_LIST } from '@/constants/queryKey';
 import useGetReviews from '@/hooks/query/useGetReviews';
 import useUserStore from '@/stores/useUserStore';
 import { useQueryClient } from '@tanstack/react-query';
@@ -9,7 +10,7 @@ const MyReviews = () => {
   const user = useUserStore((state) => state.user);
 
   const { data, fetchNextPage, isFetchingNextPage, hasNextPage } = useGetReviews({
-    userId: (user?.userId as string) || '',
+    userId: user?.userId ?? '',
   });
 
   const queryClient = useQueryClient();
@@ -30,7 +31,7 @@ const MyReviews = () => {
   const reviews = data?.pages.flatMap((group) => group.data.data.reviews) || [];
 
   useEffect(() => {
-    queryClient.resetQueries({ queryKey: ['reviews', user?.userId] });
+    queryClient.resetQueries({ queryKey: [REVIEW_LIST, user?.userId] });
   }, [user?.userId, queryClient]);
 
   return (
