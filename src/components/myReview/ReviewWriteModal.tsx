@@ -185,14 +185,15 @@ const ReviewWriteModal = ({
                   color={theme.colors.primary}
                   customStyle={css`
                     width: 120px;
-                    ${isLoading &&
-                    `cursor: not-allowed;
+                    ${isLoading
+                      ? `cursor: not-allowed;
                     opacity: 0.5;
-                    `}
+                    `
+                      : ``}
                   `}
                   type="submit"
                 >
-                  isLoading ? '등록 중...' : '작성'
+                  {isLoading ? '등록 중...' : '작성'}
                 </FiledBtn>
                 <BorderBtn
                   children="닫기"
