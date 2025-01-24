@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import Rating from '@/components/Rating';
 import Profile from './Profile';
+import defaultProfile from '@/assets/basicProfile.png';
 
 export interface UserProfileProps {
   name: string;
@@ -13,7 +14,7 @@ const GuideProfile = ({ name, userEmailId, rating, imgURL }: UserProfileProps) =
   return (
     <div css={userProfileStyles}>
       <div className="profile-container">
-        {imgURL && <Profile url={imgURL} size="40px" />}
+        {<Profile url={imgURL || defaultProfile} size="40px" />}
         <div className="user-info">
           <div className="name-rating">
             <div className="name">{name}</div>
