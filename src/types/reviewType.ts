@@ -4,9 +4,9 @@ export interface Review {
   reviewId: number;
   title: string;
   content: string;
-  imgSrc?: string;
+  imgSrc?: string[];
   createdAt?: string;
-  reviewCount: number;
+  reviewCount?: number;
   rating: number;
   user?: User;
 }
