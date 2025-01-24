@@ -13,6 +13,7 @@ import FileUploadBtn from '@/components/FileUploadBtn';
 
 import useCreateReview from '@/hooks/query/useCreateReview';
 import { ShowToast } from '@/components/Toast';
+import { REVIEW_CONSTANTS } from '@/constants/reviewConstant';
 
 export interface ReviewWriteModalProps {
   reviewTitle: string;
@@ -78,6 +79,19 @@ const ReviewWriteModal = ({
 
     if (reviewContent.trim().length === 0) {
       ShowToast('리뷰 내용을 입력해주세요.', 'failed');
+      return;
+    }
+
+    if (reviewContent.length > REVIEW_CONSTANTS.MAX_CONTENT_LENGTH) {
+      ShowToast(
+        `리뷰 내용은 ${REVIEW_CONSTANTS.MAX_CONTENT_LENGTH}글자를 초과할 수 없습니다..`,
+        'failed',
+      );
+      return;
+    }
+
+    if (travelRating < 1 || travelRating > 5) {
+      ShowToast('여행 평점은 1-5점 사이여야 합니다.', 'failed');
       return;
     }
 
