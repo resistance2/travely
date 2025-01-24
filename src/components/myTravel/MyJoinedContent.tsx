@@ -131,14 +131,19 @@ const MyJoinedContent = () => {
 
                 <CurrentUserStatus>
                   {/* D-DAY이면서 승인 상태고 후기가 작성되지 않은 경우 후기 작성 버튼 */}
-                  {isPast && currentUser.status === 'approved' && !reviewWritten && (
-                    <ReviewWriteModal
-                      reviewTitle={travelData.travelTitle}
-                      userName={travelData.guideInfo.socialName}
-                      guideInfo={travelData.guideInfo}
-                      travelThumbnail={travelData.thumbnail}
-                    />
-                  )}
+                  {isPast &&
+                    currentUser.status === 'approved' &&
+                    !reviewWritten &&
+                    user?.userId && (
+                      <ReviewWriteModal
+                        travelId={travelData.travelId}
+                        userId={user.userId}
+                        reviewTitle={travelData.travelTitle}
+                        userName={travelData.guideInfo.socialName}
+                        guideInfo={travelData.guideInfo}
+                        travelThumbnail={travelData.thumbnail}
+                      />
+                    )}
 
                   {/* D-DAY이면서 후기가 작성된 경우 여행 완료 메시지 */}
                   {isPast && reviewWritten && <CompletionMessage>여행 완료</CompletionMessage>}

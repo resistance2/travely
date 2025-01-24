@@ -1,6 +1,7 @@
 export interface myJoinedTravel {
   id: string;
   travelTitle: string;
+  travelId: string;
   guideInfo: {
     socialName: string;
     userProfileImg: string;
