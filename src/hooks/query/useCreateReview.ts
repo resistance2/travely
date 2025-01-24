@@ -1,6 +1,6 @@
 import { createReview } from '@/api/review/createReview';
 import { ShowToast } from '@/components/Toast';
-import { MY_JOINED_TRAVEL } from '@/constants/queryKey'; // Assuming you have a constant for review list query key
+import { MY_JOINED_TRAVEL } from '@/constants/queryKey';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface UseCreateReviewProps {

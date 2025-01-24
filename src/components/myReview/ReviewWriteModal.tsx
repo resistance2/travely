@@ -76,11 +76,6 @@ const ReviewWriteModal = ({
   const onSubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (travelRating === 0) {
-      ShowToast('여행 평점을 입력해주세요.', 'failed');
-      return;
-    }
-
     if (reviewContent.trim().length === 0) {
       ShowToast('리뷰 내용을 입력해주세요.', 'failed');
       return;
@@ -187,7 +182,6 @@ const ReviewWriteModal = ({
               </div>
               <div css={buttonContainer}>
                 <FiledBtn
-                  children={isLoading ? '등록 중...' : '작성'}
                   color={theme.colors.primary}
                   customStyle={css`
                     width: 120px;
@@ -197,7 +191,9 @@ const ReviewWriteModal = ({
                     `}
                   `}
                   type="submit"
-                />
+                >
+                  isLoading ? '등록 중...' : '작성'
+                </FiledBtn>
                 <BorderBtn
                   children="닫기"
                   color="#b8bbbe"
