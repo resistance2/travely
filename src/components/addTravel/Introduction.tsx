@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import GrayBack from '@/components/GrayBack';
+import { ShowToast } from '@/components/Toast';
 import useGetImageUrl from '@/hooks/query/useGetImageUrl';
 import useAddTravelStore from '@/stores/useAddTravelStore';
 import useFieldStore from '@/stores/useFieldStore';
@@ -53,7 +54,11 @@ const Introduction = ({ title = '상품 소개' }: IntroductionProps) => {
       return;
     }
 
-    setImgLimit(imgUrls.length > 4);
+    if (imgUrls.length > 4) {
+      setImgLimit(true);
+      ShowToast('이미지는 최대 4개만 사용 가능합니다.', 'failed');
+      return;
+    }
 
     for (const imgSrc of imgUrls) {
       if (uploadedImages.includes(imgSrc)) continue;

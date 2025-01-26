@@ -1,21 +1,21 @@
 import { SERVER } from '@/constants/url';
+import axios from 'axios';
 
 const getImageUrl = async (file: File): Promise<string> => {
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await fetch(`${SERVER}/api/images/upload/single`, {
-    method: 'POST',
-    body: formData,
+  const { data } = await axios.post(`${SERVER}/api/images/upload/single`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
 
-  const { success, data } = await response.json();
-
-  if (!success) {
+  if (!data.success) {
     throw new Error('Failed to upload image');
   }
 
-  return data.imageUrl;
+  return data.data.imageUrl;
 };
 
 export default getImageUrl;
