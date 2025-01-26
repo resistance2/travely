@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import GrayBack from '@/components/GrayBack';
+import useGetImageUrl from '@/hooks/query/useGetImageUrl';
 import useAddTravelStore from '@/stores/useAddTravelStore';
 import useFieldStore from '@/stores/useFieldStore';
-import useImageStore from '@/stores/useImageStore';
 import { css } from '@emotion/react';
 import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
@@ -33,9 +33,10 @@ const QUILL_MODULE = {
 const Introduction = ({ title = '상품 소개' }: IntroductionProps) => {
   const [imgLimit, setImgLimit] = useState(false);
   const [value, setValue] = useState('');
-  const { setIntroSrcs } = useImageStore((state) => state.actions);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const { setContent } = useFieldStore((state) => state.actions);
   const setData = useAddTravelStore((state) => state.setData);
+  const { mutate: uploadImage } = useGetImageUrl();
 
   useEffect(() => {
     handleContent();
@@ -52,24 +53,38 @@ const Introduction = ({ title = '상품 소개' }: IntroductionProps) => {
       return;
     }
 
-    const newSrcs = await Promise.all(
-      imgUrls.map(async (imgUrl) => {
-        const response = await fetch(imgUrl);
-        const blob = await response.blob();
-        return new File([blob], 'image.jpg', { type: blob.type });
-      }),
-    );
+    setImgLimit(imgUrls.length > 4);
 
-    if (newSrcs.length > 4) {
-      const excessImgSrc = newSrcs[4];
-      const newValue = value.replace(`<img src="${excessImgSrc}">`, '');
-      setValue(newValue);
-      newSrcs.pop();
-      setImgLimit(true);
-      setTimeout(() => setImgLimit(false), 3000);
+    for (const imgSrc of imgUrls) {
+      if (uploadedImages.includes(imgSrc)) continue;
+
+      try {
+        const response = await fetch(imgSrc);
+        const blob = await response.blob();
+        const imageFile = new File([blob], 'image.jpg', { type: blob.type });
+
+        uploadImage(
+          { file: imageFile },
+          {
+            onSuccess: (uploadedImageUrl) => {
+              setUploadedImages((prev) => [...prev, uploadedImageUrl]);
+              const newValue = value.replace(
+                `<img src="${imgSrc}">`,
+                `<img src="${uploadedImageUrl}">`,
+              );
+              setValue(newValue);
+            },
+            onError: () => {
+              const newValue = value.replace(`<img src="${imgSrc}">`, '');
+              setValue(newValue);
+            },
+          },
+        );
+      } catch (error) {
+        console.error('Error processing image:', error);
+      }
     }
 
-    setIntroSrcs(newSrcs);
     setContent(value);
     setData({ travelContent: value });
   };
