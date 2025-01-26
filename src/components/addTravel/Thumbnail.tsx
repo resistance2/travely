@@ -2,7 +2,7 @@ import GrayBack from '@/components/GrayBack';
 import useImageStore from '@/stores/useImageStore';
 import { css } from '@emotion/react';
 import { ImagePlus } from 'lucide-react';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, memo, useCallback, useState } from 'react';
 
 type ThumbnailType = 'thumbnail' | 'meetingSpace';
 
@@ -10,7 +10,7 @@ interface ThumbnailProps {
   type: ThumbnailType;
 }
 
-const Thumbnail = ({ type }: ThumbnailProps) => {
+const Thumbnail = memo(({ type }: ThumbnailProps) => {
   const [errMessage, setErrMessage] = useState('');
   const { thumbnail, meetingSpace } = useImageStore((state) => state.images);
   const { setThumbnail, setMeetingSpace } = useImageStore((state) => state.actions);
@@ -46,9 +46,9 @@ const Thumbnail = ({ type }: ThumbnailProps) => {
     }
   };
 
-  const getPreviewUrl = (file: File | null) => {
+  const getPreviewUrl = useCallback((file: File | null) => {
     return file ? URL.createObjectURL(file) : '';
-  };
+  }, []);
 
   const DATA_OF_TYPE = {
     thumbnail: {
@@ -74,7 +74,7 @@ const Thumbnail = ({ type }: ThumbnailProps) => {
       <p css={{ fontSize: '14px', color: '#ff2020' }}>{errMessage}</p>
     </>
   );
-};
+});
 
 export default Thumbnail;
 
