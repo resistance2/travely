@@ -1,25 +1,18 @@
 import { ImageStore } from '@/stores/useImageStore';
 
-const formData = new FormData();
-
-const addImageToFormData = (type: string, file: File) => {
-  if (!file) return;
-  formData.append(type, file);
-};
-
 const prepareImageUpload = (images: ImageStore) => {
+  const formData = new FormData();
   if (images.thumbnail) {
-    addImageToFormData('thumbnail', images.thumbnail);
+    formData.append('thumbnail', images.thumbnail);
   }
   if (images.meetingSpace) {
-    addImageToFormData('meetingSpace', images.meetingSpace);
+    formData.append('meetingSpace', images.meetingSpace);
   }
   if (images.introSrcs.length > 0) {
     images.introSrcs.forEach((src) => {
-      addImageToFormData('introSrcs', src);
+      formData.append('introSrcs', src);
     });
   }
-
   return formData;
 };
 
