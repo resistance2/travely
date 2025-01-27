@@ -1,0 +1,3 @@
+export const REVIEW_CONSTANTS = {
+  MAX_CONTENT_LENGTH: 1000,
+};

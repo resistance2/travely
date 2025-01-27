@@ -11,6 +11,10 @@ import GuideProfile from '@/components/GuideProfile';
 import StarRating from '@/components/StarRating';
 import FileUploadBtn from '@/components/FileUploadBtn';
 
+import useCreateReview from '@/hooks/query/useCreateReview';
+import { ShowToast } from '@/components/Toast';
+import { REVIEW_CONSTANTS } from '@/constants/reviewConstant';
+
 export interface ReviewWriteModalProps {
   reviewTitle: string;
   userName: string;
@@ -22,6 +26,8 @@ export interface ReviewWriteModalProps {
     userRating: number; // 추가
   };
   travelThumbnail?: string;
+  travelId: string;
+  userId: string;
 }
 
 const isValidFile = (file: File) => {
@@ -33,12 +39,15 @@ const ReviewWriteModal = ({
   reviewTitle,
   guideInfo,
   travelThumbnail: imgURL,
+  travelId,
+  userId,
 }: ReviewWriteModalProps) => {
   const [open, setOpen] = useState(false);
-  const [travelRating, setTravelRating] = useState(0);
-  const [userRating, setUserRating] = useState(0);
+  const [travelRating, setTravelRating] = useState<number>(0);
+  const [userRating, setUserRating] = useState<number>(0);
   const [files, setFiles] = useState<File[]>([]);
-
+  const [reviewContent, setReviewContent] = useState('');
+  const { mutate, isPending: isLoading } = useCreateReview();
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       if (!isValidFile(event.target.files[0])) {
@@ -58,17 +67,60 @@ const ReviewWriteModal = ({
     setOpen(false);
   };
 
+  const resetForm = () => {
+    setFiles([]);
+    setTravelRating(0);
+    setUserRating(0);
+    setReviewContent('');
+  };
+
   const onSubmitReview = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFiles([]);
-    setOpen(false);
+
+    if (reviewContent.trim().length === 0) {
+      ShowToast('리뷰 내용을 입력해주세요.', 'failed');
+      return;
+    }
+
+    if (reviewContent.length > REVIEW_CONSTANTS.MAX_CONTENT_LENGTH) {
+      ShowToast(
+        `리뷰 내용은 ${REVIEW_CONSTANTS.MAX_CONTENT_LENGTH}글자를 초과할 수 없습니다..`,
+        'failed',
+      );
+      return;
+    }
+
+    if (travelRating < 1 || travelRating > 5) {
+      ShowToast('여행 평점은 1-5점 사이여야 합니다.', 'failed');
+      return;
+    }
+
+    if (!travelRating || travelRating === 0) {
+      ShowToast('여행 평점을 입력해주세요.', 'failed');
+      return;
+    }
+    mutate(
+      {
+        userId,
+        travelId,
+        reviewImgs: files,
+        travelScore: travelRating,
+        content: reviewContent,
+        title: reviewTitle,
+        ...(userRating > 0 && { guideScore: userRating }),
+      },
+      {
+        onSuccess: () => {
+          setOpen(false);
+          resetForm();
+        },
+      },
+    );
   };
 
   useEffect(() => {
     if (!open) {
-      setFiles([]);
-      setTravelRating(0);
-      setUserRating(0);
+      resetForm();
     }
   }, [open]);
 
@@ -106,7 +158,11 @@ const ReviewWriteModal = ({
 
             <form onSubmit={(e) => onSubmitReview(e)}>
               <div css={textAreaContainer}>
-                <textarea placeholder="리뷰를 작성해주세요" />
+                <textarea
+                  placeholder="리뷰를 작성해주세요"
+                  value={reviewContent}
+                  onChange={(e) => setReviewContent(e.target.value)}
+                />
               </div>
 
               <FileUploadBtn
@@ -140,13 +196,19 @@ const ReviewWriteModal = ({
               </div>
               <div css={buttonContainer}>
                 <FiledBtn
-                  children="작성"
                   color={theme.colors.primary}
                   customStyle={css`
                     width: 120px;
+                    ${isLoading
+                      ? `cursor: not-allowed;
+                    opacity: 0.5;
+                    `
+                      : ``}
                   `}
                   type="submit"
-                />
+                >
+                  {isLoading ? '등록 중...' : '작성'}
+                </FiledBtn>
                 <BorderBtn
                   children="닫기"
                   color="#b8bbbe"

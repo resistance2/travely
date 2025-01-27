@@ -1,11 +1,11 @@
 import DeleteIcon from '@/components/DeleteIcon';
 import { textEllipsis } from '@/styles/GlobalStyles';
 import { Review } from '@/types/reviewType';
-import { dateToString } from '@/utils/dataToString';
 
 import { css } from '@emotion/react';
 import Rating from '@/components/Rating';
 import Profile from '../Profile';
+import { formatDate } from '@/utils/format';
 
 interface ReviewCardProps {
   review: Review;
@@ -24,6 +24,7 @@ const ReviewCard = ({
   showDate,
   showDelete,
 }: ReviewCardProps) => {
+  // console.log(review.imgSrc.map((src, index) => src);
   return (
     <div css={reviewStyle}>
       <div className="titleStyle">
@@ -31,13 +32,13 @@ const ReviewCard = ({
           {showUser && review.user && (
             <div css={userProfileStyles}>
               <div className="profile-container">
-                {review.imgSrc && <Profile url={review.imgSrc} size="40px" />}
+                <Profile url={review.user.userProfileImage} size="30px" />
                 <div className="user-info">
                   <div className="name-rating">
                     <div className="name">{review.user.socialName}</div>
                   </div>
                   <p className="createAt">
-                    {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
+                    {review?.createdAt ? formatDate(review.createdAt) : ''}
                   </p>
                 </div>
               </div>
@@ -45,9 +46,7 @@ const ReviewCard = ({
           )}
           {showTitle && review?.title && <h2>{review.title}</h2>}
           {showDate && (
-            <p className="createAt">
-              {review?.createdAt instanceof Date ? dateToString(review.createdAt) : ''}
-            </p>
+            <p className="createAt">{review?.createdAt ? formatDate(review.createdAt) : ''}</p>
           )}
           <div className="ratingContainer">
             <Rating rating={Number(review.rating)} />
@@ -55,10 +54,21 @@ const ReviewCard = ({
         </div>
         {showDelete && <DeleteIcon onDelete={onDelete || (() => {})} />}
       </div>
-      <div className="imgContainer">
-        <img src={review.imgSrc} alt="review" />
+      <div
+        css={css`
+          display: flex;
+          gap: 10px;
+        `}
+      >
+        {Array.isArray(review.imgSrc) &&
+          review.imgSrc.length > 0 &&
+          review.imgSrc.map((src, index) => (
+            <div key={index + src} className="imgContainer">
+              <img src={src} alt="리뷰 이미지" />
+            </div>
+          ))}
       </div>
-      <p css={textEllipsis(3)}>{review.content}</p>
+      <p css={textEllipsis(4)}>{review.content}</p>
     </div>
   );
 };
@@ -98,6 +108,7 @@ const userProfileStyles = css`
 const reviewStyle = css`
   border-radius: 10px;
   width: 100%;
+  min-width: 530px;
   background-color: #f8f8f8;
   padding: 10px 15px 15px 15px;
   margin-bottom: 20px;
@@ -129,12 +140,13 @@ const reviewStyle = css`
     border-radius: 5px;
     overflow: hidden;
   }
+
   img {
     width: 100%;
   }
 
   .ratingContainer {
-    transform: translateY(-0.8px);
+    transform: translateY(-0.36vh);
   }
 
   .createAt {
