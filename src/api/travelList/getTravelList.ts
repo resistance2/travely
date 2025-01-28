@@ -36,9 +36,14 @@ const getTravelList = async ({
   tag,
 }: IGetTravelList): Promise<IGetTravelListReturn> => {
   const userId = useUserStore.getState().user?.userId;
-  const res = await axios.get<IGetTravelListRes>(
-    `${SERVER}/api/v1/travels/travel-list?userId=${userId}&page=${page}&size=${size}&tag=${tag === '전체' ? 'all' : tag}`,
-  );
+  const res = await axios.get<IGetTravelListRes>(`${SERVER}/api/v1/travels/travel-list`, {
+    params: {
+      userId,
+      page,
+      size,
+      tag: tag === '전체' ? 'all' : tag,
+    },
+  });
   const { currentPage, hasNext } = res.data.data.pageInfo;
   const cardDatas = res.data.data.travels;
   const nextCursor = hasNext ? currentPage + 1 : null;
