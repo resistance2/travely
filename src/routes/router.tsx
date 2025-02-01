@@ -18,6 +18,7 @@ import AddForFindGuide from '@/pages/AddForFindGuide';
 import MyFindGuide from '@/pages/MyFindGuide';
 import FindGuideDetail from '@/pages/FindGuideDetail';
 import MyBankAccount from '@/components/myPage/MyBankAccount';
+import EditTravel from '@/pages/EditTravel';
 
 const PATH = {
   HOME: '/',
@@ -127,6 +128,10 @@ const router = createBrowserRouter([
           {
             path: 'add-for-find-guide',
             element: <AddForFindGuide />,
+          },
+          {
+            path: 'travel-edit/:travelId',
+            element: <EditTravel />,
           },
         ],
       },

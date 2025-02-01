@@ -27,6 +27,7 @@ interface Fields {
 interface State {
   fields: Fields;
 }
+
 interface Action {
   actions: {
     setContent: (newDescription: string) => void;

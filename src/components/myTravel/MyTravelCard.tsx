@@ -34,6 +34,10 @@ const TripCard: React.FC<ITripCardProps> = ({
     navigate(`/my-page/my-created-travel/manage-my-travel/${travelId}`);
   };
 
+  const handleEditClick = () => {
+    navigate(`/travel-edit/${travelId}`);
+  };
+
   const handleEnable = () => {
     updateTravelStatusMutation.mutate({ travelId, isActive: true });
   };
@@ -58,7 +62,9 @@ const TripCard: React.FC<ITripCardProps> = ({
             </ManageButton>
             {badgeCount > 0 && <ManageBadge>{badgeCount}</ManageBadge>}
           </ManageButtonContainer>
-          <EditButton isDisabled={isDisabled}>수정</EditButton>
+          <EditButton isDisabled={isDisabled} onClick={handleEditClick}>
+            수정
+          </EditButton>
         </Buttons>
         <UpdateDate>업데이트: {formatDate(updateDate)}</UpdateDate>
       </TripInfo>
