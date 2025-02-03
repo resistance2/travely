@@ -156,8 +156,8 @@ const reviewStyle = css`
   .imgContainer {
     display: flex;
     justify-content: center;
-    width: 110px;
-    height: 120px;
+    width: 120px;
+    height: 100px;
     margin-bottom: 16px;
     border-radius: 5px;
     overflow: hidden;
@@ -165,6 +165,7 @@ const reviewStyle = css`
 
   img {
     width: 100%;
+    object-fit: cover;
   }
 
   .ratingContainer {
