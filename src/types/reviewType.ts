@@ -1,7 +1,7 @@
 import { User } from '@/types/userType';
 
 export interface Review {
-  reviewId: number;
+  reviewId: string;
   title: string;
   content: string;
   imgSrc?: string[];
