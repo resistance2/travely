@@ -65,7 +65,7 @@ const ReviewCard = ({ review, showTitle, showUser, showDate, showDelete }: Revie
             modalId={`my.review.delete.${review.reviewId}`}
             onConfirm={handleDelete}
             trigger={
-              <DeleteIcon onDelete={() => setModalName(`my.review.delete.${review.reviewId}`)} />
+              <DeleteIcon onClick={() => setModalName(`my.review.delete.${review.reviewId}`)} />
             }
             message={
               <div css={modalStyle}>
@@ -189,6 +189,6 @@ const modalStyle = css`
 
   .modalSubText {
     font-size: 14px;
-    color: #666;
+    color: #999;
   }
 `;
