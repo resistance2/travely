@@ -13,99 +13,39 @@ const FloatingMenu = ({ onSubmit }: FloatingMenuProps) => {
   const sections = useSectionsStore((state) => state.sections);
   const setOpenSection = useSectionsStore((state) => state.setOpenSection);
   const location = useLocation();
-  const pathName = location.pathname;
-  const menuHeight = pathName === `/${ADD_FOR_FIND_GUIDE}` ? '260px' : '520px';
+  const pathName = location.pathname === `/${ADD_FOR_FIND_GUIDE}` ? ADD_FOR_FIND_GUIDE : 'default';
+
+  const pathConfig = {
+    [ADD_FOR_FIND_GUIDE]: {
+      menuHeight: '260px',
+      basicSections: ['제목', '글 내용', '일정 및 팀 추가'],
+      toggleSections: ['대표이미지'],
+    },
+    default: {
+      menuHeight: '520px',
+      basicSections: ['제목', '대표 이미지', '상품소개', '코스', '태그', '예약 생성', '가격'],
+      toggleSections: ['포함내용', '미포함내용', '이용안내', 'FAQ'],
+    },
+  };
+
+  const { menuHeight, basicSections, toggleSections } = pathConfig[pathName] || pathConfig.default;
 
   return (
     <MenuContainer menuHeight={menuHeight}>
-      {pathName === `/${ADD_FOR_FIND_GUIDE}` ? (
-        <>
-          <MenuItem>
-            <span>제목</span>
-          </MenuItem>
-          <MenuItem isOpen={sections.includes('대표이미지')}>
-            <span>대표 이미지</span>
-            <ToggleIcon
-              onClick={() => setOpenSection('대표이미지')}
-              isOpen={sections.includes('대표이미지')}
-            >
-              {sections.includes('대표이미지') ? (
-                <CircleMinus size={22} />
-              ) : (
-                <CirclePlus size={22} />
-              )}
-            </ToggleIcon>
-          </MenuItem>
-          <MenuItem>
-            <span>글 내용</span>
-          </MenuItem>
-          <MenuItem>
-            <span>일정 및 팀 추가</span>
-          </MenuItem>
-        </>
-      ) : (
-        <>
-          <MenuItem>
-            <span>제목</span>
-          </MenuItem>
-          <MenuItem>
-            <span>대표 이미지</span>
-          </MenuItem>
-          <MenuItem>
-            <span>상품소개</span>
-          </MenuItem>
-          <MenuItem>
-            <span>코스</span>
-          </MenuItem>
-          <MenuItem>
-            <span>태그</span>
-          </MenuItem>
-          <MenuItem>
-            <span>예약 생성</span>
-          </MenuItem>
-          <MenuItem>
-            <span>가격</span>
-          </MenuItem>
+      {basicSections.map((section) => (
+        <MenuItem key={section}>
+          <span>{section}</span>
+        </MenuItem>
+      ))}
 
-          <MenuItem isOpen={sections.includes('포함내용')}>
-            <span>포함내용</span>
-            <ToggleIcon
-              onClick={() => setOpenSection('포함내용')}
-              isOpen={sections.includes('포함내용')}
-            >
-              {sections.includes('포함내용') ? <CircleMinus size={22} /> : <CirclePlus size={22} />}
-            </ToggleIcon>
-          </MenuItem>
-          <MenuItem isOpen={sections.includes('미포함내용')}>
-            <span>미포함내용</span>
-            <ToggleIcon
-              onClick={() => setOpenSection('미포함내용')}
-              isOpen={sections.includes('미포함내용')}
-            >
-              {sections.includes('미포함내용') ? (
-                <CircleMinus size={22} />
-              ) : (
-                <CirclePlus size={22} />
-              )}
-            </ToggleIcon>
-          </MenuItem>
-          <MenuItem isOpen={sections.includes('이용안내')}>
-            <span>이용안내</span>
-            <ToggleIcon
-              onClick={() => setOpenSection('이용안내')}
-              isOpen={sections.includes('이용안내')}
-            >
-              {sections.includes('이용안내') ? <CircleMinus size={22} /> : <CirclePlus size={22} />}
-            </ToggleIcon>
-          </MenuItem>
-          <MenuItem isOpen={sections.includes('FAQ')}>
-            <span>FAQ</span>
-            <ToggleIcon onClick={() => setOpenSection('FAQ')} isOpen={sections.includes('FAQ')}>
-              {sections.includes('FAQ') ? <CircleMinus size={22} /> : <CirclePlus size={22} />}
-            </ToggleIcon>
-          </MenuItem>
-        </>
-      )}
+      {toggleSections.map((section) => (
+        <MenuItem key={section} isOpen={sections.includes(section)}>
+          <span>{section}</span>
+          <ToggleIcon onClick={() => setOpenSection(section)} isOpen={sections.includes(section)}>
+            {sections.includes(section) ? <CircleMinus size={22} /> : <CirclePlus size={22} />}
+          </ToggleIcon>
+        </MenuItem>
+      ))}
 
       <BottomButtons>
         <TempSaveButton>임시저장</TempSaveButton>
