@@ -20,10 +20,10 @@ const StyledTrash2 = styled(Trash2)`
 `;
 
 interface DeleteIconProps {
-  onDelete: () => void;
+  onClick: () => void;
 }
 
-const DeleteIcon = ({ onDelete }: DeleteIconProps) => {
+const DeleteIcon = ({ onClick: onDelete }: DeleteIconProps) => {
   return (
     <DeleteButton onClick={onDelete} aria-label="삭제">
       <StyledTrash2 />

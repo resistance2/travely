@@ -8,10 +8,19 @@ interface ConfirmModalProps {
   modalId: string;
   trigger: React.ReactNode;
   message: string | React.ReactNode;
+  confirmText?: string;
+  cancelText?: string;
   onConfirm?: () => void;
 }
 
-const ConfirmModal = ({ modalId, trigger, message, onConfirm }: ConfirmModalProps) => {
+const ConfirmModal = ({
+  modalId,
+  trigger,
+  message,
+  confirmText = '예',
+  cancelText = '아니오',
+  onConfirm,
+}: ConfirmModalProps) => {
   const modalName = useModalStore((state) => state.modalName);
   const closeModal = useModalStore((state) => state.setModalName);
   const isModalOpen = modalName === modalId;
@@ -22,10 +31,10 @@ const ConfirmModal = ({ modalId, trigger, message, onConfirm }: ConfirmModalProp
         {typeof message === 'string' ? <p>{message}</p> : <div css={customMessage}>{message}</div>}
         <div css={{ display: 'flex', gap: '20px' }}>
           <FiledBtn color={theme.colors.primary} size={'mdHeight'} onClick={onConfirm}>
-            예
+            {confirmText}
           </FiledBtn>
           <FiledBtn color={'#d7d7d7'} size={'mdHeight'} onClick={() => closeModal(null)}>
-            아니오
+            {cancelText}
           </FiledBtn>
         </div>
       </div>

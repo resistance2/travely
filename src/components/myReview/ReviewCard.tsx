@@ -6,25 +6,33 @@ import { css } from '@emotion/react';
 import Rating from '@/components/Rating';
 import Profile from '../Profile';
 import { formatDate } from '@/utils/format';
+import useModalStore from '@/stores/useModalStore';
+import useDeleteReview from '@/hooks/query/useDeleteReview';
+import ConfirmModal from '@/components/ConfirmModal';
 
 interface ReviewCardProps {
   review: Review;
-  onDelete?: () => void;
   showTitle: boolean;
   showUser: boolean;
   showDate: boolean;
   showDelete: boolean;
 }
 
-const ReviewCard = ({
-  review,
-  onDelete,
-  showTitle,
-  showUser,
-  showDate,
-  showDelete,
-}: ReviewCardProps) => {
-  // console.log(review.imgSrc.map((src, index) => src);
+const ReviewCard = ({ review, showTitle, showUser, showDate, showDelete }: ReviewCardProps) => {
+  const setModalName = useModalStore((state) => state.setModalName);
+  const { mutate } = useDeleteReview();
+
+  const handleDelete = () => {
+    mutate(
+      { reviewId: review.reviewId },
+      {
+        onSuccess: () => {
+          setModalName(null);
+        },
+      },
+    );
+  };
+
   return (
     <div css={reviewStyle}>
       <div className="titleStyle">
@@ -52,7 +60,21 @@ const ReviewCard = ({
             <Rating rating={Number(review.rating)} />
           </div>
         </div>
-        {showDelete && <DeleteIcon onDelete={onDelete || (() => {})} />}
+        {showDelete && (
+          <ConfirmModal
+            modalId={`my.review.delete.${review.reviewId}`}
+            onConfirm={handleDelete}
+            trigger={
+              <DeleteIcon onClick={() => setModalName(`my.review.delete.${review.reviewId}`)} />
+            }
+            message={
+              <div css={modalStyle}>
+                <p className="modalText">정말 리뷰를 삭제하시겠습니까?</p>
+                <p className="modalSubText">유저 평점은 삭제되지 않습니다</p>
+              </div>
+            }
+          />
+        )}
       </div>
       <div
         css={css`
@@ -134,8 +156,8 @@ const reviewStyle = css`
   .imgContainer {
     display: flex;
     justify-content: center;
-    width: 110px;
-    height: 120px;
+    width: 120px;
+    height: 100px;
     margin-bottom: 16px;
     border-radius: 5px;
     overflow: hidden;
@@ -143,6 +165,7 @@ const reviewStyle = css`
 
   img {
     width: 100%;
+    object-fit: cover;
   }
 
   .ratingContainer {
@@ -153,5 +176,19 @@ const reviewStyle = css`
     font-size: 13px;
     color: #666;
     transform: translateY(-3px);
+  }
+`;
+
+const modalStyle = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .modalText {
+    font-weight: 600;
+  }
+
+  .modalSubText {
+    font-size: 14px;
+    color: #999;
   }
 `;
