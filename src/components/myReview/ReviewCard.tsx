@@ -184,11 +184,11 @@ const modalStyle = css`
   flex-direction: column;
   align-items: center;
   .modalText {
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .modalSubText {
-    font-size: 18px;
+    font-size: 14px;
     color: #666;
   }
 `;
