@@ -1,4 +1,3 @@
-import useSectionsStore from '@/stores/useSectionsStore';
 import styled from '@emotion/styled';
 import { CircleMinus, CirclePlus } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
@@ -7,11 +6,11 @@ const ADD_FOR_FIND_GUIDE = 'add-for-find-guide';
 
 interface FloatingMenuProps {
   onSubmit?: () => void;
+  sections: string[];
+  setOpenSection: (section: string) => void;
 }
 
-const FloatingMenu = ({ onSubmit }: FloatingMenuProps) => {
-  const sections = useSectionsStore((state) => state.sections);
-  const setOpenSection = useSectionsStore((state) => state.setOpenSection);
+const FloatingMenu = ({ onSubmit, sections, setOpenSection }: FloatingMenuProps) => {
   const location = useLocation();
   const pathName = location.pathname === `/${ADD_FOR_FIND_GUIDE}` ? ADD_FOR_FIND_GUIDE : 'default';
 

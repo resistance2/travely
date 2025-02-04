@@ -46,3 +46,16 @@ export const validateAddTravel = (data: AddTravelData): boolean => {
 
   return true;
 };
+
+export const validateImageFile = (file: File): boolean => {
+  if (file.size > 5 * 1024 * 1024) {
+    return false;
+  }
+  if (
+    !file.type.startsWith('image/') ||
+    !['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)
+  ) {
+    return false;
+  }
+  return true;
+};

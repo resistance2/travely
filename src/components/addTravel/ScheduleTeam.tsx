@@ -1,20 +1,29 @@
 import { css } from '@emotion/react';
-import useFieldStore from '@/stores/useFieldStore';
 import { CirclePlus, X } from 'lucide-react';
 import { useRef } from 'react';
 import Team from '@/components/Team';
-import { useLocation } from 'react-router-dom';
 import { formatDate } from '@/utils/format';
 import useComposing from '@/hooks/custom/useComposing';
 
-const ScheduleTeam = () => {
+interface ScheduleTeamProps {
+  scheduleList: {
+    travelStartDate: string;
+    travelEndDate: string;
+    personLimit: number;
+  }[];
+  addField: (newField: {
+    personLimit: number;
+    travelStartDate: string;
+    travelEndDate: string;
+  }) => void;
+  removeField: (index: number) => void;
+}
+
+const ScheduleTeam = ({ scheduleList, addField, removeField }: ScheduleTeamProps) => {
   const { setIsComposing, handleKeyDown } = useComposing();
-  const scheduleList = useFieldStore((state) => state.fields.scheduleList);
-  const { addField, removeField } = useFieldStore((state) => state.actions);
   const startDateRef = useRef<HTMLInputElement>(null);
   const endDateRef = useRef<HTMLInputElement>(null);
   const membersRef = useRef<HTMLSelectElement>(null);
-  const location = useLocation();
 
   const handleAddSchedule = () => {
     if (scheduleList && scheduleList.length >= 4) {
@@ -32,16 +41,13 @@ const ScheduleTeam = () => {
           travelStartDate: startDateRef.current.value,
           travelEndDate: endDateRef.current.value,
         };
-        addField('scheduleList', newSchedule);
+        addField(newSchedule);
         startDateRef.current.value = '';
         endDateRef.current.value = '';
         membersRef.current.value = '';
       }
     }
   };
-
-  const isAddFindGuidePage = location.pathname === '/add-for-find-guide' && !scheduleList;
-  const isAddTravelPage = location.pathname === '/add-travel';
 
   return (
     <div css={scheduleWrapper}>
@@ -54,7 +60,7 @@ const ScheduleTeam = () => {
                 <span>
                   {`${formatDate(schedule.travelStartDate)} ~ ${formatDate(schedule.travelEndDate)} / ${schedule.personLimit}인`}
                 </span>
-                <button onClick={() => removeField('scheduleList', index)}>
+                <button onClick={() => removeField(index)}>
                   <X size={20} />
                 </button>
               </div>
@@ -63,60 +69,58 @@ const ScheduleTeam = () => {
           </li>
         ))}
       </ul>
-      {(isAddFindGuidePage || isAddTravelPage) && (
-        <div css={scheduleAddWrapper}>
-          <div css={inputRowWrapper}>
-            <label css={labelStyle}>일정</label>
-            <input
-              css={smallTextBox}
-              ref={startDateRef}
-              type="date"
-              placeholder="시작 날짜"
-              onKeyDown={(e) => handleKeyDown(e, handleAddSchedule)}
-              onCompositionStart={() => setIsComposing(true)}
-              onCompositionEnd={() => setIsComposing(false)}
-            />
-            <span css={tilde}>~</span>
-            <input
-              css={smallTextBox}
-              ref={endDateRef}
-              type="date"
-              placeholder="종료 날짜"
-              onKeyDown={(e) => handleKeyDown(e, handleAddSchedule)}
-              onCompositionStart={() => setIsComposing(true)}
-              onCompositionEnd={() => setIsComposing(false)}
-            />
-          </div>
-          <div css={inputRowWithButtonWrapper}>
-            <div css={inputRowWrapper}>
-              <label css={labelStyle}>모집인원</label>
-              <select
-                css={smallTextBox}
-                ref={membersRef}
-                defaultValue=""
-                onCompositionStart={() => setIsComposing(true)}
-                onCompositionEnd={() => setIsComposing(false)}
-              >
-                <option value="" disabled>
-                  본인제외
-                </option>
-                {Array.from(
-                  { length: 8 },
-                  (_, idx) =>
-                    idx !== 0 && (
-                      <option key={idx} value={idx}>
-                        {idx}명
-                      </option>
-                    ),
-                )}
-              </select>
-            </div>
-            <button css={plusBtn} onClick={handleAddSchedule}>
-              <CirclePlus size={24} />
-            </button>
-          </div>
+      <div css={scheduleAddWrapper}>
+        <div css={inputRowWrapper}>
+          <label css={labelStyle}>일정</label>
+          <input
+            css={smallTextBox}
+            ref={startDateRef}
+            type="date"
+            placeholder="시작 날짜"
+            onKeyDown={(e) => handleKeyDown(e, handleAddSchedule)}
+            onCompositionStart={() => setIsComposing(true)}
+            onCompositionEnd={() => setIsComposing(false)}
+          />
+          <span css={tilde}>~</span>
+          <input
+            css={smallTextBox}
+            ref={endDateRef}
+            type="date"
+            placeholder="종료 날짜"
+            onKeyDown={(e) => handleKeyDown(e, handleAddSchedule)}
+            onCompositionStart={() => setIsComposing(true)}
+            onCompositionEnd={() => setIsComposing(false)}
+          />
         </div>
-      )}
+        <div css={inputRowWithButtonWrapper}>
+          <div css={inputRowWrapper}>
+            <label css={labelStyle}>모집인원</label>
+            <select
+              css={smallTextBox}
+              ref={membersRef}
+              defaultValue=""
+              onCompositionStart={() => setIsComposing(true)}
+              onCompositionEnd={() => setIsComposing(false)}
+            >
+              <option value="" disabled>
+                본인제외
+              </option>
+              {Array.from(
+                { length: 8 },
+                (_, idx) =>
+                  idx !== 0 && (
+                    <option key={idx} value={idx}>
+                      {idx}명
+                    </option>
+                  ),
+              )}
+            </select>
+          </div>
+          <button css={plusBtn} onClick={handleAddSchedule}>
+            <CirclePlus size={24} />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

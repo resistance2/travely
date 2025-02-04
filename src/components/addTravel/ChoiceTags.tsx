@@ -1,10 +1,9 @@
 import FiledBtn from '@/components/FiledBtn';
 import GrayBack from '@/components/GrayBack';
-import useAddTravelStore from '@/stores/useAddTravelStore';
 import { theme } from '@/styles/theme';
 import { TagType } from '@/types/tagType';
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { memo } from 'react';
 
 const TAGS: TagType[] = [
   'Food',
@@ -19,10 +18,12 @@ const TAGS: TagType[] = [
   'etc.',
 ] as const;
 
-const ChoiceTags = () => {
-  const setData = useAddTravelStore((state) => state.setData);
-  const [choseTag, setChoseTag] = useState<TagType[]>([]);
+interface IChoiceTagsProps {
+  choseTag: TagType[];
+  setChoseTag: (data: TagType[]) => void;
+}
 
+const ChoiceTags = memo(({ choseTag, setChoseTag }: IChoiceTagsProps) => {
   const handleTag = (tag: TagType) => {
     if (choseTag.length === 3 && !choseTag.includes(tag)) {
       alert('태그는 최대 3개까지 선택 가능합니다.');
@@ -34,10 +35,6 @@ const ChoiceTags = () => {
       setChoseTag([...choseTag, tag]);
     }
   };
-
-  useEffect(() => {
-    setData({ tag: choseTag });
-  }, [choseTag, setData]);
 
   return (
     <GrayBack title={'태그'} padding={true}>
@@ -55,7 +52,7 @@ const ChoiceTags = () => {
       </div>
     </GrayBack>
   );
-};
+});
 
 export default ChoiceTags;
 

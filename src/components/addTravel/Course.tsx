@@ -1,20 +1,23 @@
 import { plusBtn, textBox } from '@/components/addTravel/Details';
 import useComposing from '@/hooks/custom/useComposing';
-import useFieldStore from '@/stores/useFieldStore';
 import { css } from '@emotion/react';
 import { CirclePlus, MapPin, X } from 'lucide-react';
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 
-const Course = () => {
+interface CourseProps {
+  courseList: string[];
+  addCourse: (newField: string) => void;
+  removeCourse: (index: number) => void;
+}
+
+const Course = memo(({ courseList, removeCourse, addCourse }: CourseProps) => {
   const { setIsComposing, handleKeyDown } = useComposing();
-  const courseList = useFieldStore((state) => state.fields.courseList);
-  const { addField, removeField } = useFieldStore((state) => state.actions);
   const courseRef = useRef<HTMLInputElement>(null);
 
   const handleAddCourse = () => {
     if (courseRef.current) {
       if (courseRef.current.value.trim() !== '') {
-        addField('courseList', courseRef.current.value);
+        addCourse(courseRef.current.value);
         courseRef.current.value = '';
       }
     }
@@ -29,7 +32,7 @@ const Course = () => {
             <div css={courseItem}>
               <MapPin css={{ marginRight: '10px' }} />
               <span>{course}</span>
-              <button onClick={() => removeField('courseList', index)}>
+              <button onClick={() => removeCourse(index)}>
                 <X size={20} />
               </button>
             </div>
@@ -53,7 +56,7 @@ const Course = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Course;
 

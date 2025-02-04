@@ -1,74 +1,47 @@
 import GrayBack from '@/components/GrayBack';
-import useImageStore from '@/stores/useImageStore';
+import useGetImageUrl from '@/hooks/query/useGetImageUrl';
+import { validateImageFile } from '@/utils/validCheck';
 import { css } from '@emotion/react';
 import { ImagePlus } from 'lucide-react';
-import { ChangeEvent, memo, useCallback, useState } from 'react';
-
-type ThumbnailType = 'thumbnail' | 'meetingSpace';
+import { ChangeEvent, memo, useState } from 'react';
 
 interface ThumbnailProps {
-  type: ThumbnailType;
+  imageUrl: string;
+  setImageUrl: (thumbnail: string) => void;
+  title: string;
 }
 
-const Thumbnail = memo(({ type }: ThumbnailProps) => {
+const ImageUploadField = memo(({ imageUrl, setImageUrl, title }: ThumbnailProps) => {
   const [errMessage, setErrMessage] = useState('');
-  const { thumbnail, meetingSpace } = useImageStore((state) => state.images);
-  const { setThumbnail, setMeetingSpace } = useImageStore((state) => state.actions);
+  const { mutate: uploadImages } = useGetImageUrl();
 
-  const validateFile = (file: File): string | null => {
-    if (file.size > 5 * 1024 * 1024) {
-      return '파일 크기는 5MB 이하여야 합니다.';
-    }
-    if (
-      !file.type.startsWith('image/') ||
-      !['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)
-    ) {
-      return 'jpeg, png, jpg 형식의 이미지 파일만 업로드 가능합니다.';
-    }
-    return null;
-  };
-
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>, type: ThumbnailType) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      const errorMessage = validateFile(file);
-      if (errorMessage) {
-        setErrMessage(errorMessage);
+      if (!validateImageFile(file)) {
+        setErrMessage('5MB 이하의 jpeg, png, jpg 형식의 이미지 파일만 업로드 가능합니다.');
         setTimeout(() => setErrMessage(''), 3000);
         return;
       }
-
-      if (type === 'thumbnail') {
-        setThumbnail(file);
-      } else if (type === 'meetingSpace') {
-        setMeetingSpace(file);
-      }
+      uploadImages(
+        { file },
+        {
+          onSuccess: (uploadedImageUrl) => {
+            setImageUrl(uploadedImageUrl);
+          },
+        },
+      );
     }
-  };
-
-  const getPreviewUrl = useCallback((file: File | null) => {
-    return file ? URL.createObjectURL(file) : '';
-  }, []);
-
-  const DATA_OF_TYPE = {
-    thumbnail: {
-      title: '대표 이미지',
-      image: thumbnail,
-    },
-    meetingSpace: {
-      title: '만나는 장소',
-      image: meetingSpace,
-    },
   };
 
   return (
     <>
-      <GrayBack title={DATA_OF_TYPE[type].title}>
-        <div css={thumbnailSize(getPreviewUrl(DATA_OF_TYPE[type].image))}>
-          <button onClick={() => document.getElementById(type)?.click()}>
+      <GrayBack title={title}>
+        <div css={thumbnailStyle(imageUrl)}>
+          <button onClick={() => document.getElementById(`image-input-${title}`)?.click()}>
             <ImagePlus size={100} css={{ color: '#fff' }} />
           </button>
-          <input id={type} type="file" onChange={(e) => handleFileChange(e, type)} />
+          <input id={`image-input-${title}`} type="file" onChange={(e) => handleFileChange(e)} />
         </div>
       </GrayBack>
       <p css={{ fontSize: '14px', color: '#ff2020' }}>{errMessage}</p>
@@ -76,9 +49,9 @@ const Thumbnail = memo(({ type }: ThumbnailProps) => {
   );
 });
 
-export default Thumbnail;
+export default ImageUploadField;
 
-const thumbnailSize = (thumbnail: string) => css`
+const thumbnailStyle = (thumbnail: string) => css`
   width: 100%;
   height: 400px;
   background-image: ${thumbnail === '' ? 'none' : `url(${thumbnail})`};

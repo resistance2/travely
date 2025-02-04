@@ -2,15 +2,16 @@
 import GrayBack from '@/components/GrayBack';
 import { ShowToast } from '@/components/Toast';
 import useGetImageUrl from '@/hooks/query/useGetImageUrl';
-import useAddTravelStore from '@/stores/useAddTravelStore';
-import useFieldStore from '@/stores/useFieldStore';
+import { validateImageFile } from '@/utils/validCheck';
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
 interface IntroductionProps {
   title?: string;
+  setContent: (content: string) => void;
+  content: string;
 }
 
 const QUILL_MODULE = {
@@ -31,26 +32,23 @@ const QUILL_MODULE = {
   },
 };
 
-const Introduction = ({ title = '상품 소개' }: IntroductionProps) => {
+const Introduction = memo(({ title = '상품 소개', setContent, content }: IntroductionProps) => {
   const [imgLimit, setImgLimit] = useState(false);
-  const [value, setValue] = useState('');
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
-  const { setContent } = useFieldStore((state) => state.actions);
-  const setData = useAddTravelStore((state) => state.setData);
   const { mutate: uploadImage } = useGetImageUrl();
 
   useEffect(() => {
     handleContent();
-  }, [value]);
+  }, [content]);
 
   const handleContent = async () => {
     const regex = /<img\s+[^>]*src="([^"]+)"[^>]*>/g;
-    const matches = [...value.matchAll(regex)];
+    const matches = [...content.matchAll(regex)];
     const imgUrls = matches.map((match) => match[1]);
 
     if (imgUrls.length === 0) {
-      setContent(value);
-      setData({ travelContent: value });
+      setContent(content);
+      // setData({ travelContent: content });
       return;
     }
 
@@ -68,20 +66,25 @@ const Introduction = ({ title = '상품 소개' }: IntroductionProps) => {
         const blob = await response.blob();
         const imageFile = new File([blob], 'image.jpg', { type: blob.type });
 
+        if (!validateImageFile(imageFile)) {
+          ShowToast('5MB 이하의 jpeg, png, jpg 형식의 이미지 파일만 업로드 가능합니다.', 'failed');
+          return;
+        }
+
         uploadImage(
           { file: imageFile },
           {
             onSuccess: (uploadedImageUrl) => {
               setUploadedImages((prev) => [...prev, uploadedImageUrl]);
-              const newValue = value.replace(
+              const newValue = content.replace(
                 `<img src="${imgSrc}">`,
                 `<img src="${uploadedImageUrl}">`,
               );
-              setValue(newValue);
+              setContent(newValue);
             },
             onError: () => {
-              const newValue = value.replace(`<img src="${imgSrc}">`, '');
-              setValue(newValue);
+              const newValue = content.replace(`<img src="${imgSrc}">`, '');
+              setContent(newValue);
             },
           },
         );
@@ -90,19 +93,19 @@ const Introduction = ({ title = '상품 소개' }: IntroductionProps) => {
       }
     }
 
-    setContent(value);
-    setData({ travelContent: value });
+    setContent(content);
+    // setData({ travelContent: content });
   };
 
   return (
     <GrayBack title={title}>
-      <ReactQuill value={value} onChange={setValue} modules={QUILL_MODULE} css={textbox} />
+      <ReactQuill value={content} onChange={setContent} modules={QUILL_MODULE} css={textbox} />
       {imgLimit ? (
         <p css={{ fontSize: '14px', color: '#ff2020' }}>이미지는 최대 4장까지 첨부 가능합니다.</p>
       ) : null}
     </GrayBack>
   );
-};
+});
 
 export default Introduction;
 

@@ -2,9 +2,9 @@ import GrayBack from '@/components/GrayBack';
 import { CirclePlus } from 'lucide-react';
 import { css } from '@emotion/react';
 import useFieldStore, { FieldsOptions } from '@/stores/useFieldStore';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import DetailsList from '@/components/addTravel/DetailsList';
-import Thumbnail from '@/components/addTravel/Thumbnail';
+import ImageUploadField from '@/components/addTravel/Thumbnail';
 import useComposing from '@/hooks/custom/useComposing';
 
 interface DetailsProps {
@@ -16,6 +16,8 @@ const Details = ({ title }: DetailsProps) => {
   const addField = useFieldStore((state) => state.actions.addField);
   const newFieldRef = useRef<HTMLInputElement>(null);
   const answer = useRef<HTMLTextAreaElement>(null);
+
+  const [meetingPlaceImageUrl, setMeetingPlaceImageUrl] = useState('');
 
   let option: FieldsOptions = 'includeList';
   if (title === '포함내용') {
@@ -51,7 +53,7 @@ const Details = ({ title }: DetailsProps) => {
     <GrayBack title={title} padding={true}>
       {title === '이용안내' ? (
         <>
-          <span css={{ fontSize: '18px' }}>만나는 시간</span>
+          <span css={{ fontSize: '18px', fontWeight: '600' }}>만나는 시간</span>
           <DetailsList option={option} />
           <div css={{ display: 'flex' }}>
             <input
@@ -68,7 +70,11 @@ const Details = ({ title }: DetailsProps) => {
               <CirclePlus size={24} />
             </button>
           </div>
-          <Thumbnail type="meetingSpace" />
+          <ImageUploadField
+            imageUrl={meetingPlaceImageUrl}
+            setImageUrl={setMeetingPlaceImageUrl}
+            title="만나는 장소"
+          />
         </>
       ) : (
         <>
