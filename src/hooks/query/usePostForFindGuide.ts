@@ -1,10 +1,11 @@
 import postForFindGuide from '@/api/addForFindGuide/postForFindGuide';
 import { ShowToast } from '@/components/Toast';
+import { TRAVEL_GUIDE_LIST } from '@/constants/queryKey';
 import useFieldStore from '@/stores/useFieldStore';
 import useImageStore from '@/stores/useImageStore';
 import useSectionsStore from '@/stores/useSectionsStore';
 import { AddForFindGuideData } from '@/types/guideFindDataType';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 const usePostForFindGuide = () => {
@@ -12,6 +13,7 @@ const usePostForFindGuide = () => {
   const resetImages = useImageStore((state) => state.actions.resetImages);
   const resetField = useFieldStore((state) => state.actions.resetField);
   const resetSections = useSectionsStore((state) => state.resetSections);
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ dataToUpload }: { dataToUpload: AddForFindGuideData }) =>
@@ -24,8 +26,8 @@ const usePostForFindGuide = () => {
         resetField();
         resetSections();
         navigate('/find-guide');
-        // TODO: 가이드구해요리스트페이지 쿼리키 무효화 코드 추가 필요
-      }, 3000);
+        queryClient.invalidateQueries({ queryKey: [TRAVEL_GUIDE_LIST] });
+      }, 300);
     },
 
     onError: () => {
