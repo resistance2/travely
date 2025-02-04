@@ -5,26 +5,12 @@ import ImageUploadField from '@/components/addTravel/Thumbnail';
 import GrayBack from '@/components/GrayBack';
 import usePostForFindGuide from '@/hooks/query/usePostForFindGuide';
 import { addTravelWrapper, noneStyleInput, pageLayoutWrapper } from '@/pages/AddTravel';
-import useFieldStore from '@/stores/useFieldStore';
 import useUserStore from '@/stores/useUserStore';
 import { addForFindGuideDataValidate } from '@/utils/updateDataValidate';
 import { useRef, useState } from 'react';
 
 const AddForFindGuide = () => {
-  const titleRef = useRef<HTMLInputElement>(null);
-  const user = useUserStore((state) => state.user);
-  const { mutate } = usePostForFindGuide();
-
   const [sections, setSections] = useState<string[]>(['제목', '글 내용', '일정 및 팀 추가']);
-
-  const setOpenSection = (section: string) => {
-    if (sections.includes(section)) {
-      setSections(sections.filter((s) => s !== section));
-    } else {
-      setSections([...sections, section]);
-    }
-  };
-
   const [thumbnail, setThumbnail] = useState('');
   const [scheduleList, setScheduleList] = useState<
     {
@@ -33,6 +19,18 @@ const AddForFindGuide = () => {
       travelEndDate: string;
     }[]
   >([]);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const [content, setContent] = useState<string>('');
+  const user = useUserStore((state) => state.user);
+  const { mutate } = usePostForFindGuide();
+
+  const setOpenSection = (section: string) => {
+    if (sections.includes(section)) {
+      setSections(sections.filter((s) => s !== section));
+    } else {
+      setSections([...sections, section]);
+    }
+  };
 
   const handleAddSchedule = (newField: {
     personLimit: number;
@@ -46,29 +44,8 @@ const AddForFindGuide = () => {
     setScheduleList(scheduleList.filter((_, i) => i !== index));
   };
 
-  // const handleFetchCheck = async () => {
-  //   const images = useImageStore.getState().images;
-  //   if (hasImageData(images)) {
-  //     handleImageUpload(images);
-  //     return;
-  //   }
-  //   handleSubmit();
-  // };
-
-  // const handleImageUpload = async (images: ImageStore) => {
-  //   const res = await uploadImages(images);
-  //   const introSrcs = res.introSrcs.reverse();
-  //   const thumbnail = res.thumbnail?.[0];
-  //   if (introSrcs?.length > 0 && fields.content !== '') {
-  //     await setContent(replaceImageSrc(fields.content, introSrcs));
-  //   }
-  //   handleSubmit(thumbnail);
-  // };
-
-  const [content, setContent] = useState<string>('');
   const handleSubmit = () => {
     if (titleRef.current && user?.userId) {
-      const { content, scheduleList } = useFieldStore.getState().fields;
       const dataToUpload = {
         userId: user.userId,
         travelTitle: titleRef.current.value,
