@@ -78,28 +78,34 @@ const Application = ({
           <h1>{Number(price).toLocaleString()}원</h1>
           <p>/ 1인</p>
         </div>
-        <select onChange={handleSelectTeam}>
-          <option value="">(여행 기간을 선택해주세요)</option>
-          {teams.map((team) => (
-            <option key={team.teamId} value={team.teamId}>
-              {formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}
-            </option>
-          ))}
-        </select>
+        {isTraveler || (
+          <select onChange={handleSelectTeam}>
+            <option value="">(여행 기간을 선택해주세요)</option>
+            {teams.map((team) => (
+              <option key={team.teamId} value={team.teamId}>
+                {formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}
+              </option>
+            ))}
+          </select>
+        )}
         <div css={btnWrapper}>
           <button css={bookmarkBtn} onClick={handleBookmark}>
             <Bookmark
               size={20}
-              stroke={isBookmark ? theme.colors.primary : '#666'}
+              stroke={isBookmark ? theme.colors.primary : '#aaa'}
               fill={isBookmark ? theme.colors.primary : 'none'}
             />
             {bookmark}
           </button>
-          {isTraveler ? null : (
-            <FiledBtn color={theme.colors.primary} customStyle={applyBtn} onClick={handleRegister}>
-              신청하기
-            </FiledBtn>
-          )}
+
+          <FiledBtn
+            color={isTraveler ? '#999' : theme.colors.primary}
+            customStyle={applyBtn}
+            onClick={handleRegister}
+            disabled={isTraveler}
+          >
+            {isTraveler ? '신청 완료' : '신청하기'}
+          </FiledBtn>
         </div>
       </div>
       <div css={guideProfileWrapper}>

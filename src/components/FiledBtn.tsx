@@ -9,17 +9,19 @@ interface FiledBtnProps {
   customStyle?: SerializedStyles;
   type?: 'button' | 'submit' | 'reset';
   className?: string;
+  disabled?: boolean;
 }
 
 const FiledBtn = forwardRef<HTMLButtonElement, FiledBtnProps>(
-  ({ children, color, size, onClick, customStyle, type, className }, ref) => {
+  ({ children, color, size, onClick, customStyle, type, className, disabled }, ref) => {
     return (
       <button
         ref={ref}
-        css={[filedBtn(color, size), customStyle]}
+        css={[filedBtn(color, size, disabled), customStyle]}
         onClick={onClick}
         type={type}
         className={className}
+        disabled={disabled}
       >
         {children}
       </button>
@@ -31,7 +33,7 @@ FiledBtn.displayName = 'FiledBtn';
 
 export default FiledBtn;
 
-const filedBtn = (color: string, size: string | undefined) => css`
+const filedBtn = (color: string, size: string | undefined, disabled: boolean | undefined) => css`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,8 +44,9 @@ const filedBtn = (color: string, size: string | undefined) => css`
   height: 30px;
   font-size: 14px;
   transition: transform 0.2s ease-in-out;
+  cursor: ${disabled ? 'not-allowed' : 'pointer'};
   :hover {
-    transform: scale(1.05);
+    ${disabled ? '' : `transform: scale(1.05);`}
   }
   ${size === 'sm' &&
   `
