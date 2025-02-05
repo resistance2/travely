@@ -102,7 +102,7 @@ const MyJoinedContent = () => {
                 <Header>
                   <Title>{travelData.travelTitle}</Title>
                   {/* 예약이 거절된 상태면 "취소됨"을 표시, 아닌 경우 D-DAY 표시 */}
-                  {currentUser.status === 'refused' ? (
+                  {currentUser.status === 'rejected' ? (
                     <StatusCanceled>취소됨</StatusCanceled>
                   ) : (
                     <DaysRemaining>{daysRemaining}</DaysRemaining>
@@ -144,16 +144,17 @@ const MyJoinedContent = () => {
                         travelThumbnail={travelData.thumbnail}
                       />
                     )}
-
-                  {/* D-DAY이면서 후기가 작성된 경우 여행 완료 메시지 */}
-                  {isPast && reviewWritten && <CompletionMessage>여행 완료</CompletionMessage>}
-                  {isPast && currentUser.status === 'refused' && <p>예약 취소</p>}
-                  {/* 아직 D-DAY가 지나지 않은 경우 예약 상태 표시 */}
-                  {!isPast && (
+                  {isPast ? (
+                    <>
+                      {reviewWritten && <CompletionMessage>여행 완료</CompletionMessage>}
+                      {currentUser.status === 'rejected' && <p>예약 취소</p>}
+                      {currentUser.status === 'waiting' && <p>예약 불가</p>}
+                    </>
+                  ) : (
                     <>
                       {currentUser.status === 'approved' && <p>예약 완료</p>}
                       {currentUser.status === 'waiting' && <p>예약 대기</p>}
-                      {currentUser.status === 'refused' && <p>예약 취소</p>}
+                      {currentUser.status === 'rejected' && <p>예약 취소</p>}
                     </>
                   )}
                 </CurrentUserStatus>
