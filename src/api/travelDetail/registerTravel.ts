@@ -15,16 +15,20 @@ interface registerTravelResponse {
 }
 
 const registerTravel = async ({ userId, teamId }: registerTravelRequestParam) => {
-  const { data } = await axios.post<registerTravelResponse>(
-    `${SERVER}/api/v1/travels/${teamId}/join`,
-    { userId },
-    {
-      headers: {
-        'Content-Type': 'application/json',
+  try {
+    const { data } = await axios.post<registerTravelResponse>(
+      `${SERVER}/api/v1/travels/${teamId}/join`,
+      { userId },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    },
-  );
-  return data;
+    );
+    return data;
+  } catch (err) {
+    throw new Error(err instanceof Error ? err.message : '여행 신청 실패');
+  }
 };
 
 export default registerTravel;

@@ -15,14 +15,12 @@ const usePostForFindGuide = () => {
     mutationFn: ({ dataToUpload }: { dataToUpload: AddForFindGuideData }) =>
       postForFindGuide(dataToUpload),
 
-    onSuccess: (data) => {
+    onSuccess: () => {
       ShowToast('작성하신 글이 업로드 되었습니다.', 'success');
-      if (data) {
-        resetAddTravel();
-        queryClient.invalidateQueries({ queryKey: [GUIDE_LIST] });
-        queryClient.invalidateQueries({ queryKey: [HOME_GUIDE_LIST] });
-        navigate('/find-guide');
-      }
+      resetAddTravel();
+      queryClient.invalidateQueries({ queryKey: [GUIDE_LIST] });
+      queryClient.invalidateQueries({ queryKey: [HOME_GUIDE_LIST] });
+      navigate('/find-guide');
     },
 
     onError: () => {

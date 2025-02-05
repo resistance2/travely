@@ -18,9 +18,18 @@ interface ApplicationProps {
   isBookmark: boolean;
   teams: Pick<TravelTeamData, 'teamId' | 'travelStartDate' | 'travelEndDate'>[];
   guide: GuideData;
+  isTraveler: boolean;
 }
 
-const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: ApplicationProps) => {
+const Application = ({
+  travelId,
+  price,
+  bookmark,
+  isBookmark,
+  teams,
+  guide,
+  isTraveler,
+}: ApplicationProps) => {
   const { mutate } = useUpdateBookmark();
   const user = useUserStore((state) => state.user);
   const { mutate: registerTravel } = useRegisterTravel();
@@ -35,10 +44,16 @@ const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: Ap
       ShowToast('로그인 후 이용 가능합니다.', 'failed');
       return;
     }
+    // if (user.userId === guide.userId) {
+    //   ShowToast('자신의 여행에는 신청할 수 없습니다.', 'failed');
+    //   return;
+    // }
+    console.log(selectedTeamId);
     if (!selectedTeamId) {
       ShowToast('신청할 팀을 선택하세요.', 'failed');
       return;
     }
+
     registerTravel({ userId: user.userId, teamId: selectedTeamId });
   };
 
@@ -63,6 +78,7 @@ const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: Ap
           <p>/ 1인</p>
         </div>
         <select onChange={handleSelectTeam}>
+          <option value="">(여행 기간을 선택해주세요)</option>
           {teams.map((team) => (
             <option key={team.teamId} value={team.teamId}>
               {formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}
@@ -78,9 +94,11 @@ const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: Ap
             />
             {bookmark}
           </button>
-          <FiledBtn color={theme.colors.primary} customStyle={applyBtn} onClick={handleRegister}>
-            신청하기
-          </FiledBtn>
+          {isTraveler ? null : (
+            <FiledBtn color={theme.colors.primary} customStyle={applyBtn} onClick={handleRegister}>
+              신청하기
+            </FiledBtn>
+          )}
         </div>
       </div>
       <div css={guideProfileWrapper}>

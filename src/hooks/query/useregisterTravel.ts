@@ -20,7 +20,13 @@ const useRegisterTravel = () => {
       ShowToast('여행 신청 성공', 'success');
       navigate('/my-page/my-travel-list');
     },
-    onError: () => {
+    onError: (error: Error) => {
+      console.error(error);
+      // const errorMessage =
+      //   error instanceof Error
+      //     ? error.message
+      //     : '여행 팀이 신청이 마감되었거나 이미 신청이 완료된 여행입니다.';
+      //TODO: 서버에서 반환되는 구체적인 에러메시지를 사용자에게 표시해야함.
       ShowToast('여행 팀이 신청이 마감되었거나 이미 신청이 완료된 여행입니다.', 'failed');
     },
   });
