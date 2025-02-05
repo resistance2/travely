@@ -8,8 +8,9 @@ import { formatDate } from '@/utils/format';
 import useUpdateBookmark from '@/hooks/query/useUpdateBookmark';
 import useUserStore from '@/stores/useUserStore';
 import { ShowToast } from '../Toast';
-import useRegisterTravel from '@/hooks/query/useregisterTravel';
+
 import { useState } from 'react';
+import useRegisterTravel from '@/hooks/query/useRegisterTravel';
 
 interface ApplicationProps {
   travelId: string;
