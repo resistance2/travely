@@ -8,6 +8,8 @@ import { formatDate } from '@/utils/format';
 import useUpdateBookmark from '@/hooks/query/useUpdateBookmark';
 import useUserStore from '@/stores/useUserStore';
 import { ShowToast } from '../Toast';
+import useRegisterTravel from '@/hooks/query/useregisterTravel';
+import { useState } from 'react';
 
 interface ApplicationProps {
   travelId: string;
@@ -21,6 +23,24 @@ interface ApplicationProps {
 const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: ApplicationProps) => {
   const { mutate } = useUpdateBookmark();
   const user = useUserStore((state) => state.user);
+  const { mutate: registerTravel } = useRegisterTravel();
+  const [selectedTeamId, setSelectedTeamId] = useState<string>('');
+
+  const handleSelectTeam = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTeamId(event.target.value);
+  };
+
+  const handleRegister = () => {
+    if (!user) {
+      ShowToast('로그인 후 이용 가능합니다.', 'failed');
+      return;
+    }
+    if (!selectedTeamId) {
+      ShowToast('신청할 팀을 선택하세요.', 'failed');
+      return;
+    }
+    registerTravel({ userId: user.userId, teamId: selectedTeamId });
+  };
 
   const handleBookmark = () => {
     if (!user) {
@@ -42,9 +62,9 @@ const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: Ap
           <h1>{Number(price).toLocaleString()}원</h1>
           <p>/ 1인</p>
         </div>
-        <select>
-          {teams.map((team, idx) => (
-            <option key={team.teamId} value={idx}>
+        <select onChange={handleSelectTeam}>
+          {teams.map((team) => (
+            <option key={team.teamId} value={team.teamId}>
               {formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}
             </option>
           ))}
@@ -58,7 +78,7 @@ const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: Ap
             />
             {bookmark}
           </button>
-          <FiledBtn color={theme.colors.primary} customStyle={applyBtn}>
+          <FiledBtn color={theme.colors.primary} customStyle={applyBtn} onClick={handleRegister}>
             신청하기
           </FiledBtn>
         </div>

@@ -67,6 +67,7 @@ export interface TravelDetailData {
   totalRating: number;
   bookmark: number;
   isBookmark: boolean;
+  isTraveler: boolean;
 }
 
 export interface AddTravelData {
