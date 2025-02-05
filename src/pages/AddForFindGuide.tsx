@@ -4,45 +4,42 @@ import ScheduleTeam from '@/components/addTravel/ScheduleTeam';
 import Thumbnail from '@/components/addTravel/Thumbnail';
 import GrayBack from '@/components/GrayBack';
 import useHandleImageUpload from '@/hooks/custom/useHandleImageUpload';
+import useResetAddTravel from '@/hooks/custom/useResetAddTravel';
 import usePostForFindGuide from '@/hooks/query/usePostForFindGuide';
 import { addTravelWrapper, noneStyleInput, pageLayoutWrapper } from '@/pages/AddTravel';
 import useFieldStore from '@/stores/useFieldStore';
-import useImageStore, { ImageStore } from '@/stores/useImageStore';
+import useImageStore from '@/stores/useImageStore';
 import useSectionsStore from '@/stores/useSectionsStore';
 import useUserStore from '@/stores/useUserStore';
-import {
-  addForFindGuideDataValidate,
-  hasImageData,
-  replaceImageSrc,
-} from '@/utils/updateDataValidate';
-import { useRef } from 'react';
+import { addForFindGuideDataValidate, hasImageData } from '@/utils/updateDataValidate';
+import { useEffect, useRef } from 'react';
 
 const AddForFindGuide = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const sections = useSectionsStore((state) => state.sections);
-  const fields = useFieldStore((state) => state.fields);
   const user = useUserStore((state) => state.user);
-  const { setContent } = useFieldStore((state) => state.actions);
+
   const { uploadImages } = useHandleImageUpload();
   const { mutate } = usePostForFindGuide();
+  const resetAddTravel = useResetAddTravel().resetAddTravel;
+
+  useEffect(() => {
+    resetAddTravel();
+  }, [resetAddTravel]);
 
   const handleFetchCheck = async () => {
     const images = useImageStore.getState().images;
     if (hasImageData(images)) {
-      handleImageUpload(images);
-      return;
+      const res = await uploadImages({
+        thumbnail: images.thumbnail,
+        meetingSpace: null,
+        introSrcs: [],
+      });
+      const thumbnail = res.thumbnail?.[0];
+      handleSubmit(thumbnail);
+    } else {
+      handleSubmit();
     }
-    handleSubmit();
-  };
-
-  const handleImageUpload = async (images: ImageStore) => {
-    const res = await uploadImages(images);
-    const introSrcs = res.introSrcs.reverse();
-    const thumbnail = res.thumbnail?.[0];
-    if (introSrcs?.length > 0 && fields.content !== '') {
-      await setContent(replaceImageSrc(fields.content, introSrcs));
-    }
-    handleSubmit(thumbnail);
   };
 
   const handleSubmit = (thumbnail?: string) => {

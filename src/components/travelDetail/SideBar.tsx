@@ -18,6 +18,7 @@ const SideBar = ({ travelId, travelData }: SideBarProps) => {
         isBookmark={travelData.isBookmark}
         teams={travelData.team}
         guide={travelData.guide}
+        isTraveler={travelData.isTraveler}
       />
       <SideTravelTeam teams={travelData.team} />
     </aside>

@@ -40,7 +40,7 @@ const UserTable = ({ data, teamId, hasAccount }: UserTableProps) => {
                 <UserStatusWaiting
                   teamId={teamId}
                   userId={user.userId}
-                  userName={user.userName}
+                  userName={user.socialName}
                   hasAccount={hasAccount}
                 />
               ) : user.status === 'approved' ? (

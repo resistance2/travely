@@ -10,12 +10,20 @@ import FloatingMenu from '@/components/addTravel/FloatingMenu';
 import useSectionsStore from '@/stores/useSectionsStore';
 import useAddTravelStore from '@/stores/useAddTravelStore';
 import useHandleAddTravel from '@/hooks/custom/useHandleAddTravel';
+import useResetAddTravel from '@/hooks/custom/useResetAddTravel';
+import { useEffect } from 'react';
 
 const AddTravel = () => {
   const sections = useSectionsStore((state) => state.sections);
   const setData = useAddTravelStore((state) => state.setData);
   const data = useAddTravelStore((state) => state.data);
   const handleAddTravel = useHandleAddTravel().handleAddTravel;
+
+  const resetAddTravel = useResetAddTravel().resetAddTravel;
+
+  useEffect(() => {
+    resetAddTravel();
+  }, [resetAddTravel]);
 
   const changeHandlers = {
     changeTitle: (travelTitle: string) => {

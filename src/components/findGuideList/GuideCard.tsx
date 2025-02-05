@@ -24,7 +24,7 @@ const GuideCard: React.FC<IGuideCardDataProps> = ({ cardData }) => {
             <Team
               max={team.personLimit === null ? 1 : team.personLimit}
               size="sm"
-              mbtiList={team.mbti === null ? [] : team.mbti}
+              userList={team.mbti === null ? [] : team.mbti.map((mbti) => ({ mbti: mbti || null }))}
             />
           </div>
           <div className="name-comment-wrap">

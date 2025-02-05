@@ -9,6 +9,9 @@ import useUpdateBookmark from '@/hooks/query/useUpdateBookmark';
 import useUserStore from '@/stores/useUserStore';
 import { ShowToast } from '../Toast';
 
+import { useState } from 'react';
+import useRegisterTravel from '@/hooks/query/useRegisterTravel';
+
 interface ApplicationProps {
   travelId: string;
   price: number;
@@ -16,11 +19,44 @@ interface ApplicationProps {
   isBookmark: boolean;
   teams: Pick<TravelTeamData, 'teamId' | 'travelStartDate' | 'travelEndDate'>[];
   guide: GuideData;
+  isTraveler: boolean;
 }
 
-const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: ApplicationProps) => {
+const Application = ({
+  travelId,
+  price,
+  bookmark,
+  isBookmark,
+  teams,
+  guide,
+  isTraveler,
+}: ApplicationProps) => {
   const { mutate } = useUpdateBookmark();
   const user = useUserStore((state) => state.user);
+  const { mutate: registerTravel } = useRegisterTravel();
+  const [selectedTeamId, setSelectedTeamId] = useState<string>('');
+
+  const handleSelectTeam = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTeamId(event.target.value);
+  };
+
+  const handleRegister = () => {
+    if (!user) {
+      ShowToast('로그인 후 이용 가능합니다.', 'failed');
+      return;
+    }
+    // !TODO: 자신의 여행을 신청할 수 없게 막기
+    // if (user.userId === guide.userId) {
+    //   ShowToast('자신의 여행에는 신청할 수 없습니다.', 'failed');
+    //   return;
+    // }
+    if (!selectedTeamId) {
+      ShowToast('신청할 팀을 선택하세요.', 'failed');
+      return;
+    }
+
+    registerTravel({ userId: user.userId, teamId: selectedTeamId });
+  };
 
   const handleBookmark = () => {
     if (!user) {
@@ -42,24 +78,33 @@ const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: Ap
           <h1>{Number(price).toLocaleString()}원</h1>
           <p>/ 1인</p>
         </div>
-        <select>
-          {teams.map((team, idx) => (
-            <option key={team.teamId} value={idx}>
-              {formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}
-            </option>
-          ))}
-        </select>
+        {isTraveler || (
+          <select onChange={handleSelectTeam}>
+            <option value="">(여행 기간을 선택해주세요)</option>
+            {teams.map((team) => (
+              <option key={team.teamId} value={team.teamId}>
+                {formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}
+              </option>
+            ))}
+          </select>
+        )}
         <div css={btnWrapper}>
           <button css={bookmarkBtn} onClick={handleBookmark}>
             <Bookmark
               size={20}
-              stroke={isBookmark ? theme.colors.primary : '#666'}
+              stroke={isBookmark ? theme.colors.primary : '#aaa'}
               fill={isBookmark ? theme.colors.primary : 'none'}
             />
             {bookmark}
           </button>
-          <FiledBtn color={theme.colors.primary} customStyle={applyBtn}>
-            신청하기
+
+          <FiledBtn
+            color={isTraveler ? '#999' : theme.colors.primary}
+            customStyle={applyBtn}
+            onClick={handleRegister}
+            disabled={isTraveler}
+          >
+            {isTraveler ? '신청 완료' : '신청하기'}
           </FiledBtn>
         </div>
       </div>

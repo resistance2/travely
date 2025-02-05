@@ -16,7 +16,10 @@ export interface TravelData {
   updateAt: string;
   teamTeams: string[];
   travelActive: boolean;
-  accountNumber: string | null;
+  bankAccount: {
+    accountNumber: string;
+    bankCode: string;
+  };
 }
 export interface TravelTeamData {
   teamId: string;
@@ -29,7 +32,8 @@ export interface TravelTeamData {
 }
 export interface ApplicationUserData {
   status: Status;
-  userName: string;
+  userName?: string;
+  socialName: string;
   userEmail: string;
   userProfileImage: string;
   mbti: string;
@@ -67,6 +71,7 @@ export interface TravelDetailData {
   totalRating: number;
   bookmark: number;
   isBookmark: boolean;
+  isTraveler: boolean;
 }
 
 export interface AddTravelData {

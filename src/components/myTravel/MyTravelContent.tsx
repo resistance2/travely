@@ -21,7 +21,6 @@ type MyCreatedInfiniteQueryData = InfiniteQueryData<IGetMyCreatedTravelReturn>;
 
 const MyCreatedContent = () => {
   const { user } = useUserStore((state) => state);
-  // const { data: myCreatedTravelData } = useGetMyCreatedTravel(user?.userId as string);
   const queryClient = useQueryClient();
 
   const resetQueryData = useCallback(

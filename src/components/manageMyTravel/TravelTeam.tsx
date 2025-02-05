@@ -48,7 +48,7 @@ const TravelTeam = ({
       {teamData && showTeamData && (
         <>
           <p>{formatDate(teamData.travelStartDate) + ' ~ ' + formatDate(teamData.travelEndDate)}</p>
-          <Team max={teamData.personLimit} mbtiList={userMBTIList} />
+          <Team max={teamData.personLimit} userList={userMBTIList?.map((mbti) => ({ mbti }))} />
           {teamData.appliedUsers ? (
             <div>
               <UserTable data={teamData.appliedUsers} teamId={teamId} hasAccount={hasAccount} />
