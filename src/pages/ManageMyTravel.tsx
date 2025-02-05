@@ -42,7 +42,7 @@ const ManageMyTravel = () => {
               travelId={travelId}
               teamId={teamId}
               isOngoing={isOngoingTab}
-              hasAccount={typeof travelData.bankAccount.accountNumber === 'string'}
+              hasAccount={typeof travelData?.bankAccount?.accountNumber === 'string'}
               handleHasData={handleHasData}
             />
           ))}

@@ -19,9 +19,11 @@ const SideTravelTeam = ({ teams }: SideTravelTeamProps) => {
           <span>{formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}</span>
           <Team
             max={team.personLimit}
-            userList={team.approvedUsers?.map((user) => ({
-              mbti: user.mbti,
-            }))}
+            userList={
+              team.approvedUsers?.map((user) => ({
+                mbti: user.mbti,
+              })) || []
+            }
           />
         </div>
       ))}
