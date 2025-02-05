@@ -49,7 +49,6 @@ const Application = ({
     //   ShowToast('자신의 여행에는 신청할 수 없습니다.', 'failed');
     //   return;
     // }
-    console.log(selectedTeamId);
     if (!selectedTeamId) {
       ShowToast('신청할 팀을 선택하세요.', 'failed');
       return;

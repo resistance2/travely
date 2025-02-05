@@ -17,6 +17,7 @@ const FindGuideCard: React.FC<IFindGuideCardProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
+  // const { data: findGuideData } = useGetFindGuideDetail(guidePostId as string);
   return (
     <TripCardContainer
       onMouseEnter={() => setIsHovered(true)}
@@ -27,7 +28,7 @@ const FindGuideCard: React.FC<IFindGuideCardProps> = ({
           <Title>{title}</Title>
           <Comment>댓글 수:{reviews}</Comment>
         </TitleContainer>
-        <Team max={7} mbtiList={['ENFP']} />
+        <Team max={7} userList={[{ mbti: 'ENFP' }]} />
         <Buttons>
           <ManageButtonContainer>
             <ManageButton isDisabled={isDisabled}>수정</ManageButton>

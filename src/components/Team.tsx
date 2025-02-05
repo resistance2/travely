@@ -3,14 +3,17 @@ import { Smile } from 'lucide-react';
 
 interface ITeamProps {
   max?: number;
-  mbtiList?: (string | null)[] | [];
+  userList?: { mbti: string | null }[];
   size?: 'sm' | 'md';
 }
 
-const Team = ({ max = 1, mbtiList = [], size = 'md' }: ITeamProps) => {
+const Team = ({ max = 1, userList = [], size = 'md' }: ITeamProps) => {
+  console.log('userList', userList);
   const items = Array(max)
     .fill(0)
-    .map((_, i) => mbtiList[i] || null);
+    .map((_, i) => userList[i] || null);
+
+  console.log('items', items);
 
   return (
     <ul css={teamWrap} className={size}>
@@ -20,7 +23,7 @@ const Team = ({ max = 1, mbtiList = [], size = 'md' }: ITeamProps) => {
             <div className={`team-item${item !== null ? ' fill' : ''}`}>
               <Smile color="#fff" size={size === 'sm' ? 19 : 21} />
             </div>
-            {item === null ? <p>미정</p> : <p>{item}</p>}
+            <p>{item ? item?.mbti || '미정' : ''}</p>
           </li>
         );
       })}

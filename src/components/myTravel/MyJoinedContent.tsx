@@ -126,7 +126,9 @@ const MyJoinedContent = () => {
 
                 <Team
                   max={travelData.travelTeam.personLimit}
-                  mbtiList={travelData.travelTeam.approvedMembersMbti.mbti}
+                  userList={travelData.travelTeam.approvedMembersMbti.mbti.map((mbti) => ({
+                    mbti: mbti || null,
+                  }))}
                 />
 
                 <CurrentUserStatus>
