@@ -44,7 +44,7 @@ const filedBtn = (color: string, size: string | undefined, disabled: boolean | u
   height: 30px;
   font-size: 14px;
   transition: transform 0.2s ease-in-out;
-  cursor: ${disabled ? 'not-allowed' : 'pointer'};
+  cursor: ${disabled ? 'auto' : 'pointer'};
   :hover {
     ${disabled ? '' : `transform: scale(1.05);`}
   }

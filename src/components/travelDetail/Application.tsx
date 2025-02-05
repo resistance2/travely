@@ -45,6 +45,7 @@ const Application = ({
       ShowToast('로그인 후 이용 가능합니다.', 'failed');
       return;
     }
+    // !TODO: 자신의 여행을 신청할 수 없게 막기
     // if (user.userId === guide.userId) {
     //   ShowToast('자신의 여행에는 신청할 수 없습니다.', 'failed');
     //   return;
