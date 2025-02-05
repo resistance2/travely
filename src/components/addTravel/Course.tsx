@@ -1,4 +1,3 @@
-import { plusBtn, textBox } from '@/components/addTravel/Details';
 import useComposing from '@/hooks/custom/useComposing';
 import { css } from '@emotion/react';
 import { CirclePlus, MapPin, X } from 'lucide-react';
@@ -59,6 +58,25 @@ const Course = memo(({ courseList, removeCourse, addCourse }: CourseProps) => {
 });
 
 export default Course;
+
+const textBox = css`
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  height: 35px;
+  padding: 0 10px;
+  margin: 10px 0;
+`;
+
+const plusBtn = css`
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  color: #2467e3;
+  transition: all 0.2s ease-in-out;
+  :hover {
+    transform: scale(1.2);
+  }
+`;
 
 const courseWrapper = css`
   width: 100%;

@@ -23,7 +23,7 @@ interface IChoiceTagsProps {
   setChoseTag: (data: TagType[]) => void;
 }
 
-const ChoiceTags = memo(({ choseTag, setChoseTag }: IChoiceTagsProps) => {
+const ChoiceTags = memo(({ choseTag = [], setChoseTag }: IChoiceTagsProps) => {
   const handleTag = (tag: TagType) => {
     if (choseTag.length === 3 && !choseTag.includes(tag)) {
       alert('태그는 최대 3개까지 선택 가능합니다.');
