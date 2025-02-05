@@ -4,6 +4,7 @@ import ScheduleTeam from '@/components/addTravel/ScheduleTeam';
 import Thumbnail from '@/components/addTravel/Thumbnail';
 import GrayBack from '@/components/GrayBack';
 import useHandleImageUpload from '@/hooks/custom/useHandleImageUpload';
+import useResetAddTravel from '@/hooks/custom/useResetAddTravel';
 import usePostForFindGuide from '@/hooks/query/usePostForFindGuide';
 import { addTravelWrapper, noneStyleInput, pageLayoutWrapper } from '@/pages/AddTravel';
 import useFieldStore from '@/stores/useFieldStore';
@@ -15,7 +16,7 @@ import {
   hasImageData,
   replaceImageSrc,
 } from '@/utils/updateDataValidate';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 const AddForFindGuide = () => {
   const titleRef = useRef<HTMLInputElement>(null);
@@ -25,6 +26,11 @@ const AddForFindGuide = () => {
   const { setContent } = useFieldStore((state) => state.actions);
   const { uploadImages } = useHandleImageUpload();
   const { mutate } = usePostForFindGuide();
+  const resetAddTravel = useResetAddTravel().resetAddTravel;
+
+  useEffect(() => {
+    resetAddTravel();
+  }, [resetAddTravel]);
 
   const handleFetchCheck = async () => {
     const images = useImageStore.getState().images;
