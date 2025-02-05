@@ -1,31 +1,28 @@
 import postForFindGuide from '@/api/addForFindGuide/postForFindGuide';
 import { ShowToast } from '@/components/Toast';
-import useFieldStore from '@/stores/useFieldStore';
-import useImageStore from '@/stores/useImageStore';
-import useSectionsStore from '@/stores/useSectionsStore';
+import { GUIDE_LIST, HOME_GUIDE_LIST } from '@/constants/queryKey';
+import useResetAddTravel from '@/hooks/custom/useResetAddTravel';
 import { AddForFindGuideData } from '@/types/guideFindDataType';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 const usePostForFindGuide = () => {
   const navigate = useNavigate();
-  const resetImages = useImageStore((state) => state.actions.resetImages);
-  const resetField = useFieldStore((state) => state.actions.resetField);
-  const resetSections = useSectionsStore((state) => state.resetSections);
+  const queryClient = useQueryClient();
 
+  const resetAddTravel = useResetAddTravel().resetAddTravel;
   return useMutation({
     mutationFn: ({ dataToUpload }: { dataToUpload: AddForFindGuideData }) =>
       postForFindGuide(dataToUpload),
 
-    onSuccess: () => {
+    onSuccess: (data) => {
       ShowToast('작성하신 글이 업로드 되었습니다.', 'success');
-      setTimeout(() => {
-        resetImages();
-        resetField();
-        resetSections();
+      if (data) {
+        resetAddTravel();
+        queryClient.invalidateQueries({ queryKey: [GUIDE_LIST] });
+        queryClient.invalidateQueries({ queryKey: [HOME_GUIDE_LIST] });
         navigate('/find-guide');
-        // TODO: 가이드구해요리스트페이지 쿼리키 무효화 코드 추가 필요
-      }, 3000);
+      }
     },
 
     onError: () => {
