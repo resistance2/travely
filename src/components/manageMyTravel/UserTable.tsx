@@ -28,11 +28,12 @@ const UserTable = ({ data, teamId, hasAccount }: UserTableProps) => {
           <tr key={index}>
             <td css={{ minWidth: '80px' }}>
               <div>
-                <Profile url={user.userProfileImage} size={'40px'} /> {user.userName}
+                <Profile url={user.userProfileImage} size={'40px'} />
+                {user?.userName || user.socialName}
               </div>
             </td>
-            <td>{user.mbti}</td>
-            <td>{user.phoneNumber}</td>
+            <td>{user.mbti || '없음'}</td>
+            <td>{user.phoneNumber || '없음'}</td>
             <td>{user.userEmail}</td>
             <td>{formatDate(user.appliedAt)}</td>
             <td css={{ minWidth: '145px' }}>
