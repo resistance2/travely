@@ -8,12 +8,9 @@ interface ITeamProps {
 }
 
 const Team = ({ max = 1, userList = [], size = 'md' }: ITeamProps) => {
-  console.log('userList', userList);
   const items = Array(max)
     .fill(0)
     .map((_, i) => userList[i] || null);
-
-  console.log('items', items);
 
   return (
     <ul css={teamWrap} className={size}>

@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { ShowToast } from '@/components/Toast';
 import useUpdateProfile from '@/hooks/query/useUpdateProfile';
 
+import basicProfile from '@/assets/basicProfile.png';
 const MyAccount = () => {
   const navigate = useNavigate();
   const { user, setUser } = useUserStore((state) => state);
@@ -25,7 +26,7 @@ const MyAccount = () => {
   const [mbti, setMbti] = useState(user?.MBTI || '');
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(
-    user?.userProfileImage || null,
+    user?.userProfileImage || basicProfile,
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const updateProfile = useUpdateProfile();
@@ -110,7 +111,11 @@ const MyAccount = () => {
       <UserSummary>
         {user && profileImagePreview ? (
           <ProfileImageWrapper>
-            <ProfileImage src={profileImagePreview} alt="프로필 이미지" />
+            <ProfileImage
+              src={profileImagePreview}
+              onError={() => setProfileImagePreview(basicProfile)}
+              alt="프로필 이미지"
+            />
             {isEditing && (
               <>
                 <CameraIcon onClick={handleCameraClick}>
