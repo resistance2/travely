@@ -8,6 +8,7 @@ const useTravelersWaitingCount = (userId: string) => {
     queryFn: () => getTravelersWaitingCount(userId),
     select: (response) => response.data.waitings,
     enabled: !!userId,
+    refetchInterval: 20000,
   });
 };
 
