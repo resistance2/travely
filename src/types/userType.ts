@@ -8,6 +8,7 @@ export type User = {
   phoneNumber?: string;
   accountNumber?: string;
   bankCode?: string;
+  userScore: number;
 
   // myCreatedTravel: string[];
   // myPassedTravel: string[];
