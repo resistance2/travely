@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ShowToast } from '@/components/Toast';
 import useUpdateProfile from '@/hooks/query/useUpdateProfile';
+import Rating from '@/components/Rating';
 
 import basicProfile from '@/assets/basicProfile.png';
 const MyAccount = () => {
@@ -133,7 +134,9 @@ const MyAccount = () => {
         ) : null}
         <SocialName>{user?.socialName}</SocialName>
         <Email>{user?.userEmail}</Email>
-        {/* <p>{user?.Rating}</p> */}
+        <RatingZone>
+          <Rating rating={Number(user?.userScore)} />
+        </RatingZone>
       </UserSummary>
       <UserDetails>
         <Details>
@@ -264,6 +267,10 @@ const SocialName = styled.p`
 const Email = styled.p`
   font-size: 12px;
   color: #8f8f8f;
+`;
+
+const RatingZone = styled.p`
+  margin-top: 6px;
 `;
 
 const UserDetails = styled.div`

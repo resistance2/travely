@@ -40,8 +40,9 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
         userEmail,
         isVerifiedUser,
         _id: userId,
+        userScore,
       } = result.data.data;
-      setUser({ userProfileImage, socialName, userEmail, isVerifiedUser, userId });
+      setUser({ userProfileImage, socialName, userEmail, isVerifiedUser, userId, userScore });
     } catch (error) {
       console.error('로그인 처리에 오류가 발생했습니다.:', error);
     }
