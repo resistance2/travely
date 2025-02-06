@@ -15,11 +15,14 @@ import axios from 'axios';
 import useUserStore from '@/stores/useUserStore';
 import { modalId } from '@/constants/modalId';
 import { SERVER } from '@/constants/url';
+import { useState } from 'react';
 
 const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
   const { user, setUser } = useUserStore((state) => state);
   const { modalName, setModalName } = useModalStore((state) => state);
   const isOpen = modalId.main.login === modalName;
+
+  const [userProfileImage, setUserProfileImage] = useState(user?.userProfileImage || basicProfile);
 
   const postLogin = async (userInfo: FirebaseUser) => {
     const user = {
@@ -63,8 +66,6 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
   };
 
   if (user) {
-    const userThumbnail = user.userProfileImage;
-
     return (
       <div css={logined(light)}>
         <ul>
@@ -78,7 +79,7 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
         </ul>
         <div className="user-profile">
           <Link to="/my-page/my-account">
-            <img src={userThumbnail || basicProfile} alt="" />
+            <img src={userProfileImage} onError={() => setUserProfileImage(basicProfile)} alt="" />
           </Link>
         </div>
       </div>
