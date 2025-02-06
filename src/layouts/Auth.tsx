@@ -16,6 +16,7 @@ import useUserStore from '@/stores/useUserStore';
 import { modalId } from '@/constants/modalId';
 import { SERVER } from '@/constants/url';
 import { useState } from 'react';
+import useTravelersWaitingCount from '@/hooks/query/useTravelersWaitingCount';
 
 const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
   const { user, setUser } = useUserStore((state) => state);
@@ -23,6 +24,8 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
   const isOpen = modalId.main.login === modalName;
 
   const [userProfileImage, setUserProfileImage] = useState(user?.userProfileImage || basicProfile);
+
+  const { data: waitingCount } = useTravelersWaitingCount(user?.userId || '');
 
   const postLogin = async (userInfo: FirebaseUser) => {
     const user = {
@@ -71,7 +74,7 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
         <ul>
           <li>
             <Link to="/my-page/my-travel-list">내 여행</Link>
-            <AlarmBadge cnt={3} top={-11} right={-17} />
+            <AlarmBadge cnt={waitingCount || 0} top={-11} right={-17} />
           </li>
           <li>
             <Link to="/bookmark">북마크</Link>

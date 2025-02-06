@@ -1,12 +1,16 @@
 import { css } from '@emotion/react';
 import basicProfile from '@/assets/basicProfile.png';
+import { useState } from 'react';
 interface UserProfileProps {
   url: string | null;
   size: string;
 }
 
 const Profile = ({ url, size }: UserProfileProps) => {
-  return <img src={url || basicProfile} css={wrapper(size)} alt="Profile" />;
+  const [imgURL, setImgURL] = useState<string>(url || basicProfile);
+  return (
+    <img src={imgURL} onError={() => setImgURL(basicProfile)} css={wrapper(size)} alt="Profile" />
+  );
 };
 
 export default Profile;

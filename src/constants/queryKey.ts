@@ -12,3 +12,4 @@ export const TRAVEL_LIST = 'travel-list';
 export const BOOKMARK_LIST = 'bookmark-list';
 export const REVIEW_LIST = 'review-list';
 export const GUIDE_LIST = 'guide-list';
+export const TRAVELERS_WAITING_COUNT = 'travelersWaitingCount';
