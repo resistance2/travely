@@ -25,7 +25,7 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
 
   const [userProfileImage, setUserProfileImage] = useState(user?.userProfileImage || basicProfile);
 
-  const { data: waitingCount } = useTravelersWaitingCount('672901f5f3339eca4777fc11');
+  const { data: waitingCount } = useTravelersWaitingCount(user?.userId || '');
 
   const postLogin = async (userInfo: FirebaseUser) => {
     const user = {
