@@ -17,7 +17,7 @@ const initData = {
   travelCourse: null,
   tag: null,
   team: null,
-  travelPrice: 0,
+  travelPrice: null,
   includedItems: null,
   excludedItems: null,
   meetingTime: null,

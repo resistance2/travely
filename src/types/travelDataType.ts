@@ -82,7 +82,7 @@ export interface AddTravelData {
   travelCourse: string[] | null;
   tag: TagType[] | null;
   team: Pick<TravelTeamData, 'personLimit' | 'travelStartDate' | 'travelEndDate'>[] | null;
-  travelPrice: number;
+  travelPrice: number | null;
   includedItems: string[] | null;
   excludedItems: string[] | null;
   meetingTime: string[] | null;

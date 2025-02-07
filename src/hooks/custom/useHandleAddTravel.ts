@@ -17,7 +17,7 @@ const useHandleAddTravel = () => {
       travelContent: useFieldStore.getState().fields.content,
       travelTitle: useAddTravelStore.getState().data.travelTitle,
       thumbnail: null,
-      travelPrice: useAddTravelStore.getState().data.travelPrice,
+      travelPrice: useAddTravelStore.getState().data.travelPrice || 0,
       includedItems: useFieldStore.getState().fields.includeList,
       FAQ: useFieldStore.getState().fields.faqs,
       meetingTime: useFieldStore.getState().fields.meetingTime,
@@ -29,7 +29,7 @@ const useHandleAddTravel = () => {
     };
 
     if (!validateAddTravel(data)) return false;
-    if (data.travelPrice === 0) {
+    if (data.travelPrice === 0 || !data.travelPrice) {
       const modalStore = useModalStore.getState();
       modalStore.setModalName('zero-price-confirm');
       return false;

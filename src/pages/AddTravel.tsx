@@ -41,7 +41,7 @@ const AddTravel = () => {
     },
 
     changePrice: (travelPrice: number) => {
-      setData({ travelPrice });
+      setData({ travelPrice: travelPrice === 0 ? null : travelPrice });
     },
   };
 
@@ -57,7 +57,7 @@ const AddTravel = () => {
       travelContent: useFieldStore.getState().fields.content,
       travelTitle: useAddTravelStore.getState().data.travelTitle,
       thumbnail: null,
-      travelPrice: useAddTravelStore.getState().data.travelPrice,
+      travelPrice: useAddTravelStore.getState().data.travelPrice || 0,
       includedItems: useFieldStore.getState().fields.includeList,
       FAQ: useFieldStore.getState().fields.faqs,
       meetingTime: useFieldStore.getState().fields.meetingTime,
@@ -97,8 +97,12 @@ const AddTravel = () => {
             css={noneStyleInput}
             type="number"
             placeholder="0"
+            step="1000"
+            max="10000000"
+            min="0"
             onChange={(e) => changeHandlers.changePrice(Number(e.target.value))}
-            value={data.travelPrice}
+            value={data.travelPrice || ''}
+            required
           />
           <span css={{ marginRight: '5px' }}>원</span>
           <span css={{ fontSize: '14px' }}>/ 1인</span>
