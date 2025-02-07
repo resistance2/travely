@@ -6,6 +6,7 @@ import Team from '@/components/Team';
 import { useLocation } from 'react-router-dom';
 import { formatDate } from '@/utils/format';
 import useComposing from '@/hooks/custom/useComposing';
+import { ShowToast } from '@/components/Toast';
 
 const ScheduleTeam = () => {
   const { setIsComposing, handleKeyDown } = useComposing();
@@ -18,7 +19,7 @@ const ScheduleTeam = () => {
 
   const handleAddSchedule = () => {
     if (scheduleList && scheduleList.length >= 4) {
-      alert('일정은 최대 4개까지 추가할 수 있습니다.');
+      ShowToast('일정은 최대 4개까지 추가할 수 있습니다.', 'failed');
       return;
     }
     if (startDateRef.current && endDateRef.current && membersRef.current) {

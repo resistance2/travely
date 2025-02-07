@@ -1,54 +1,45 @@
 import useFieldStore from '@/stores/useFieldStore';
 import { validateAddTravel } from '@/utils/validCheck';
-import useImageStore from '@/stores/useImageStore';
-import useHandleImageUpload from '@/hooks/custom/useHandleImageUpload';
+
 import useCreateTravel from '@/hooks/query/useCreateTravel';
 import useAddTravelStore from '@/stores/useAddTravelStore';
+import useModalStore from '@/stores/useModalStore';
+import useUploadTravelImages from '@/hooks/custom/useUploadTravelImages';
+import { AddTravelData } from '@/types/travelDataType';
 
 const useHandleAddTravel = () => {
-  const setData = useAddTravelStore((state) => state.setData);
-  const images = useImageStore((state) => state.images);
-  const uploadImages = useHandleImageUpload().uploadImages;
+  const { upload } = useUploadTravelImages();
   const mutate = useCreateTravel().mutate;
 
-  const submitAddTravel = async () => {
-    const data = useAddTravelStore.getState().data;
+  const handleAddTravel = async () => {
+    const data: AddTravelData = {
+      userId: useAddTravelStore.getState().data.userId,
+      travelContent: useFieldStore.getState().fields.content,
+      travelTitle: useAddTravelStore.getState().data.travelTitle,
+      thumbnail: null,
+      travelPrice: useAddTravelStore.getState().data.travelPrice || 0,
+      includedItems: useFieldStore.getState().fields.includeList,
+      FAQ: useFieldStore.getState().fields.faqs,
+      meetingTime: useFieldStore.getState().fields.meetingTime,
+      excludedItems: useFieldStore.getState().fields.excludeList,
+      meetingPlace: useAddTravelStore.getState().data.meetingPlace,
+      tag: useAddTravelStore.getState().data.tag,
+      team: useFieldStore.getState().fields.scheduleList,
+      travelCourse: useFieldStore.getState().fields.courseList,
+    };
 
-    if (validateAddTravel(data)) {
-      try {
-        const { thumbnail, meetingSpace } = await uploadImages(images);
-        setData({ thumbnail: thumbnail[0], meetingPlace: meetingSpace[0] });
-      } catch (error) {
-        console.error(error);
-        return false;
-      }
-
-      const updatedData = useAddTravelStore.getState().data;
-      if (!updatedData.thumbnail || updatedData.thumbnail.trim().length === 0) {
-        console.error('썸네일 등록에 오류가 있습니다.');
-        return false;
-      }
-
-      mutate(updatedData);
-    } else {
+    if (!validateAddTravel(data)) return false;
+    if (data.travelPrice === 0 || !data.travelPrice) {
+      const modalStore = useModalStore.getState();
+      modalStore.setModalName('zero-price-confirm');
       return false;
     }
-  };
 
-  const handleAddTravel = () => {
-    const { includeList, excludeList, faqs, courseList, meetingTime, scheduleList } =
-      useFieldStore.getState().fields;
+    const imageResult = await upload();
 
-    setData({
-      includedItems: includeList,
-      excludedItems: excludeList,
-      FAQ: faqs,
-      travelCourse: courseList,
-      meetingTime,
-      team: scheduleList,
-    });
+    if (!imageResult) return false;
 
-    submitAddTravel();
+    mutate({ ...data, ...imageResult });
   };
 
   return { handleAddTravel };
