@@ -30,9 +30,13 @@ export interface IGetGuidelListReturn {
 const getGuideList = async ({ page, size }: IGetGuideList) => {
   const userId = useUserStore.getState().user?.userId;
 
-  const res = await axios.get<IGetGuideListRes>(
-    `${SERVER}/api/v1/travels-guide/travel-list?userId=${userId}&page=${page}&size=${size}`,
-  );
+  const res = await axios.get<IGetGuideListRes>(`${SERVER}/api/v1/travels-guide/travel-list`, {
+    params: {
+      userId,
+      page,
+      size,
+    },
+  });
   const { currentPage, hasNext } = res.data.data.pageInfo;
   const cardDatas = res.data.data.travels;
   const nextCursor = hasNext ? currentPage + 1 : null;
