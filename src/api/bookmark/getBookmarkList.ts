@@ -4,7 +4,11 @@ import axios from 'axios';
 
 const getBookmarkList = async (userId: string): Promise<ITravelCard[]> => {
   try {
-    const res = await axios.get(`${SERVER}/api/v1/travels/bookmark-list?userId=${userId}`);
+    const res = await axios.get(`${SERVER}/api/v1/travels/bookmark-list`, {
+      params: {
+        userId,
+      },
+    });
     return res.data.data.bookmarks;
   } catch (error) {
     console.error('북막크 목록을 조회하는데 실패했습니다: ' + error);
