@@ -17,7 +17,6 @@ const FindGuideCard: React.FC<IFindGuideCardProps> = ({
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // const { data: findGuideData } = useGetFindGuideDetail(guidePostId as string);
   return (
     <TripCardContainer
       onMouseEnter={() => setIsHovered(true)}

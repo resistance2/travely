@@ -4,9 +4,13 @@ import axios from 'axios';
 
 const getHomeGuideList = async (userId: string | null): Promise<IGuideCard[]> => {
   try {
-    const res = await axios.get(
-      `${SERVER}/api/v1/travels-guide/travel-list?userId=${userId}&page=1&size=8`,
-    );
+    const res = await axios.get(`${SERVER}/api/v1/travels-guide/travel-list`, {
+      params: {
+        userId,
+        page: 1,
+        size: 8,
+      },
+    });
 
     return res.data.data.travels;
   } catch (error) {

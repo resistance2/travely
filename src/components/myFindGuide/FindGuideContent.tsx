@@ -28,7 +28,6 @@ const FindGuideContent = () => {
   );
 };
 
-// 스타일 정의
 const ScrollableContainer = styled.div`
   max-width: 100%;
   overflow-x: auto;
