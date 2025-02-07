@@ -32,14 +32,13 @@ export interface IGetMyJoinedTravelReturn {
 
 const getMyJoinedTravel = async ({ userId, page, size }: IGetMyJoinedTravel) => {
   try {
-    const params = new URLSearchParams({
-      userId,
-      page: page.toString(),
-      size: size.toString(),
+    const response = await axios.get<IGETMyJoinedTravelRes>(`${SERVER}/api/v1/travels/my-travels`, {
+      params: {
+        userId,
+        page,
+        size,
+      },
     });
-    const response = await axios.get<IGETMyJoinedTravelRes>(
-      `${SERVER}/api/v1/travels/my-travels?${params.toString()}`,
-    );
     const { currentPage, hasNext } = response.data.data.pageInfo;
     const travelDatas = response.data.data.travels;
     const nextCursor = hasNext ? currentPage + 1 : null;

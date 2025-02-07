@@ -32,13 +32,15 @@ export interface IGetMyCreatedTravelReturn {
 
 const getMyCreatedTravel = async ({ userId, page, size }: IGetMyCreatedTravel) => {
   try {
-    const params = new URLSearchParams({
-      userId,
-      page: page.toString(),
-      size: size.toString(),
-    });
     const response = await axios.get<IGetMyCreatedTravelRes>(
-      `${SERVER}/api/v1/travels/my-created-travels?${params.toString()}`,
+      `${SERVER}/api/v1/travels/my-created-travels`,
+      {
+        params: {
+          userId,
+          page,
+          size,
+        },
+      },
     );
     const { currentPage, hasNext } = response.data.data.pageInfo;
     const createdTravelDatas = response.data.data.travels;
