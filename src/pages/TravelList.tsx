@@ -10,14 +10,7 @@ import scrollToTop from '@/utils/scrollToTop';
 import useGetTravelList from '@/hooks/query/useGetTravelList';
 import { useCallback, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { IGetTravelListReturn } from '@/api/travelList/getTravelList';
 import { TRAVEL_LIST } from '@/constants/queryKey';
-
-interface InfiniteQueryData<TPageData> {
-  pages: TPageData[];
-  pageParams: number[];
-}
-type TravelListInfiniteQueryData = InfiniteQueryData<IGetTravelListReturn>;
 
 const TravelList = () => {
   const queryClient = useQueryClient();
@@ -26,23 +19,12 @@ const TravelList = () => {
   const currentTag = tagDatas.find((data) => data.path === path) || { name: '전체', path: '전체' };
   const { name: pageTitle, path: searchTag } = currentTag;
 
-  const resetQueryData = useCallback(
-    (key: string) => {
-      queryClient.setQueryData<TravelListInfiniteQueryData>([TRAVEL_LIST, key], (data) => {
-        if (data) {
-          return {
-            pages: data.pages.slice(0, 1),
-            pageParams: data.pageParams.slice(0, 1),
-          };
-        }
-        return undefined;
-      });
-    },
-    [queryClient],
-  );
+  const resetQueryData = useCallback(() => {
+    queryClient.resetQueries({ queryKey: [TRAVEL_LIST] });
+  }, [queryClient]);
 
   useEffect(() => {
-    resetQueryData(searchTag);
+    resetQueryData();
   }, [searchTag, resetQueryData]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTravelList({
