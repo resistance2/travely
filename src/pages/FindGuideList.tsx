@@ -1,33 +1,13 @@
-import { IGetGuidelListReturn } from '@/api/guideList/getGuideList';
 import BorderBtn from '@/components/BorderBtn';
 import GuideCard from '@/components/findGuideList/GuideCard';
 import useGetGuideList from '@/hooks/query/useGetGuideList';
 import scrollToTop from '@/utils/scrollToTop';
 import { css } from '@emotion/react';
-import { useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 
-interface InfiniteQueryData<TPageData> {
-  pages: TPageData[];
-  pageParams: unknown[];
-}
-type GuideListInfiniteQueryData = InfiniteQueryData<IGetGuidelListReturn>;
-
 const FindGuide = () => {
-  const queryClient = useQueryClient();
-  useEffect(() => {
-    queryClient.setQueryData<GuideListInfiniteQueryData>(['guideList'], (data) => {
-      if (data) {
-        return {
-          pages: data.pages.slice(0, 1),
-          pageParams: data.pageParams.slice(0, 1),
-        };
-      }
-      return undefined;
-    });
-  }, [queryClient]);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetGuideList();
 
   const { ref } = useInView({

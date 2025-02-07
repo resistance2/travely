@@ -8,24 +8,13 @@ import { useInView } from 'react-intersection-observer';
 import SkeletonTravelCard from '@/components/SkeletonTravelCard';
 import scrollToTop from '@/utils/scrollToTop';
 import useGetTravelList from '@/hooks/query/useGetTravelList';
-import { useCallback, useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { TRAVEL_LIST } from '@/constants/queryKey';
+import { useCallback } from 'react';
 
 const TravelList = () => {
-  const queryClient = useQueryClient();
   const location = useLocation();
   const path = location.pathname.split('/').filter((item) => item !== '')[1] || '전체';
   const currentTag = tagDatas.find((data) => data.path === path) || { name: '전체', path: '전체' };
   const { name: pageTitle, path: searchTag } = currentTag;
-
-  const resetQueryData = useCallback(() => {
-    queryClient.resetQueries({ queryKey: [TRAVEL_LIST] });
-  }, [queryClient]);
-
-  useEffect(() => {
-    resetQueryData();
-  }, [searchTag, resetQueryData]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetTravelList({
     tag: searchTag,
