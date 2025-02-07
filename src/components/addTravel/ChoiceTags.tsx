@@ -1,5 +1,6 @@
 import FiledBtn from '@/components/FiledBtn';
 import GrayBack from '@/components/GrayBack';
+import { ShowToast } from '@/components/Toast';
 import useAddTravelStore from '@/stores/useAddTravelStore';
 import { theme } from '@/styles/theme';
 import { TagType } from '@/types/tagType';
@@ -25,7 +26,7 @@ const ChoiceTags = () => {
 
   const handleTag = (tag: TagType) => {
     if (choseTag.length === 3 && !choseTag.includes(tag)) {
-      alert('태그는 최대 3개까지 선택 가능합니다.');
+      ShowToast('태그는 최대 3개까지 선택 가능합니다.', 'failed');
       return;
     }
     if (choseTag.includes(tag)) {

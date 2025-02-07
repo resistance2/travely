@@ -51,11 +51,11 @@ const ReviewWriteModal = ({
   const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       if (!isValidFile(event.target.files[0])) {
-        alert('지원하지 않는 파일 형식입니다.');
+        ShowToast('지원하지 않는 파일 형식입니다.', 'failed');
         return;
       }
       if (files.length + event.target.files.length > 4) {
-        alert('파일은 최대 4개까지 업로드 가능합니다.');
+        ShowToast('파일은 최대 4개까지 업로드 가능합니다.', 'failed');
         return;
       }
       setFiles([...files, ...Array.from(event.target.files)]);
