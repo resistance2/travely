@@ -15,7 +15,7 @@ import axios from 'axios';
 import useUserStore from '@/stores/useUserStore';
 import { modalId } from '@/constants/modalId';
 import { SERVER } from '@/constants/url';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useTravelersWaitingCount from '@/hooks/query/useTravelersWaitingCount';
 
 const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
@@ -46,11 +46,14 @@ const Auth: React.FC<{ light?: boolean }> = ({ light = false }) => {
         userScore,
       } = result.data.data;
       setUser({ userProfileImage, socialName, userEmail, isVerifiedUser, userId, userScore });
-      setUserProfileImage(userProfileImage);
     } catch (error) {
       console.error('로그인 처리에 오류가 발생했습니다.:', error);
     }
   };
+
+  useEffect(() => {
+    setUserProfileImage(user?.userProfileImage || basicProfile);
+  }, [user?.userProfileImage]);
 
   const handleLogin = (Oauth: 'google' | 'kakao') => {
     if (Oauth === 'google') {
