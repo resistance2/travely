@@ -22,15 +22,7 @@ interface ApplicationProps {
   isTraveler: boolean;
 }
 
-const Application = ({
-  travelId,
-  price,
-  bookmark,
-  isBookmark,
-  teams,
-  guide,
-  isTraveler,
-}: ApplicationProps) => {
+const Application = ({ travelId, price, bookmark, isBookmark, teams, guide }: ApplicationProps) => {
   const { mutate } = useUpdateBookmark();
   const user = useUserStore((state) => state.user);
   const { mutate: registerTravel } = useRegisterTravel();
@@ -39,6 +31,9 @@ const Application = ({
   const handleSelectTeam = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTeamId(event.target.value);
   };
+
+  const filteredTeams = teams?.filter((team) => team.travelStartDate >= new Date().toISOString());
+  const isNoTeam = !filteredTeams || filteredTeams.length === 0;
 
   const handleRegister = () => {
     if (!user) {
@@ -78,16 +73,16 @@ const Application = ({
           <h1>{Number(price).toLocaleString()}원</h1>
           <p>/ 1인</p>
         </div>
-        {isTraveler || (
-          <select onChange={handleSelectTeam}>
-            <option value="">(여행 기간을 선택해주세요)</option>
-            {teams.map((team) => (
-              <option key={team.teamId} value={team.teamId}>
-                {formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}
-              </option>
-            ))}
-          </select>
-        )}
+        <select onChange={handleSelectTeam}>
+          <option value="">
+            {isNoTeam ? '신청 가능한 여행이 없습니다.' : '여행 기간을 선택해주세요'}
+          </option>
+          {filteredTeams.map((team) => (
+            <option key={team.teamId} value={team.teamId}>
+              {formatDate(team.travelStartDate) + ' ~ ' + formatDate(team.travelEndDate)}
+            </option>
+          ))}
+        </select>
         <div css={btnWrapper}>
           <button css={bookmarkBtn} onClick={handleBookmark}>
             <Bookmark
@@ -97,14 +92,13 @@ const Application = ({
             />
             {bookmark}
           </button>
-
           <FiledBtn
-            color={isTraveler ? '#999' : theme.colors.primary}
+            color={isNoTeam ? '#999' : theme.colors.primary}
             customStyle={applyBtn}
             onClick={handleRegister}
-            disabled={isTraveler}
+            disabled={isNoTeam}
           >
-            {isTraveler ? '신청 완료' : '신청하기'}
+            {isNoTeam ? '신청 불가' : '신청하기'}
           </FiledBtn>
         </div>
       </div>
