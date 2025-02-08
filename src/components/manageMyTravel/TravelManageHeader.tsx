@@ -33,6 +33,7 @@ const TravelManageHeader = ({ travelData, isOngoingTab, setIsOngoingTab }: Manag
 
   const handleDelete = () => {
     deleteTravelMutate({ travelId: travelData.travelId });
+    setModalName(null);
   };
 
   return (
