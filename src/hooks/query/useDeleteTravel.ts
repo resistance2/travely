@@ -1,6 +1,6 @@
 import deleteTravel from '@/api/manageTravel/deleteTravel';
 import { ShowToast } from '@/components/Toast';
-import { MY_CREATED_TRAVEL } from '@/constants/queryKey';
+import { MY_CREATED_TRAVEL, TRAVELERS_WAITING_COUNT } from '@/constants/queryKey';
 import { useTabStore } from '@/stores/useTabStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +18,7 @@ const useDeleteTravel = () => {
       navigate('/my-page/my-created-travel');
       setSelectedTab('내가 만든 여행');
       queryClient.invalidateQueries({ queryKey: [MY_CREATED_TRAVEL] });
+      queryClient.invalidateQueries({ queryKey: [TRAVELERS_WAITING_COUNT] });
     },
 
     onError: () => {
