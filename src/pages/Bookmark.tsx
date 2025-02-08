@@ -12,7 +12,7 @@ const Bookmark = () => {
   }
 
   if (isError) {
-    ShowToast('북막크 리스트를 불러오는데 오류가 발생했습니다.', 'failed');
+    ShowToast('북마크 리스트를 불러오는데 오류가 발생했습니다.', 'failed');
     navigate('/');
     return null;
   }
