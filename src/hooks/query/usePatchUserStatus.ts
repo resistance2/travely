@@ -1,6 +1,6 @@
 import patchUserStatus from '@/api/manageTravel/patchUserStatus';
 import { ShowToast } from '@/components/Toast';
-import { MANAGE_TRAVEL_TEAMS } from '@/constants/queryKey';
+import { MANAGE_TRAVEL_TEAMS, TRAVELERS_WAITING_COUNT } from '@/constants/queryKey';
 import useModalStore from '@/stores/useModalStore';
 import { TravelTeamData } from '@/types/travelDataType';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -33,6 +33,7 @@ const usePatchUserStatus = (teamId: string, page: number, userName: string) => {
     onSuccess: (_, { status }) => {
       setModalName(null);
       ShowToast(`${userName}님이 ${status === 'approved' ? '승인' : '거절'}되었습니다.`, 'success');
+      queryClient.invalidateQueries({ queryKey: [TRAVELERS_WAITING_COUNT] });
     },
     onError: (_err, _, context) => {
       if (context?.prevData) {
