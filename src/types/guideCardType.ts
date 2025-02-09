@@ -3,7 +3,10 @@ export interface IGuideCard {
   readonly thumbnail: string;
   readonly travelTitle: string;
   readonly createdBy: {
-    readonly userId: string;
+    readonly userId: {
+      _id: string;
+      mbti: string;
+    };
     readonly userName: string;
   };
   readonly team: {
