@@ -269,7 +269,7 @@ const Email = styled.p`
   color: #8f8f8f;
 `;
 
-const RatingZone = styled.p`
+const RatingZone = styled.div`
   margin-top: 6px;
 `;
 

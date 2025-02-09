@@ -5,7 +5,7 @@ import useUserStore from '@/stores/useUserStore';
 import useGetMyJoinedTravel from '@/hooks/query/useGetMyJoinedTravel';
 import { myJoinedTravel } from '@/types/myJoinedTravel';
 import BorderBtn from '../BorderBtn';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useQueryClient } from '@tanstack/react-query';
 import { IGetMyJoinedTravelReturn } from '@/api/myJoinedTravel/getMyJoinedTravel';
@@ -40,6 +40,7 @@ const formatDateRange = (startDate: string, endDate: string) => {
 const MyJoinedContent = () => {
   const { user } = useUserStore((state) => state);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const resetQueryData = useCallback(
     (key: string) => {
@@ -100,7 +101,9 @@ const MyJoinedContent = () => {
             return (
               <TripCardContainer key={travelData.id} isPast={isPast && reviewWritten}>
                 <Header>
-                  <Title>{travelData.travelTitle}</Title>
+                  <Title onClick={() => navigate(`/travel-detail/${travelData.travelId}`)}>
+                    {travelData.travelTitle}
+                  </Title>
                   {/* 예약이 거절된 상태면 "취소됨"을 표시, 아닌 경우 D-DAY 표시 */}
                   {currentUser.status === 'rejected' ? (
                     <StatusCanceled>취소됨</StatusCanceled>
@@ -213,6 +216,7 @@ const Title = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin: 0;
+  cursor: pointer;
 `;
 
 const DaysRemaining = styled.span`
