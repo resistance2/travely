@@ -12,6 +12,8 @@ interface IGuideCardDataProps {
 const GuideCard: React.FC<IGuideCardDataProps> = ({ cardData }) => {
   const { id, thumbnail, travelTitle, createdBy, team, commentCnt } = cardData;
 
+  console.log(team?.mbti);
+
   return (
     <Link to={`/find-guide-detail/${id}`}>
       <div css={card}>
@@ -22,9 +24,9 @@ const GuideCard: React.FC<IGuideCardDataProps> = ({ cardData }) => {
           <p className="title">{travelTitle}</p>
           <div className="team">
             <Team
-              max={team.personLimit === null ? 1 : team.personLimit}
+              max={team?.personLimit === null ? 1 : team.personLimit}
               size="sm"
-              userList={team.mbti === null ? [] : team.mbti.map((mbti) => ({ mbti: mbti || null }))}
+              userList={team?.mbti ? [] : team?.mbti?.map((mbti) => ({ mbti: mbti || null }))}
             />
           </div>
           <div className="name-comment-wrap">
