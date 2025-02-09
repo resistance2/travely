@@ -80,7 +80,7 @@ const MyCreatedContent = () => {
               rating={trip.reviewAverage}
               reviews={trip.travelReviewCount}
               price={trip.travelPrice}
-              badgeCount={trip.approveWatingCount}
+              badgeCount={trip.approveWaitingCount}
               updateDate={trip.updatedAt}
               isDisabled={!trip.travelActive}
             />
