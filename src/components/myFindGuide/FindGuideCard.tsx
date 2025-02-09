@@ -1,23 +1,27 @@
+import { Applicant } from '@/api/myCreatedTravel/getCreatedGuideTravel';
 import Team from '@/components/Team';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
 interface IFindGuideCardProps {
   title: string;
-  reviews: number;
+  comments: number;
   isDisabled?: boolean;
+  userList?: Applicant[];
+  personLimit?: number;
   onEnable?: () => void;
 }
 
 const FindGuideCard: React.FC<IFindGuideCardProps> = ({
   title,
-  reviews,
+  comments,
   isDisabled = false,
+  userList = [],
+  personLimit,
   onEnable,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // const { data: findGuideData } = useGetFindGuideDetail(guidePostId as string);
   return (
     <TripCardContainer
       onMouseEnter={() => setIsHovered(true)}
@@ -26,9 +30,12 @@ const FindGuideCard: React.FC<IFindGuideCardProps> = ({
       <TripInfo isDisabled={isDisabled}>
         <TitleContainer>
           <Title>{title}</Title>
-          <Comment>댓글 수:{reviews}</Comment>
+          <Comment>댓글 수:{comments}</Comment>
         </TitleContainer>
-        <Team max={7} userList={[{ mbti: 'ENFP' }]} />
+        <Team
+          max={personLimit || 1}
+          userList={userList.map((user) => ({ mbti: user?.mbti || null }))}
+        />
         <Buttons>
           <ManageButtonContainer>
             <ManageButton isDisabled={isDisabled}>수정</ManageButton>

@@ -1,10 +1,10 @@
 import { SERVER } from '@/constants/url';
 import axios from 'axios';
 
-interface Applicant {
+export interface Applicant {
   userId: string;
   status: string;
-  mbti: string;
+  mbti?: string;
 }
 
 export interface GuideTravel {
@@ -13,6 +13,7 @@ export interface GuideTravel {
   teamId: string;
   appliedUsers: Applicant[];
   commentCount: number;
+  personLimit: number;
 }
 
 interface getMyCreatedGuideTravelListResponse {
