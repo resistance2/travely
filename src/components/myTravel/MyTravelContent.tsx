@@ -3,7 +3,7 @@ import TripCard from './MyTravelCard';
 import useUserStore from '@/stores/useUserStore';
 import useGetMyCreatedTravel from '@/hooks/query/useGetMyCreatedTravel';
 import { myCreatedTravel } from '@/types/myCreatedTravelType';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import BorderBtn from '../BorderBtn';
 import { IGetMyCreatedTravelReturn } from '@/api/myCreatedTravel/getMycreatedTravel';
 import { MY_CREATED_TRAVEL } from '@/constants/queryKey';
@@ -22,6 +22,7 @@ type MyCreatedInfiniteQueryData = InfiniteQueryData<IGetMyCreatedTravelReturn>;
 const MyCreatedContent = () => {
   const { user } = useUserStore((state) => state);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const resetQueryData = useCallback(
     (key: string) => {
@@ -89,8 +90,8 @@ const MyCreatedContent = () => {
       ) : (
         <EmptyMessage>
           여행을 생성해주세요
-          <BorderBtn color="#4a95f2">
-            <Link to="/add-travel">여행 만들기 +</Link>
+          <BorderBtn color="#4a95f2" onClick={() => navigate('/add-travel')}>
+            여행 만들기 +
           </BorderBtn>
         </EmptyMessage>
       )}

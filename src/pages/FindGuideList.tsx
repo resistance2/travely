@@ -7,10 +7,11 @@ import { css } from '@emotion/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const FindGuide = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     queryClient.resetQueries({ queryKey: [GUIDE_LIST] });
@@ -42,8 +43,8 @@ const FindGuide = () => {
     <div css={findGuideWrap}>
       <div className="page-title">
         <h2>가이드 찾아요</h2>
-        <BorderBtn color="#4a95f2">
-          <Link to="/add-for-find-guide">가이드 찾아요 +</Link>
+        <BorderBtn color="#4a95f2" onClick={() => navigate('/add-for-find-guide')}>
+          가이드 찾아요 +
         </BorderBtn>
       </div>
 

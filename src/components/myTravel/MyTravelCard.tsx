@@ -4,6 +4,7 @@ import Rating from '@/components/Rating';
 import { formatDate } from '@/utils/formatDate';
 import useUpdateTravelStatus from '@/hooks/query/useUpdateTravelStatus';
 import { useNavigate } from 'react-router-dom';
+import { css } from '@emotion/react';
 
 interface ITripCardProps {
   travelId: string;
@@ -45,7 +46,9 @@ const TripCard: React.FC<ITripCardProps> = ({
     >
       <TripInfo isDisabled={isDisabled}>
         <TitleContainer>
-          <Title>{title}</Title>
+          <h3 css={titleStyle} onClick={() => navigate(`/travel-detail/${travelId}`)}>
+            {title}
+          </h3>
           <Rating rating={Number(rating)} reviewCount={Number(reviews)} />
         </TitleContainer>
         <Price>
@@ -109,16 +112,17 @@ const DisabledText = styled.p<{ isHovered: boolean }>`
   cursor: ${(props) => (props.isHovered ? 'pointer' : 'default')};
 `;
 
+const titleStyle = css`
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
 const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-`;
-
-const Title = styled.h3`
-  font-size: 18px;
-  font-weight: bold;
 `;
 
 const Price = styled.p`
