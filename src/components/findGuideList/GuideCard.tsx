@@ -12,8 +12,6 @@ interface IGuideCardDataProps {
 const GuideCard: React.FC<IGuideCardDataProps> = ({ cardData }) => {
   const { id, thumbnail, travelTitle, createdBy, team, commentCnt } = cardData;
 
-  console.log(team?.mbti);
-
   return (
     <Link to={`/find-guide-detail/${id}`}>
       <div css={card}>
