@@ -6,5 +6,5 @@ export interface myCreatedTravel {
   travelActive: boolean;
   updatedAt: string;
   reviewAverage: number;
-  approveWatingCount: number;
+  approveWaitingCount: number;
 }
