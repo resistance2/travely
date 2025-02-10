@@ -36,7 +36,7 @@ const TravelTeam = ({
 
   useEffect(() => {
     if (teamData && showTeamData) handleHasData(false);
-  }, []);
+  }, [teamData]);
 
   if (!teamData) return null;
 
