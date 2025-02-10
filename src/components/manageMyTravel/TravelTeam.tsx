@@ -42,20 +42,18 @@ const TravelTeam = ({
 
   const showTeamData = isOngoingDate(teamData.travelEndDate) === isOngoing;
   const userMBTIList = teamData?.approvedUsers?.map((user) => user.mbti);
-
+  console.log(teamData.appliedUsers);
   return (
     <div css={teamWrapper}>
       {teamData && showTeamData && (
         <>
           <p>{formatDate(teamData.travelStartDate) + ' ~ ' + formatDate(teamData.travelEndDate)}</p>
           <Team max={teamData.personLimit} userList={userMBTIList?.map((mbti) => ({ mbti }))} />
-          {teamData.appliedUsers ? (
+          {teamData.appliedUsers && (
             <div>
               <UserTable data={teamData.appliedUsers} teamId={teamId} hasAccount={hasAccount} />
               <MultiPagination pageData={teamData.pagination} teamId={teamData.teamId} />
             </div>
-          ) : (
-            <div css={noData}>신청한 유저가 없습니다.</div>
           )}
         </>
       )}
@@ -71,13 +69,4 @@ const teamWrapper = css`
     font-weight: 700;
     margin-bottom: 20px;
   }
-`;
-
-const noData = css`
-  display: flex;
-  justify-content: center;
-  font-weight: 500;
-  font-size: 18px;
-  color: #888;
-  margin: 100px;
 `;
