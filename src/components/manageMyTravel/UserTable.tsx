@@ -11,8 +11,10 @@ interface UserTableProps {
 }
 
 const UserTable = ({ data, teamId, hasAccount }: UserTableProps) => {
+  const hasAppliedUsers = data.length !== 0;
+
   return (
-    <table css={tableWrapper}>
+    <table css={tableWrapper(hasAppliedUsers)}>
       <thead>
         <tr>
           <th>유저</th>
@@ -24,34 +26,38 @@ const UserTable = ({ data, teamId, hasAccount }: UserTableProps) => {
         </tr>
       </thead>
       <tbody>
-        {data.map((user, index) => (
-          <tr key={index}>
-            <td css={{ minWidth: '80px' }}>
-              <div>
-                <Profile url={user.userProfileImage} size={'40px'} />
-                {user?.userName || user.socialName}
-              </div>
-            </td>
-            <td>{user.mbti || '없음'}</td>
-            <td>{user.phoneNumber || '없음'}</td>
-            <td>{user.userEmail}</td>
-            <td>{formatDate(user.appliedAt)}</td>
-            <td css={{ minWidth: '145px' }}>
-              {user.status === 'waiting' ? (
-                <UserStatusWaiting
-                  teamId={teamId}
-                  userId={user.userId}
-                  userName={user.socialName}
-                  hasAccount={hasAccount}
-                />
-              ) : user.status === 'approved' ? (
-                '승인'
-              ) : (
-                '거절'
-              )}
-            </td>
-          </tr>
-        ))}
+        {hasAppliedUsers ? (
+          data.map((user, index) => (
+            <tr key={index}>
+              <td css={{ minWidth: '80px' }}>
+                <div>
+                  <Profile url={user.userProfileImage} size={'40px'} />
+                  {user?.userName || user.socialName}
+                </div>
+              </td>
+              <td>{user.mbti || '없음'}</td>
+              <td>{user.phoneNumber || '없음'}</td>
+              <td>{user.userEmail}</td>
+              <td>{formatDate(user.appliedAt)}</td>
+              <td css={{ minWidth: '145px' }}>
+                {user.status === 'waiting' ? (
+                  <UserStatusWaiting
+                    teamId={teamId}
+                    userId={user.userId}
+                    userName={user.socialName}
+                    hasAccount={hasAccount}
+                  />
+                ) : user.status === 'approved' ? (
+                  '승인'
+                ) : (
+                  '거절'
+                )}
+              </td>
+            </tr>
+          ))
+        ) : (
+          <div css={noData}>신청한 유저가 없습니다.</div>
+        )}
       </tbody>
     </table>
   );
@@ -59,11 +65,18 @@ const UserTable = ({ data, teamId, hasAccount }: UserTableProps) => {
 
 export default UserTable;
 
-const tableWrapper = css`
+const tableWrapper = (hasAppliedUsers: boolean) => css`
   width: 100%;
   margin-top: 40px;
+  ${!hasAppliedUsers &&
+  `
+      margin-bottom: 100px;
+    `}
   & thead {
     background-color: #ededed;
+  }
+  & tbody {
+    position: relative;
   }
   & th,
   td {
@@ -76,4 +89,14 @@ const tableWrapper = css`
     justify-content: center;
     align-items: center;
   }
+`;
+
+const noData = css`
+  width: 100%;
+  position: absolute;
+  top: 30px;
+  margin: 0 auto;
+  font-weight: 500;
+  font-size: 18px;
+  color: #888;
 `;
