@@ -9,8 +9,8 @@ const useGetReviews = ({ userId }: { userId: string }) => {
       return getReviewsByUserId({ userId, page: pageParam, pageSize: 10 });
     },
     getNextPageParam: (lastPage) => {
-      const { pageInfo } = lastPage.data;
-      return pageInfo.hasNext ? pageInfo.page + 1 : undefined;
+      const lastPageInfo = lastPage?.data?.pageInfo ?? {};
+      return lastPageInfo?.hasNext ? lastPageInfo?.page + 1 : undefined;
     },
     initialPageParam: 1,
     enabled: !!userId,

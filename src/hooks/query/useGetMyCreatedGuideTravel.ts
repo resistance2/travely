@@ -12,8 +12,8 @@ const useGetMyCreatedTravel = ({ userId }: IUseGetTravelList) => {
     queryKey: [MY_CREATED_TRAVEL, userId],
     queryFn: ({ pageParam }) => getCreatedGuideTravel({ userId, page: pageParam, size: pageSize }),
     getNextPageParam: (lastPage) => {
-      const { pageInfo } = lastPage.data;
-      return pageInfo.hasNext ? pageInfo.currentPage + 1 : undefined;
+      const lastPageInfo = lastPage?.data?.pageInfo ?? {};
+      return lastPageInfo?.hasNext ? lastPageInfo?.currentPage + 1 : undefined;
     },
     initialPageParam: 1,
   });
