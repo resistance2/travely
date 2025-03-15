@@ -3,7 +3,7 @@ import TagCardWrap from '@/components/TagCardWrap';
 import TravelCard from '@/components/traveList/TravelCard';
 import { tagDatas } from '@/data/tagDatas';
 import { css } from '@emotion/react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import SkeletonTravelCard from '@/components/SkeletonTravelCard';
 import scrollToTop from '@/utils/scrollToTop';
@@ -18,6 +18,8 @@ const TravelList = () => {
   const path = location.pathname.split('/').filter((item) => item !== '')[1] || '전체';
   const currentTag = tagDatas.find((data) => data.path === path) || { name: '전체', path: '전체' };
   const { name: pageTitle, path: searchTag } = currentTag;
+
+  const navigate = useNavigate();
 
   const resetQueryData = useCallback(() => {
     queryClient.resetQueries({ queryKey: [TRAVEL_LIST] });
@@ -56,8 +58,8 @@ const TravelList = () => {
       <TagCardWrap />
       <div className="page-title">
         <h2>{pageTitle}</h2>
-        <BorderBtn color="#4a95f2">
-          <Link to="/add-travel">여행 만들기 +</Link>
+        <BorderBtn color="#4a95f2" onClick={() => navigate('/add-travel')}>
+          여행 만들기 +
         </BorderBtn>
       </div>
 
