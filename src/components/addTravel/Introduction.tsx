@@ -5,7 +5,7 @@ import useGetImageUrl from '@/hooks/query/useGetImageUrl';
 import useAddTravelStore from '@/stores/useAddTravelStore';
 import useFieldStore from '@/stores/useFieldStore';
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'quill/dist/quill.snow.css';
 
@@ -31,7 +31,7 @@ const QUILL_MODULE = {
   },
 };
 
-const Introduction = ({ title = '상품 소개' }: IntroductionProps) => {
+const Introduction = memo(({ title = '상품 소개' }: IntroductionProps) => {
   const [imgLimit, setImgLimit] = useState(false);
   const [value, setValue] = useState('');
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
@@ -102,7 +102,7 @@ const Introduction = ({ title = '상품 소개' }: IntroductionProps) => {
       ) : null}
     </GrayBack>
   );
-};
+});
 
 export default Introduction;
 
