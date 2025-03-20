@@ -21,6 +21,7 @@ export function ShowToast(message: string, toastType = 'success') {
       theme: 'light',
       draggable: true,
       icon: <CustomIconBlue />,
+      position: 'bottom-right',
     });
   } else {
     toast.error(`${message}`, {
@@ -28,6 +29,7 @@ export function ShowToast(message: string, toastType = 'success') {
       theme: 'light',
       draggable: true,
       icon: <CustomIconRed />,
+      position: 'bottom-right',
     });
   }
 }
