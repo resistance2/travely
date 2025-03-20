@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { ShowToast } from '@/components/Toast';
-import getImageUrl from '@/api/addTravel/getImageUrl';
+// import getImageUrl from '@/api/addTravel/getImageUrl';
+import { uploadImageWithPresignedUrl } from '@/api/addTravel/uploadImageWithPresignedUrl';
 
 export interface UseImageUploadProps {
   file: File;
@@ -8,7 +9,7 @@ export interface UseImageUploadProps {
 
 const useGetImageUrl = () => {
   return useMutation<string, Error, UseImageUploadProps>({
-    mutationFn: ({ file }) => getImageUrl(file),
+    mutationFn: ({ file }) => uploadImageWithPresignedUrl(file, 'travel'),
     onError: () => {
       ShowToast('이미지 업로드 중 오류가 발생하였습니다. 다시 시도해주세요', 'failed');
     },
