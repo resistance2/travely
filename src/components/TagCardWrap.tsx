@@ -26,7 +26,14 @@ function TagCardWrap({ shape = 'round' }: ITagCardWrap) {
           <li key={i}>
             <Link to={`/travel-list/${tag.path}`}>
               <div className="tag-img">
-                <img src={tag.imgSrc} alt={tag.name} />
+                <img
+                  src={tag.imgSrc}
+                  alt={tag.name}
+                  loading="lazy"
+                  width="90"
+                  height="90"
+                  fetchPriority={i < 4 ? 'high' : 'low'}
+                />
               </div>
               <p className="tag-name">{tag.name}</p>
             </Link>
@@ -62,22 +69,23 @@ function TagCardWrap({ shape = 'round' }: ITagCardWrap) {
             setIsBeginning(swiper.isBeginning);
             setIsEnd(swiper.isEnd);
           }}
-          // autoplay={{
-          //   delay: 5000,
-          //   disableOnInteraction: false,
-          // }}
         >
           {tags.map((tag, i) => (
             <SwiperSlide key={i}>
               <div className="card">
                 <Link to={`/travel-list/${tag.path}`}>
                   <div className="card-img">
-                    <img src={tag.imgSrc} alt={tag.name} />
+                    <img
+                      src={tag.imgSrc}
+                      alt={tag.name}
+                      loading="lazy"
+                      width="350"
+                      height="350"
+                      fetchPriority={i < 4 ? 'high' : 'low'}
+                    />
                   </div>
-
                   <p>{tag.name}</p>
                   <div className="btn-list">둘러보기</div>
-                  {/* <FiledBtn children="둘러보기" color="#fff" size="sm" /> */}
                 </Link>
               </div>
             </SwiperSlide>
