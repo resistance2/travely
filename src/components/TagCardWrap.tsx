@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import FiledBtn from '@/components/FiledBtn';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
@@ -26,14 +27,7 @@ function TagCardWrap({ shape = 'round' }: ITagCardWrap) {
           <li key={i}>
             <Link to={`/travel-list/${tag.path}`}>
               <div className="tag-img">
-                <img
-                  src={tag.imgSrc}
-                  alt={tag.name}
-                  loading="lazy"
-                  width="90"
-                  height="90"
-                  fetchPriority={i < 4 ? 'high' : 'low'}
-                />
+                <img src={tag.imgSrc} alt={tag.name} />
               </div>
               <p className="tag-name">{tag.name}</p>
             </Link>
@@ -69,23 +63,21 @@ function TagCardWrap({ shape = 'round' }: ITagCardWrap) {
             setIsBeginning(swiper.isBeginning);
             setIsEnd(swiper.isEnd);
           }}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
         >
           {tags.map((tag, i) => (
             <SwiperSlide key={i}>
               <div className="card">
                 <Link to={`/travel-list/${tag.path}`}>
                   <div className="card-img">
-                    <img
-                      src={tag.imgSrc}
-                      alt={tag.name}
-                      loading="lazy"
-                      width="350"
-                      height="350"
-                      fetchPriority={i < 4 ? 'high' : 'low'}
-                    />
+                    <img src={tag.imgSrc} alt={tag.name} />
                   </div>
+
                   <p>{tag.name}</p>
-                  <div className="btn-list">둘러보기</div>
+                  <FiledBtn children="둘러보기" color="#fff" size="sm" />
                 </Link>
               </div>
             </SwiperSlide>
@@ -164,24 +156,13 @@ const squareTagCardWrap = css`
     border-radius: 10px;
     overflow: hidden;
 
-    .btn-list {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      width: 60px;
-      border-radius: 8px;
-      font-size: 13px;
-      background-color: #fff;
-      transition: transform 0.2s ease-in-out;
-    }
-
     &:hover {
-      .btn-list {
+      button {
         width: 80px;
         padding-right: 24px;
         padding-left: 8px;
       }
-      .btn-list:after {
+      button:after {
         opacity: 1;
         right: 7px;
       }
@@ -222,7 +203,7 @@ const squareTagCardWrap = css`
       font-weight: bold;
       letter-spacing: 1px;
     }
-    .btn-list {
+    button {
       height: 40px;
       position: absolute;
       bottom: 20px;
@@ -232,7 +213,7 @@ const squareTagCardWrap = css`
       border-radius: 4px;
       transition: 0.2s;
     }
-    .btn-list:after {
+    button:after {
       content: '»';
       position: absolute;
       opacity: 0;
