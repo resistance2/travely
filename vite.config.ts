@@ -41,7 +41,9 @@ export default defineConfig({
         quality: 80,
       },
       webp: {
-        lossless: true,
+        quality: 80,
+        lossless: false,
+        effort: 4,
       },
     }),
   ],
